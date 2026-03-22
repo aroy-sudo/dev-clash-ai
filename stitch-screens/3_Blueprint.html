@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vector Blueprint - Step 3</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Work+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f6faff",
+              "on-secondary": "#ffffff",
+              "on-secondary-fixed-variant": "#5b4300",
+              "on-tertiary-fixed-variant": "#8b1a16",
+              "error-container": "#ffdad6",
+              "outline": "#6c7a76",
+              "surface-tint": "#006b5c",
+              "on-primary-fixed-variant": "#005145",
+              "surface-container-low": "#ebf5ff",
+              "on-background": "#001e2e",
+              "on-tertiary-container": "#7e100e",
+              "inverse-on-surface": "#e5f2ff",
+              "error": "#ba1a1a",
+              "on-tertiary-fixed": "#410001",
+              "primary-fixed-dim": "#44ddc1",
+              "surface-container-lowest": "#ffffff",
+              "on-primary-container": "#00473c",
+              "surface-container-high": "#d4ebff",
+              "secondary-fixed": "#ffdf9e",
+              "on-tertiary": "#ffffff",
+              "surface": "#f6faff",
+              "secondary": "#785900",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#c8e6ff",
+              "primary": "#006b5c",
+              "tertiary": "#ac332a",
+              "on-secondary-container": "#6c5000",
+              "on-surface": "#001e2e",
+              "secondary-container": "#fdc003",
+              "surface-container": "#dff0ff",
+              "tertiary-fixed-dim": "#ffb4aa",
+              "secondary-fixed-dim": "#fabd00",
+              "tertiary-fixed": "#ffdad5",
+              "primary-fixed": "#68fadd",
+              "on-surface-variant": "#3c4a46",
+              "inverse-surface": "#133347",
+              "tertiary-container": "#ff877a",
+              "on-error": "#ffffff",
+              "inverse-primary": "#44ddc1",
+              "surface-dim": "#bfdef7",
+              "surface-bright": "#f6faff",
+              "on-primary-fixed": "#00201a",
+              "outline-variant": "#bbcac4",
+              "primary-container": "#00bfa5",
+              "on-secondary-fixed": "#261a00",
+              "on-primary": "#ffffff",
+              "surface-variant": "#c8e6ff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Work Sans"],
+              "label": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.scribble-underline {
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='10' viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 8 Q 25 2 50 8 T 98 2' stroke='%23fdc003' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 8px
+    }
+.grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.04;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCN19tLpukaW89hZ7UyLw-UiMPvTgAVNqIUBM6ZER1qcZKbvtQmP6dSUWn1xWmsx_IbFya2JtNHi-i2T_pT7JKgJyaLOdtepCVpaF4_hvpr_oQ5WfW-LV4Ow2oGioQ8MglWVyZ7NG6jVBkpIbGpkdNpQ-RIRJz32t-PYbq37LeUcOu4oDG1_1oFoi5DhgYmLkDTBNy1t66NVNru9fs587Ihy5Mywmfc6TgFSG6tt8Dfb8Fxu2Ss_OXRNxCIzvJEDiaZj7pE4__JfPw)
+    }
+.sketchy-border {
+    clip-path: polygon(0% 2%, 98% 0%, 100% 97%, 2% 100%)
+    }
+.hand-drawn-circle {
+    border: 2px solid currentColor;
+    border-radius: 48% 52% 55% 45%/42% 48% 52% 58%
+    }</style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen overflow-x-hidden selection:bg-secondary-container">
+<div class="grain-overlay"></div>
+<!-- TopAppBar -->
+<header class="bg-[#f6faff] dark:bg-[#133347] flex justify-between items-center w-full px-6 py-4 mx-auto fixed top-0 z-50">
+<div class="font-['Space_Grotesk'] font-bold tracking-tight text-2xl font-black text-[#006b5c] dark:text-[#00bfa5]">
+            Vector
+        </div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-[#006b5c] dark:text-[#00bfa5] cursor-pointer hover:opacity-80 transition-opacity">help_outline</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col py-8 bg-[#f6faff] dark:bg-[#133347] h-screen w-20 md:w-64 border-r-[0.5px] border-[#133347]/10">
+<div class="mt-16 px-6 mb-12">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center border-2 border-on-background/10">
+<img alt="User" class="rounded-full" data-alt="User avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJKBJqoYByiYOhNOeEBBVtjAQ4IVreIA2z8CXkod6QuKybEHfm6ZxBA0xjB80jbNXmmihAu2LpUvLdOT050sezJQnfAlIjp9pEpLFYwIinVUJlMJNBzU-sN-9LjQEKg_VDS6IAXkwfkuIZGrejCK9Ags-fDff8T6NmISOeeqOYxUJbI8SgnWmlbVMFU83sTElRtUwgeWEqSXtdfje0FqPhuI26_U1MwKFzlBkBH6SxL6Z80EivzDhaO8GZCFmTe4ckVVYvlG5lPws"/>
+</div>
+<div class="hidden md:block">
+<p class="font-['Work_Sans'] text-sm uppercase tracking-widest text-[#006b5c]">Step 3 of 3</p>
+<p class="font-headline font-bold text-on-surface">Focus</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Active State Focus (Step 3) -->
+<a class="flex items-center gap-4 py-3 transition-all duration-300 ease-in-out text-[#133347]/50 dark:text-[#f6faff]/50 pl-4 hover:bg-[#00bfa5]/10" href="#">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+<span class="hidden md:block font-['Work_Sans'] text-sm uppercase tracking-widest">Identity</span>
+</a>
+<a class="flex items-center gap-4 py-3 transition-all duration-300 ease-in-out text-[#133347]/50 dark:text-[#f6faff]/50 pl-4 hover:bg-[#00bfa5]/10" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span class="hidden md:block font-['Work_Sans'] text-sm uppercase tracking-widest">Path</span>
+</a>
+<a class="flex items-center gap-4 py-3 transition-all duration-300 ease-in-out text-[#006b5c] dark:text-[#00bfa5] font-black border-l-4 border-[#fdc003] pl-4" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="hidden md:block font-['Work_Sans'] text-sm uppercase tracking-widest">Focus</span>
+</a>
+</div>
+<div class="mt-auto px-6 hidden md:block">
+<button class="w-full py-4 bg-primary text-on-primary font-headline font-bold rounded-xl sketchy-border hover:bg-primary-container transition-colors duration-300 shadow-lg">
+                Continue Draft
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-20 md:ml-64 pt-24 pb-32 px-8 min-h-screen">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Sidebar Header -->
+<div class="lg:col-span-4 sticky top-24 self-start">
+<h1 class="font-headline text-5xl md:text-6xl font-black text-on-background leading-none mb-6">
+                    Where do you <span class="scribble-underline px-1">stand</span> right now?
+                </h1>
+<p class="font-body text-xl text-on-surface-variant max-w-sm mb-8">
+                    Let's map out your current knowledge. Every tick is a brick in your future foundation.
+                </p>
+<!-- Status Card -->
+<div class="bg-surface-container-low p-6 rounded-xl border-2 border-outline-variant/20 -rotate-1 shadow-sm">
+<h3 class="font-headline font-bold text-tertiary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+                        Drafting Stats
+                    </h3>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="font-label text-sm uppercase tracking-tighter">Syllabus Covered</span>
+<span class="font-headline font-bold text-2xl">42%</span>
+</div>
+<div class="h-4 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[42%] flex items-center justify-end px-1">
+<div class="w-2 h-2 rounded-full bg-on-secondary"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- The Blueprint Grid -->
+<div class="lg:col-span-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Class 11th Section -->
+<section class="space-y-6">
+<div class="flex items-center gap-4 mb-8">
+<span class="text-4xl font-headline font-black text-secondary/30">11</span>
+<h2 class="font-headline text-3xl font-bold tracking-tight">Class 11th</h2>
+<div class="h-px flex-grow bg-outline-variant/30"></div>
+</div>
+<!-- Physics Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-primary shadow-md transform hover:rotate-1 transition-transform cursor-default">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+                                    Physics
+                                </h3>
+<span class="bg-primary/10 text-primary font-label text-[10px] px-2 py-1 rounded">CORE</span>
+</div>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 group">
+<div class="w-5 h-5 hand-drawn-circle flex items-center justify-center text-secondary group-hover:bg-secondary-container transition-colors">
+<span class="material-symbols-outlined text-xs" data-icon="check" style="font-variation-settings: 'FILL' 0;">check</span>
+</div>
+<span class="font-body text-sm font-medium">Mechanics &amp; Kinematics</span>
+</li>
+<li class="flex items-center gap-3 group">
+<div class="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline group-hover:bg-surface-container-high transition-colors"></div>
+<span class="font-body text-sm">Thermodynamics</span>
+</li>
+</ul>
+</div>
+<!-- Chemistry Section -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-tertiary shadow-md rotate-1">
+<h3 class="font-headline text-xl font-bold flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-tertiary" data-icon="science">science</span>
+                                Chemistry
+                            </h3>
+<div class="space-y-6">
+<div>
+<p class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant mb-2">Inorganic</p>
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 hand-drawn-circle flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span>
+</div>
+<span class="font-body text-sm">Periodic Table</span>
+</div>
+</div>
+<div>
+<p class="font-label text-[11px] uppercase tracking-widest text-on-surface-variant mb-2">Physical</p>
+<div class="flex items-center gap-3">
+<div class="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline"></div>
+<span class="font-body text-sm">Mole Concept</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Class 12th Section -->
+<section class="space-y-6">
+<div class="flex items-center gap-4 mb-8">
+<span class="text-4xl font-headline font-black text-primary/30">12</span>
+<h2 class="font-headline text-3xl font-bold tracking-tight">Class 12th</h2>
+<div class="h-px flex-grow bg-outline-variant/30"></div>
+</div>
+<!-- Maths Card -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-secondary shadow-md -rotate-1">
+<h3 class="font-headline text-xl font-bold flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary" data-icon="calculate">calculate</span>
+                                Mathematics
+                            </h3>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 group">
+<div class="w-5 h-5 hand-drawn-circle flex items-center justify-center text-secondary bg-secondary-container">
+<span class="material-symbols-outlined text-xs" data-icon="check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-body text-sm font-bold">Calculus II</span>
+</li>
+<li class="flex items-center gap-3 group">
+<div class="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline"></div>
+<span class="font-body text-sm">Vector Algebra</span>
+</li>
+<li class="flex items-center gap-3 group">
+<div class="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline"></div>
+<span class="font-body text-sm">Probability</span>
+</li>
+</ul>
+</div>
+<!-- Organic Chemistry (Deep Dive) -->
+<div class="bg-inverse-surface text-background p-6 rounded-xl shadow-xl sketchy-border">
+<div class="flex items-center justify-between mb-4">
+<p class="font-label text-[11px] uppercase tracking-tighter text-secondary-container">Deep Focus</p>
+<span class="material-symbols-outlined text-secondary-container" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h3 class="font-headline text-2xl font-black mb-2">Organic Synthesis</h3>
+<p class="font-body text-xs text-background/60 mb-6">Class 12th Chemistry Advanced Path</p>
+<div class="p-4 bg-background/5 rounded border border-background/10 space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="radio_button_checked">radio_button_checked</span>
+<span class="font-body text-sm">Alcohols &amp; Ethers</span>
+</div>
+<div class="flex items-center gap-2 text-background/40">
+<span class="material-symbols-outlined text-sm" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span class="font-body text-sm">Aldehydes</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Hand-drawn Annotation -->
+<div class="mt-12 relative">
+<div class="absolute -top-12 -left-8 pointer-events-none">
+<svg class="text-tertiary" height="60" viewbox="0 0 60 60" width="60">
+<path d="M10 50 L 50 10 M 40 10 L 50 10 L 50 20" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+</div>
+<p class="font-headline font-bold text-lg text-tertiary rotate-2">
+                        Wait! Don't forget your revision cycles.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-8 left-0 w-full z-50 flex justify-between px-12 items-center bg-transparent">
+<button class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 opacity-40 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+<span class="font-['Space_Grotesk'] text-[12px] font-bold">Back</span>
+</button>
+<div class="flex flex-col items-center justify-center bg-[#fdc003] text-[#133347] rounded-full p-4 scale-110 shadow-xl border-2 border-on-background">
+<span class="material-symbols-outlined" data-icon="gesture">gesture</span>
+<span class="font-['Space_Grotesk'] text-[12px] font-bold">The Blueprint</span>
+</div>
+<button class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 opacity-40 hover:scale-105 transition-transform group">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-['Space_Grotesk'] text-[12px] font-bold">Next</span>
+</button>
+</nav>
+<!-- Sketchy decorative elements -->
+<div class="fixed top-1/4 right-10 opacity-10 pointer-events-none hidden xl:block">
+<svg height="200" viewbox="0 0 100 100" width="200">
+<circle cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-dasharray="2 2" stroke-width="0.5"></circle>
+<path d="M10 10 L 90 90 M 90 10 L 10 90" stroke="currentColor" stroke-width="0.5"></path>
+</svg>
+</div>
+</body></html>

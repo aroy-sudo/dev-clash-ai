@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error-container": "#ffdad6",
+              "outline": "#6c7a76",
+              "on-tertiary-container": "#7e100e",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#3c4a46",
+              "surface-container-highest": "#c8e6ff",
+              "surface-dim": "#bfdef7",
+              "on-secondary-fixed-variant": "#5b4300",
+              "error": "#ba1a1a",
+              "on-background": "#001e2e",
+              "on-tertiary-fixed-variant": "#8b1a16",
+              "secondary-fixed-dim": "#fabd00",
+              "on-secondary": "#ffffff",
+              "surface-container": "#dff0ff",
+              "tertiary": "#ac332a",
+              "on-surface": "#001e2e",
+              "surface-container-high": "#d4ebff",
+              "tertiary-fixed": "#ffdad5",
+              "surface-container-lowest": "#ffffff",
+              "on-error": "#ffffff",
+              "surface-tint": "#006b5c",
+              "primary-container": "#00bfa5",
+              "on-primary-fixed": "#00201a",
+              "on-secondary-container": "#6c5000",
+              "on-tertiary-fixed": "#410001",
+              "on-secondary-fixed": "#261a00",
+              "on-primary-container": "#00473c",
+              "primary": "#006b5c",
+              "tertiary-fixed-dim": "#ffb4aa",
+              "surface-bright": "#f6faff",
+              "background": "#f6faff",
+              "on-primary": "#ffffff",
+              "surface-container-low": "#ebf5ff",
+              "inverse-on-surface": "#e5f2ff",
+              "tertiary-container": "#ff877a",
+              "on-error-container": "#93000a",
+              "outline-variant": "#bbcac4",
+              "secondary-container": "#fdc003",
+              "secondary": "#785900",
+              "primary-fixed": "#68fadd",
+              "surface-variant": "#c8e6ff",
+              "secondary-fixed": "#ffdf9e",
+              "surface": "#f6faff",
+              "inverse-surface": "#133347",
+              "primary-fixed-dim": "#44ddc1",
+              "on-primary-fixed-variant": "#005145",
+              "inverse-primary": "#44ddc1"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Work Sans"],
+              "label": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .sketched-border {
+            border: 2px solid currentColor;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+        }
+        .paper-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        .marker-underline {
+            background: linear-gradient(120deg, transparent 0%, transparent 20%, #fdc003 20%, #fdc003 80%, transparent 80%);
+            background-size: 100% 0.3em;
+            background-repeat: no-repeat;
+            background-position: 0 88%;
+        }
+        .chat-bubble-ai {
+            border-radius: 2% 98% 2% 98% / 98% 2% 98% 2%;
+        }
+        .chat-bubble-user {
+            border-radius: 98% 2% 98% 2% / 2% 98% 2% 98%;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 max-w-full bg-[#f6faff] dark:bg-[#133347] backdrop-blur-md border-b-2 border-dashed border-[#006b5c]/20">
+<div class="flex items-center gap-4">
+<span class="font-headline text-3xl font-black text-[#006b5c] dark:text-[#00bfa5] uppercase italic">Vector</span>
+</div>
+<nav class="hidden md:flex items-center gap-8 font-headline font-bold tracking-tight">
+<a class="text-[#006b5c] dark:text-[#00bfa5] hover:skew-x-1 hover:text-[#785900] transition-transform" href="#">Days Left: 14</a>
+<a class="text-[#006b5c] dark:text-[#00bfa5] hover:skew-x-1 hover:text-[#785900] transition-transform" href="#">Level 12: 85% XP</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#006b5c] dark:text-[#00bfa5] text-3xl">account_circle</button>
+</div>
+</header>
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col p-6 space-y-4 bg-[#f6faff] dark:bg-[#133347] w-72 border-r-4 border-double border-[#006b5c] pt-24 hidden md:flex shadow-[8px_8px_0px_0px_rgba(0,107,92,0.1)]">
+<div class="mb-8 px-2">
+<h2 class="font-headline text-2xl font-bold text-primary">Architect Mode</h2>
+<p class="text-sm opacity-70">Drafting Success</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>The Hub</span>
+</a>
+<a class="flex items-center gap-3 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined">map</span>
+<span>Roadmap</span>
+</a>
+<a class="flex items-center gap-3 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined">style</span>
+<span>Flashcards</span>
+</a>
+<a class="flex items-center gap-3 p-3 font-headline text-lg font-bold bg-[#fdc003] dark:bg-[#785900] text-[#133347] rounded-sm rotate-1 scale-105 border-2 border-black translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span>Chatbot</span>
+</a>
+<a class="flex items-center gap-3 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span>Tests</span>
+</a>
+<a class="flex items-center gap-3 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span>Rewards</span>
+</a>
+</nav>
+<div class="pt-4 border-t-2 border-dashed border-primary/20 space-y-2">
+<a class="flex items-center gap-3 p-2 font-headline font-bold text-primary opacity-70" href="#"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
+<a class="flex items-center gap-3 p-2 font-headline font-bold text-primary opacity-70" href="#"><span class="material-symbols-outlined">help</span><span>Support</span></a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-72 pt-20 h-screen relative bg-surface overflow-hidden">
+<!-- Desk Background Texture -->
+<div class="absolute inset-0 opacity-10 pointer-events-none overflow-hidden select-none">
+<div class="absolute top-10 right-10 rotate-12">
+<div class="w-48 h-64 border-2 border-on-surface/20 rounded-lg flex flex-col p-4 space-y-2">
+<div class="h-2 w-full bg-on-surface/10"></div>
+<div class="h-2 w-3/4 bg-on-surface/10"></div>
+<div class="h-2 w-1/2 bg-on-surface/10"></div>
+</div>
+</div>
+<div class="absolute bottom-20 left-10 -rotate-6">
+<div class="w-32 h-4 bg-primary/20 rounded-full"></div>
+</div>
+<div class="absolute bottom-10 right-20 rotate-45">
+<div class="w-2 h-40 bg-secondary/20 rounded-full"></div>
+</div>
+</div>
+<div class="paper-grain absolute inset-0 z-0"></div>
+<div class="h-full flex flex-col max-w-4xl mx-auto px-6 relative z-10">
+<!-- Header Section -->
+<div class="py-6 flex flex-col items-center">
+<h1 class="font-headline text-5xl font-black text-primary italic tracking-tight mb-2 marker-underline">
+                    Doubt Solver
+                </h1>
+<p class="font-body text-secondary font-bold">Ask anything, I'll sketch the answer.</p>
+</div>
+<!-- Chat Interface -->
+<div class="flex-1 bg-surface-container-low sketched-border shadow-2xl mb-8 flex flex-col overflow-hidden relative rotate-[0.5deg]">
+<!-- Chat Feed -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8 scroll-smooth">
+<!-- AI Bubble -->
+<div class="flex gap-4 max-w-[85%]">
+<div class="w-10 h-10 shrink-0 bg-primary-container border-2 border-black rounded-sm flex items-center justify-center -rotate-3">
+<span class="material-symbols-outlined text-on-primary-container">smart_toy</span>
+</div>
+<div class="bg-surface-container-highest sketched-border p-5 chat-bubble-ai relative">
+<p class="font-headline text-lg leading-relaxed text-on-surface">
+                                Hello, Architect! I've got my markers ready. What's puzzling you today? Let's draft a solution.
+                            </p>
+</div>
+</div>
+<!-- User Bubble -->
+<div class="flex gap-4 max-w-[85%] ml-auto flex-row-reverse">
+<div class="w-10 h-10 shrink-0 bg-secondary-container border-2 border-black rounded-sm flex items-center justify-center rotate-6">
+<span class="material-symbols-outlined text-on-secondary-container">person</span>
+</div>
+<div class="bg-surface-container sketched-border p-5 chat-bubble-user relative -rotate-1">
+<p class="font-headline text-lg leading-relaxed text-on-surface">
+                                Can you explain how the structural loading works on the cantilever section of the museum design?
+                            </p>
+</div>
+</div>
+<!-- AI Bubble Response -->
+<div class="flex gap-4 max-w-[85%]">
+<div class="w-10 h-10 shrink-0 bg-primary-container border-2 border-black rounded-sm flex items-center justify-center -rotate-1">
+<span class="material-symbols-outlined text-on-primary-container">smart_toy</span>
+</div>
+<div class="bg-surface-container-highest sketched-border p-5 chat-bubble-ai relative rotate-1">
+<p class="font-headline text-lg leading-relaxed text-on-surface mb-4">
+                                Think of the cantilever as a giant arm holding a heavy weight. The stress is highest at the shoulder (the fixed point).
+                            </p>
+<div class="p-4 bg-white/50 sketched-border mb-4">
+<img class="w-full h-48 object-cover rounded opacity-80 grayscale" data-alt="Architectural sketch showing force vectors on cantilever" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCClpDRPZRFy83q8NEe_rObDBxZSjS_WHD8CFXJLIz5cvm4GDVpAdrqElQM6ACu6Uf_VmOHQojrKM4RNZyuTJhf4wxEejL-eOtBolOl78BteFc5sVE9e_taM6synqeBTpgrHnZQiZbmxDrPD_uBqSs6cVVKVe28NSI0vBlutBNUEI1jjDRWPOk0bw9OezRIcboR_w4ngt5GNzMxtprEsJe9kEsOdbSic8vrg6UW9HQ5ZtVSvCJeWExQU2HxObBHiJn_fsYZSwcCSE"/>
+</div>
+<p class="font-headline text-lg leading-relaxed text-on-surface">
+                                We need to reinforce the tension side (top) and compression side (bottom) with specific vector distributions.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-6 bg-surface-container-high border-t-2 border-dashed border-primary/20">
+<div class="flex items-end gap-4">
+<div class="flex-1 bg-surface-container-lowest sketched-border min-h-[60px] p-4 flex items-start -rotate-[0.2deg] shadow-inner relative group">
+<span class="font-headline text-xl text-on-surface-variant flex items-center">
+                                Type your question here...<span class="w-0.5 h-6 bg-secondary ml-1 cursor-blink"></span>
+</span>
+</div>
+<button class="bg-primary text-on-primary font-headline font-black text-xl px-8 py-4 sketched-border shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all flex items-center gap-2 uppercase italic rotate-2">
+                            Send
+                            <span class="material-symbols-outlined">draw</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Decorative Elements -->
+<div class="fixed bottom-10 right-10 z-50 pointer-events-none hidden lg:block">
+<div class="w-24 h-24 bg-tertiary-container sketched-border flex items-center justify-center -rotate-12 translate-y-4 translate-x-4 shadow-xl">
+<span class="material-symbols-outlined text-4xl text-on-tertiary-container">lightbulb</span>
+</div>
+<div class="w-24 h-24 bg-secondary-container sketched-border flex items-center justify-center rotate-6 shadow-xl relative z-10">
+<span class="material-symbols-outlined text-4xl text-on-secondary-container">architecture</span>
+</div>
+</div>
+</main>
+<!-- Bottom Nav (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface-container-low flex justify-around p-4 border-t-2 border-dashed border-primary/20 z-50">
+<button class="flex flex-col items-center text-primary opacity-60">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] font-bold uppercase">Hub</span>
+</button>
+<button class="flex flex-col items-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="text-[10px] font-bold uppercase">Chat</span>
+</button>
+<button class="flex flex-col items-center text-primary opacity-60">
+<span class="material-symbols-outlined">map</span>
+<span class="text-[10px] font-bold uppercase">Map</span>
+</button>
+<button class="flex flex-col items-center text-primary opacity-60">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-bold uppercase">Me</span>
+</button>
+</nav>
+</body></html>

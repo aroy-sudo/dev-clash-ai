@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vector - The Path</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#f6faff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "on-tertiary-fixed-variant": "#8b1a16",
+                        "error-container": "#ffdad6",
+                        "outline": "#6c7a76",
+                        "surface-tint": "#006b5c",
+                        "on-primary-fixed-variant": "#005145",
+                        "surface-container-low": "#ebf5ff",
+                        "on-background": "#001e2e",
+                        "on-tertiary-container": "#7e100e",
+                        "inverse-on-surface": "#e5f2ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#410001",
+                        "primary-fixed-dim": "#44ddc1",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#00473c",
+                        "surface-container-high": "#d4ebff",
+                        "secondary-fixed": "#ffdf9e",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#f6faff",
+                        "secondary": "#785900",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#c8e6ff",
+                        "primary": "#006b5c",
+                        "tertiary": "#ac332a",
+                        "on-secondary-container": "#6c5000",
+                        "on-surface": "#001e2e",
+                        "secondary-container": "#fdc003",
+                        "surface-container": "#dff0ff",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "secondary-fixed-dim": "#fabd00",
+                        "tertiary-fixed": "#ffdad5",
+                        "primary-fixed": "#68fadd",
+                        "on-surface-variant": "#3c4a46",
+                        "inverse-surface": "#133347",
+                        "tertiary-container": "#ff877a",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#44ddc1",
+                        "surface-dim": "#bfdef7",
+                        "surface-bright": "#f6faff",
+                        "on-primary-fixed": "#00201a",
+                        "outline-variant": "#bbcac4",
+                        "primary-container": "#00bfa5",
+                        "on-secondary-fixed": "#261a00",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#c8e6ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Work Sans"],
+                        "label": ["Work Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.grainy-overlay {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAVKldlZKwNBkPtJbGIOhCxNfRA-RE42aICCgSjdUNJZSaMul4MVaoF9yaz2biMaRWdWT2IE9YyPkvl0a4X00itOtAYNaj_bD8oz_r91OorBen9BVJ2ls1UMw7UhaTQD9q8nMqVYZfk9HaH7bsWgoyRgAkBOa9wW672bKuYkcie4NvTKJCWb0RjxU6xFyf16l8XnJ72X-LIV6SCS3Goe1Jz5c--dbvaRebyqtJFQ2DJOlsLYYKKEj9KpHDJYqjlBSQzuWYWXwa2Q6k);
+    pointer-events: none
+    }
+.sketchy-border {
+    box-shadow: 4px 4px 0 0 #133347;
+    border: 2px solid #133347
+    }
+.sketchy-border:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 0 #fdc003
+    }
+.hand-drawn-underline {
+    background-image: linear-gradient(120deg, #fdc003 0%, #fdc003 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 0.3em;
+    background-position: 0 88%
+    }</style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen relative overflow-x-hidden">
+<!-- Grain Overlay -->
+<div class="fixed inset-0 grainy-overlay opacity-20 z-50"></div>
+<!-- Top Navigation (Shared Component: TopAppBar) -->
+<header class="bg-[#f6faff] dark:bg-[#133347] flex justify-between items-center w-full px-6 py-4 mx-auto fixed top-0 z-40">
+<div class="flex items-center gap-4">
+<span class="font-['Space_Grotesk'] font-bold tracking-tight text-2xl font-black text-[#006b5c] dark:text-[#00bfa5]">Vector</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8 font-['Space_Grotesk'] font-bold text-sm">
+<a class="text-[#133347] dark:text-[#f6faff] hover:opacity-80 transition-opacity" href="#">Curriculum</a>
+<a class="text-[#133347] dark:text-[#f6faff] hover:opacity-80 transition-opacity" href="#">Archive</a>
+<a class="text-[#133347] dark:text-[#f6faff] hover:opacity-80 transition-opacity" href="#">Resources</a>
+</div>
+<span class="material-symbols-outlined text-[#006b5c] dark:text-[#00bfa5] cursor-pointer" data-icon="help_outline">help_outline</span>
+</div>
+</header>
+<!-- Sidebar Navigation (Shared Component: SideNavBar) -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col py-8 bg-[#f6faff] dark:bg-[#133347] h-screen w-20 md:w-64 border-r-[0.5px] border-[#133347]/10 pt-24">
+<div class="px-6 mb-12">
+<p class="font-['Work_Sans'] text-xs uppercase tracking-widest text-[#006b5c] mb-1">Step 2 of 3</p>
+<h3 class="font-headline font-bold text-lg text-[#133347]">Drafting your future</h3>
+</div>
+<div class="flex flex-col gap-2 w-full">
+<div class="flex items-center gap-3 py-3 text-[#133347]/50 dark:text-[#f6faff]/50 pl-4 font-['Work_Sans'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out hover:bg-[#00bfa5]/10 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+<span class="hidden md:block">Identity</span>
+</div>
+<div class="flex items-center gap-3 py-3 text-[#006b5c] dark:text-[#00bfa5] font-black border-l-4 border-[#fdc003] pl-4 font-['Work_Sans'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out cursor-default">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span class="hidden md:block">Path</span>
+</div>
+<div class="flex items-center gap-3 py-3 text-[#133347]/50 dark:text-[#f6faff]/50 pl-4 font-['Work_Sans'] text-sm uppercase tracking-widest transition-all duration-300 ease-in-out hover:bg-[#00bfa5]/10 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="hidden md:block">Focus</span>
+</div>
+</div>
+<div class="mt-auto px-6">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border-2 border-primary mb-4">
+<img alt="User Draft Profile" data-alt="User profile avatar illustration with creative glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnzO0UckEXYBDHg8BRO7n6cttQX8KvgHGn9RPU4lhnyx2GnzTGS3oAZVqeJu3sW5KGYn96sGfu8z3rU74PwoZ4qMBsVz2JHx-qJoC6tDOZb4U-zYetMbVVj6bWz_tbKV4w6ZFM5oqMWnm8feqtqhpk1r9AoFj6xMx-PSm9VwNiu3CV3GTp8VmC5bJuzzfj5hIahQ6D1scGPQouijvLobmbbaAIFsm0p2ohvtliMZTkuzueG1SzzsRAcRMIuLE4H1z72he5LWcS4GU"/>
+</div>
+<button class="hidden md:block w-full py-3 bg-primary text-on-primary font-headline font-bold rounded-lg sketchy-border transition-all">Continue Draft</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-20 pb-32 min-h-screen flex flex-col items-center">
+<div class="max-w-6xl w-full px-8 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Left Narrative -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<h1 class="font-headline text-6xl md:text-7xl font-black text-on-background leading-tight tracking-tighter">
+                    Choose <br/> <span class="hand-drawn-underline">your path.</span>
+</h1>
+<p class="font-body text-xl text-on-surface-variant max-w-md leading-relaxed">
+                    The architect’s journey isn’t linear. Decide how you want to build your expertise. One is a structured blueprint, the other a boundless exploration.
+                </p>
+<!-- Diverging Path Illustration -->
+<div class="relative w-full h-48 mt-8 flex justify-center overflow-visible">
+<svg class="w-full h-full stroke-on-background fill-none" style="stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;" viewbox="0 0 400 200">
+<!-- Path base -->
+<path d="M200 200 Q200 150 200 130"></path>
+<!-- Left fork -->
+<path d="M200 130 Q200 80 50 20"></path>
+<!-- Right fork -->
+<path d="M200 130 Q200 80 350 20"></path>
+<!-- Decorative scribbles -->
+<path class="stroke-secondary" d="M190 145 Q195 140 205 142" style="stroke-width: 2;"></path>
+<circle class="fill-primary" cx="50" cy="20" r="8"></circle>
+<circle class="fill-tertiary" cx="350" cy="20" r="8"></circle>
+</svg>
+</div>
+</div>
+<!-- Right: Choice Cards -->
+<div class="lg:col-span-7 grid md:grid-cols-2 gap-8">
+<!-- Online Course Card -->
+<div class="group relative bg-surface-container-low p-8 rounded-xl sketchy-border transition-all duration-300 cursor-pointer flex flex-col h-full -rotate-1 hover:rotate-0">
+<div class="mb-6 h-40 bg-white/50 rounded-lg flex items-center justify-center relative overflow-hidden">
+<span class="material-symbols-outlined text-7xl text-primary" data-icon="school">school</span>
+<!-- Glowing path element -->
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<h3 class="font-headline text-2xl font-extrabold mb-3 text-on-background">Online Course</h3>
+<p class="font-body text-sm text-on-surface-variant flex-grow">
+                        A structured, mentor-led sequence. Follow the curated blueprint from fundamentals to mastery with a cohort of fellow draftsmen.
+                    </p>
+<div class="mt-8 flex items-center justify-between">
+<span class="text-xs font-label uppercase tracking-widest font-bold text-primary">Curated Flow</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Free Learning Card -->
+<div class="group relative bg-surface-container-low p-8 rounded-xl sketchy-border transition-all duration-300 cursor-pointer flex flex-col h-full rotate-1 hover:rotate-0">
+<div class="mb-6 h-40 bg-white/50 rounded-lg flex items-center justify-center relative overflow-hidden">
+<span class="material-symbols-outlined text-7xl text-tertiary" data-icon="explore">explore</span>
+<!-- Compass overlay -->
+<div class="absolute inset-0 bg-tertiary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<h3 class="font-headline text-2xl font-extrabold mb-3 text-on-background">Free Learning</h3>
+<p class="font-body text-sm text-on-surface-variant flex-grow">
+                        The open library approach. Browse the archives at your own pace. Ideal for those who prefer to draft their own curriculum.
+                    </p>
+<div class="mt-8 flex items-center justify-between">
+<span class="text-xs font-label uppercase tracking-widest font-bold text-tertiary">Self-Directed</span>
+<span class="material-symbols-outlined text-tertiary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Affirmation Section -->
+<section class="mt-12 max-w-4xl px-8 text-center">
+<div class="bg-secondary-container/20 p-8 rounded-full border-2 border-dashed border-secondary/30">
+<p class="font-headline font-medium text-secondary italic">
+                    "Every great structure begins with a single, intentional line."
+                </p>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Shared Component: BottomNavBar) -->
+<footer class="fixed bottom-8 left-0 w-full z-50 flex justify-between px-12 items-center bg-transparent pointer-events-none">
+<div class="pointer-events-auto">
+<button class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 opacity-40 hover:opacity-100 transition-all">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+<span class="font-['Space_Grotesk'] text-[12px] font-bold">Back</span>
+</button>
+</div>
+<div class="flex items-center gap-2 px-8 py-3 bg-white/80 backdrop-blur-md rounded-full shadow-xl pointer-events-auto border border-outline-variant/20">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-8 h-2 rounded-full bg-secondary"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<div class="pointer-events-auto">
+<button class="flex flex-col items-center justify-center bg-[#fdc003] text-[#133347] rounded-full p-4 scale-110 shadow-lg hover:scale-115 transition-transform active:scale-90 duration-150">
+<span class="material-symbols-outlined font-bold" data-icon="arrow_forward">arrow_forward</span>
+<span class="font-['Space_Grotesk'] text-[12px] font-bold">Next</span>
+</button>
+</div>
+</footer>
+<!-- Progress Indicator (Bespoke) -->
+<div class="fixed top-0 left-0 w-full h-1 bg-surface-container z-50">
+<div class="h-full bg-secondary transition-all duration-1000" style="width: 66%;"></div>
+</div>
+</body></html>

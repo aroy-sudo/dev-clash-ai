@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vector | What's the target?</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f6faff",
+              "on-secondary": "#ffffff",
+              "on-secondary-fixed-variant": "#5b4300",
+              "on-tertiary-fixed-variant": "#8b1a16",
+              "error-container": "#ffdad6",
+              "outline": "#6c7a76",
+              "surface-tint": "#006b5c",
+              "on-primary-fixed-variant": "#005145",
+              "surface-container-low": "#ebf5ff",
+              "on-background": "#001e2e",
+              "on-tertiary-container": "#7e100e",
+              "inverse-on-surface": "#e5f2ff",
+              "error": "#ba1a1a",
+              "on-tertiary-fixed": "#410001",
+              "primary-fixed-dim": "#44ddc1",
+              "surface-container-lowest": "#ffffff",
+              "on-primary-container": "#00473c",
+              "surface-container-high": "#d4ebff",
+              "secondary-fixed": "#ffdf9e",
+              "on-tertiary": "#ffffff",
+              "surface": "#f6faff",
+              "secondary": "#785900",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#c8e6ff",
+              "primary": "#006b5c",
+              "tertiary": "#ac332a",
+              "on-secondary-container": "#6c5000",
+              "on-surface": "#001e2e",
+              "secondary-container": "#fdc003",
+              "surface-container": "#dff0ff",
+              "tertiary-fixed-dim": "#ffb4aa",
+              "secondary-fixed-dim": "#fabd00",
+              "tertiary-fixed": "#ffdad5",
+              "primary-fixed": "#68fadd",
+              "on-surface-variant": "#3c4a46",
+              "inverse-surface": "#133347",
+              "tertiary-container": "#ff877a",
+              "on-error": "#ffffff",
+              "inverse-primary": "#44ddc1",
+              "surface-dim": "#bfdef7",
+              "surface-bright": "#f6faff",
+              "on-primary-fixed": "#00201a",
+              "outline-variant": "#bbcac4",
+              "primary-container": "#00bfa5",
+              "on-secondary-fixed": "#261a00",
+              "on-primary": "#ffffff",
+              "surface-variant": "#c8e6ff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Work Sans"],
+              "label": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .parchment-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        .scribble-underline {
+            position: relative;
+        }
+        .scribble-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: currentColor;
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 5 Q 25 0 50 5 T 100 5' stroke='black' fill='transparent' stroke-width='2'/%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+        .hand-cut-edge {
+            clip-path: polygon(1% 0%, 99% 2%, 100% 98%, 0% 100%);
+        }
+        .marker-shaded {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(253, 192, 3, 0.1) 2px, rgba(253, 192, 3, 0.1) 4px);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-background min-h-screen selection:bg-secondary-container selection:text-on-secondary-container overflow-x-hidden">
+<div class="fixed inset-0 parchment-grain z-50"></div>
+<!-- Top Navigation Shell -->
+<header class="bg-[#f6faff] dark:bg-[#133347] flex justify-between items-center w-full px-6 py-4 mx-auto fixed top-0 left-0 z-40">
+<div class="flex items-center gap-2">
+<span class="text-2xl font-black text-[#006b5c] dark:text-[#00bfa5] font-['Space_Grotesk'] tracking-tight">Vector</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-[#133347] dark:text-[#f6faff] hover:opacity-80 transition-opacity" data-icon="help_outline">help_outline</button>
+</div>
+</header>
+<!-- Side Navigation Shell -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col py-8 bg-[#f6faff] dark:bg-[#133347] h-screen w-20 md:w-64 border-r-[0.5px] border-[#133347]/10 transition-all duration-300 ease-in-out hidden md:flex">
+<div class="px-6 mb-12">
+<div class="text-[#006b5c] font-black border-l-4 border-[#fdc003] pl-4 mb-1">
+<span class="font-['Work_Sans'] text-sm uppercase tracking-widest block">Step 1 of 3</span>
+<span class="text-xs opacity-60">Drafting your future</span>
+</div>
+</div>
+<div class="flex flex-col gap-4 w-full">
+<!-- Active Tab: Identity -->
+<a class="text-[#006b5c] dark:text-[#00bfa5] font-black border-l-4 border-[#fdc003] pl-4 flex items-center gap-4 py-3 hover:bg-[#00bfa5]/10 dark:hover:bg-[#00bfa5]/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+<span class="font-['Work_Sans'] text-sm uppercase tracking-widest">Identity</span>
+</a>
+<!-- Inactive Tab -->
+<a class="text-[#133347]/50 dark:text-[#f6faff]/50 pl-4 flex items-center gap-4 py-3 hover:bg-[#00bfa5]/10 dark:hover:bg-[#00bfa5]/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span class="font-['Work_Sans'] text-sm uppercase tracking-widest">Path</span>
+</a>
+<!-- Inactive Tab -->
+<a class="text-[#133347]/50 dark:text-[#f6faff]/50 pl-4 flex items-center gap-4 py-3 hover:bg-[#00bfa5]/10 dark:hover:bg-[#00bfa5]/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-['Work_Sans'] text-sm uppercase tracking-widest">Focus</span>
+</a>
+</div>
+<div class="mt-auto px-6">
+<button class="w-full bg-primary text-on-primary py-4 px-2 font-bold tracking-tight rounded-lg hover:opacity-90 active:scale-95 transition-all">
+                Continue Draft
+            </button>
+</div>
+</nav>
+<!-- Main Immersive Canvas -->
+<main class="md:ml-64 pt-20 pb-32 px-6 md:px-12 flex flex-col md:flex-row items-center justify-center min-h-screen gap-12 relative overflow-hidden">
+<!-- Background Memphis Shape (Asymmetry) -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-tertiary-container/20 rounded-full blur-3xl -z-10"></div>
+<div class="absolute bottom-20 -left-20 w-80 h-80 bg-secondary-container/10 rounded-full blur-2xl -z-10 rotate-12"></div>
+<!-- Left Column: Heading -->
+<div class="w-full md:w-1/3 flex flex-col items-start gap-4">
+<div class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container font-bold text-xs uppercase tracking-widest rotate-[-1deg] mb-2">
+                Onboarding Flow
+            </div>
+<h1 class="font-headline font-black text-6xl md:text-7xl lg:text-8xl text-on-background leading-tight tracking-tighter">
+                What's the <span class="scribble-underline text-primary">target?</span>
+</h1>
+<p class="font-body text-xl text-on-surface-variant max-w-sm mt-4 leading-relaxed">
+                Every architect needs a blueprint. Select your <span class="font-bold italic">battlefield</span> to begin drafting your curriculum.
+            </p>
+</div>
+<!-- Center Column: Illustration -->
+<div class="w-full md:w-1/3 relative flex justify-center py-12">
+<div class="relative w-full max-w-[400px] group">
+<!-- Abstract Sketched Goal Icons -->
+<div class="absolute -top-8 -left-4 p-4 bg-surface-container-high rounded-full border-2 border-primary/20 animate-bounce transition-transform hover:scale-110">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div class="absolute top-1/2 -right-10 p-4 bg-tertiary-container/30 rounded-xl rotate-12 border-2 border-tertiary/20">
+<span class="material-symbols-outlined text-4xl text-tertiary" data-icon="emoji_events">emoji_events</span>
+</div>
+<div class="absolute -bottom-4 right-1/4 p-4 bg-secondary-container/40 rounded-full -rotate-6 border-2 border-secondary/20">
+<span class="material-symbols-outlined text-4xl text-secondary" data-icon="psychology">psychology</span>
+</div>
+<!-- Main Vector Image -->
+<div class="bg-surface-container-low hand-cut-edge p-2 border-[1.5px] border-outline-variant/30 overflow-hidden shadow-sm">
+<img alt="Minimalist vector illustration of an ambitious student looking up" class="w-full h-auto grayscale contrast-125 opacity-90 mix-blend-multiply" data-alt="Minimalist vector illustration of an ambitious student looking up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhhXo1YKJfEEqARETBYPb4Fj5kr0mtu7CtX7z3twu6hllxp-I9KDV0ghv9NFoVrnrGKvBVywAzM2DXU8TO4A9qJFgFYQZT0S5HvjOVOwDryYPIMJpEpr05uVxrv1F06J8MdLYXxH9xAA2ULOD647w7XfBdkrappHW0D798WTM4n3lZLJMvpL4IKxfFORtXOSFYqAtwuhQb9LAWZmydaKwivFLmjuLLqOTJxlu0xNgAijBDhO1f0nJpKnuYWYK0VhWzc_0-z_jqzmo"/>
+</div>
+</div>
+</div>
+<!-- Right/Bottom Column: Interaction Buttons -->
+<div class="w-full md:w-1/3 flex flex-col gap-6">
+<div class="flex flex-col gap-4">
+<!-- Option 1: Selected state simulation -->
+<button class="group relative flex items-center justify-between p-8 bg-[#fdc003] border-4 border-[#133347] text-[#133347] rounded-xl transform hover:-translate-y-1 active:scale-95 transition-all marker-shaded shadow-[8px_8px_0px_0px_rgba(19,51,71,1)]">
+<div class="flex flex-col items-start">
+<span class="font-headline font-black text-4xl tracking-tight">JEE</span>
+<span class="font-body text-sm font-bold opacity-80 uppercase tracking-widest">Engineering Path</span>
+</div>
+<span class="material-symbols-outlined text-5xl font-variation-settings: 'FILL' 1;" data-icon="architecture" style="font-variation-settings: 'FILL' 1;">architecture</span>
+<!-- Scribble Marker Effect -->
+<div class="absolute -top-2 -right-2 bg-tertiary text-white text-[10px] font-bold px-2 py-0.5 rounded-full rotate-12">TARGETED</div>
+</button>
+<!-- Option 2: Default state -->
+<button class="group relative flex items-center justify-between p-8 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-xl transform hover:border-primary transition-all hover:bg-surface-container-low">
+<div class="flex flex-col items-start">
+<span class="font-headline font-black text-4xl tracking-tight">NEET</span>
+<span class="font-body text-sm font-medium opacity-60 uppercase tracking-widest">Medical Journey</span>
+</div>
+<span class="material-symbols-outlined text-5xl opacity-40 group-hover:opacity-100 group-hover:text-primary transition-all" data-icon="medical_services">medical_services</span>
+</button>
+<!-- Custom Option -->
+<button class="group relative flex items-center justify-between p-6 bg-transparent border-2 border-dashed border-outline-variant text-on-surface-variant rounded-xl hover:bg-surface-container-low transition-all">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-2xl" data-icon="add_circle">add_circle</span>
+<span class="font-body font-bold uppercase tracking-widest text-xs">Other Competitive Goals</span>
+</div>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell (Mobile & Flow Navigation) -->
+<footer class="fixed bottom-8 left-0 w-full z-50 flex justify-between px-12 items-center">
+<!-- Back Button -->
+<button class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 opacity-40 hover:scale-105 transition-transform font-['Space_Grotesk'] text-[12px] font-bold">
+<span class="material-symbols-outlined mb-1" data-icon="arrow_back">arrow_back</span>
+            Back
+        </button>
+<!-- Step Indicator (Center FAB) -->
+<div class="flex flex-col items-center justify-center bg-[#fdc003] text-[#133347] rounded-full p-4 scale-110 shadow-lg border-2 border-[#133347] font-['Space_Grotesk'] text-[12px] font-bold">
+<span class="material-symbols-outlined mb-1" data-icon="gesture">gesture</span>
+            Step Indicator
+        </div>
+<!-- Next Button -->
+<button class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 opacity-40 hover:scale-105 transition-transform font-['Space_Grotesk'] text-[12px] font-bold active:scale-90 duration-150">
+<span class="material-symbols-outlined mb-1" data-icon="arrow_forward">arrow_forward</span>
+            Next
+        </button>
+</footer>
+<!-- Rough Border Detail Elements (The "Analog" part) -->
+<div class="fixed top-0 bottom-0 left-4 w-[1px] bg-outline-variant/20 hidden lg:block"></div>
+<div class="fixed top-0 bottom-0 right-4 w-[1px] bg-outline-variant/20 hidden lg:block"></div>
+</body></html>

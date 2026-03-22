@@ -28,7 +28,7 @@ export function HandDrawnSidebar({ isCollapsed, onToggle }: { isCollapsed: boole
       initial={false}
       animate={{ width: isCollapsed ? 80 : 256 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed left-0 top-0 h-full z-40 flex flex-col py-8 bg-[#f6faff] dark:bg-[#133347] border-r-[2px] border-[#133347]/10 hidden md:flex shadow-[4px_0px_0px_0px_rgba(19,51,71,0.05)] overflow-hidden"
+      className="fixed left-0 top-20 h-[calc(100vh-5rem)] z-40 flex flex-col py-8 bg-[#f6faff] dark:bg-[#133347] border-r-[2px] border-[#133347]/10 hidden md:flex shadow-[4px_0px_0px_0px_rgba(19,51,71,0.05)] overflow-hidden"
     >
       <div className={cn("px-4 mb-12 flex items-center h-12", isCollapsed ? "justify-center" : "justify-between")}>
         <AnimatePresence mode="wait">

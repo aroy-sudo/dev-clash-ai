@@ -1,58 +1,47 @@
 'use client';
 
 import Link from "next/link";
-import Image from "next/image";
-import {usePathname} from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
-import {cn} from "@/lib/utils";
-
-const navItems = [
-    { label: "Library", href: "/" },
-    { label: "Add New", href: "/books/new" },
-]
 
 const Navbar = () => {
-    const pathName = usePathname();
     const { user } = useUser();
 
     return (
-        <header className="w-full fixed z-50 bg-(--bg-primary)">
-            <div className="wrapper navbar-height py-4 flex justify-between items-center">
-                <Link href="/" className="flex gap-0.5 items-center">
-                    <Image src="/assets/logo.png" alt="Bookfied" width={42} height={26} />
-                    <span className="logo-text">Bookified</span>
+        <header className="w-full fixed z-50 top-0 left-0 bg-surface border-b-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,30,46,1)]">
+            <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+                <Link href="/" className="flex items-center gap-2 group">
+                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center border-2 border-on-surface group-hover:-rotate-12 transition-transform shadow-[2px_2px_0px_0px_rgba(0,30,46,1)]">
+                        <span className="material-symbols-outlined text-on-primary font-black" data-icon="architecture">architecture</span>
+                    </div>
+                    <span className="font-headline font-black text-2xl tracking-tighter uppercase text-on-surface">Vector</span>
                 </Link>
 
-                <nav className="w-fit flex gap-7.5 items-center">
-                    {navItems.map(({ label, href }) => {
-                        const isActive = pathName === href || (href !== '/' && pathName.startsWith(href));
-
-                        return (
-                            <Link href={href} key={label} className={cn('nav-link-base', isActive ? 'nav-link-active' : 'text-black hover:opacity-70')}>
-                                {label}
-                            </Link>
-                        )
-                    })}
-
-                    <div className="flex gap-7.5 items-center">
-                        <SignedOut>
-                            <SignInButton mode="modal" />
-                        </SignedOut>
-                        <SignedIn>
-                            <div className="nav-user-link">
-                                <UserButton />
-                                {user?.firstName && (
-                                    <Link href="/" className="nav-user-name">
-                                        {user.firstName}
-                                    </Link>
-                                )}
-                            </div>
-                        </SignedIn>
-                    </div>
+                <nav className="flex gap-4 items-center">
+                    <SignedOut>
+                        <SignInButton mode="modal">
+                            <button className="bg-secondary hover:bg-[#fdc003] text-on-secondary font-headline font-bold uppercase tracking-wider px-6 py-2 rounded-xl border-4 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,30,46,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all">
+                                Sign In
+                            </button>
+                        </SignInButton>
+                    </SignedOut>
+                    <SignedIn>
+                        <div className="flex items-center gap-4 bg-secondary-container px-4 py-2 rounded-xl border-2 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,30,46,1)]">
+                            <span className="font-headline font-bold text-on-surface-variant hidden md:block">
+                                {user?.firstName}
+                            </span>
+                            <UserButton 
+                                appearance={{
+                                    elements: {
+                                        avatarBox: "w-10 h-10 border-2 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,30,46,1)]"
+                                    }
+                                }}
+                            />
+                        </div>
+                    </SignedIn>
                 </nav>
             </div>
         </header>
     )
 }
 
-export default Navbar
+export default Navbar;

@@ -51,9 +51,7 @@ export default function RootLayout({
               <div className="flex items-center gap-4">
                 <SignedOut>
                   <SignInButton mode="modal">
-                    <button className="px-6 py-2.5 bg-secondary-container text-on-secondary-container font-headline font-bold rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#785900] active:translate-y-1 active:shadow-none transition-all">
-                      SIGN IN
-                    </button>
+                    <button className="px-6 py-2.5 bg-secondary-container text-on-secondary-container font-headline font-bold rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#785900] active:translate-y-1 active:shadow-none transition-all uppercase">SIGN IN</button>
                   </SignInButton>
                 </SignedOut>
                 <SignedIn>

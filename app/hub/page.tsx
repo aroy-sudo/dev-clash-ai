@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { connectToDatabase } from '@/database/mongoose';
 import JeeTest from '@/database/models/jee-test.model';
 import { HubDashboard } from '@/components/layout/HubDashboard';
+import { getDueTopics } from '@/lib/actions/retention.actions';
 
 export default async function HubPage() {
   const { userId } = await auth();
@@ -18,5 +19,7 @@ export default async function HubPage() {
     redirect('/hub/mock-test/setup');
   }
 
-  return <HubDashboard />;
+  const dueTopics = await getDueTopics(userId);
+
+  return <HubDashboard dueTopics={dueTopics} />;
 }

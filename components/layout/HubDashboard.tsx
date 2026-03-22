@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/store/onboardingStore';
 
-export function HubDashboard() {
+export function HubDashboard({ dueTopics = [] }: { dueTopics?: any[] }) {
   const router = useRouter();
   const hasTakenAssessment = useOnboardingStore(state => state.hasTakenAssessment);
   const [isMounted, setIsMounted] = React.useState(false);
@@ -17,6 +17,34 @@ export function HubDashboard() {
   return (
     <div className="w-full min-h-screen relative">
       <motion.main className="pt-28 px-6 pb-12 relative z-10" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+        {/* Memory Decay Alert Section */}
+        {isMounted && dueTopics.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-full bg-red-50 border-4 border-red-600 p-6 mb-8 rounded-2xl shadow-[8px_8px_0px_0px_rgba(220,38,38,1)] flex flex-col md:flex-row items-center justify-between gap-6"
+          >
+            <div className="flex items-center gap-4">
+              <div className="bg-red-600 text-white p-3 rounded-full">
+                <span className="material-symbols-outlined text-4xl" data-icon="psychology">psychology</span>
+              </div>
+              <div>
+                <h2 className="font-headline font-black text-2xl text-red-600 uppercase">Memory Decay Alert</h2>
+                <p className="font-body text-red-900 font-bold">
+                  {dueTopics.length} topics are slipping from your long-term memory. 
+                  <span className="ml-2 opacity-70">({dueTopics.map(t => t.topicName).join(", ")})</span>
+                </p>
+              </div>
+            </div>
+            <button 
+              onClick={() => router.push('/hub/retention/test')}
+              className="px-8 py-3 bg-red-600 text-white font-headline font-black text-lg border-2 border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all"
+            >
+              Start 5-Question Retention Test
+            </button>
+          </motion.div>
+        )}
+
         {/* Assessment Warning Banner */}
         {isMounted && !hasTakenAssessment && (
           <motion.div 

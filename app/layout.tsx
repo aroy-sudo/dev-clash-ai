@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Serif, Mona_Sans} from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 import Navbar from "@/components/Navbar";
 import "./globals.css";
@@ -40,7 +40,31 @@ export default function RootLayout({
           <body
             className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
           >
-            {children}
+            <header className="fixed top-0 left-0 right-0 z-[100] h-[74px] border-b border-border/40 bg-background/80 backdrop-blur-md flex items-center justify-between px-6">
+              <div className="flex items-center gap-2">
+                 <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center border-2 border-black rotate-3">
+                   <span className="material-symbols-outlined text-on-primary" data-icon="architecture">architecture</span>
+                 </div>
+                 <span className="font-headline font-black text-2xl tracking-tighter uppercase">ARCHITECT</span>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="px-6 py-2.5 bg-secondary-container text-on-secondary-container font-headline font-bold rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_#785900] active:translate-y-1 active:shadow-none transition-all">
+                      SIGN IN
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton afterSignOutUrl="/" />
+                </SignedIn>
+              </div>
+            </header>
+            
+            <main className="pt-[74px]">
+              {children}
+            </main>
             <Toaster />
           </body>
         </html>

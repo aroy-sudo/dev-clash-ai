@@ -3,9 +3,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { useOnboardingStore } from '@/store/onboardingStore';
 
 export default function Page() {
   const router = useRouter();
+  const setTargetExam = useOnboardingStore((state) => state.setTargetExam);
+
+  const handleSelectExam = (exam: 'JEE' | 'NEET') => {
+    setTargetExam(exam);
+    router.push("/onboarding/path");
+  };
   
   return (
     <div className="w-full min-h-screen relative">
@@ -84,7 +91,7 @@ export default function Page() {
 <div className="w-full md:w-1/3 flex flex-col gap-6">
 <div className="flex flex-col gap-4">
 {/* Option 1: Selected state simulation */}
-<button className="group relative flex items-center justify-between p-8 bg-[#fdc003] border-4 border-[#133347] text-[#133347] rounded-xl transform hover:-translate-y-1 active:scale-95 transition-all marker-shaded shadow-[8px_8px_0px_0px_rgba(19,51,71,1)]" onClick={() => router.push("/onboarding/path")}>
+<div className="group relative flex items-center justify-between p-8 bg-[#fdc003] border-4 border-[#133347] text-[#133347] rounded-xl transform hover:-translate-y-1 active:scale-95 transition-all marker-shaded shadow-[8px_8px_0px_0px_rgba(19,51,71,1)] cursor-pointer" onClick={() => handleSelectExam('JEE')}>
 <div className="flex flex-col items-start">
 <span className="font-headline font-black text-4xl tracking-tight">JEE</span>
 <span className="font-body text-sm font-bold opacity-80 uppercase tracking-widest">Engineering Path</span>
@@ -92,22 +99,22 @@ export default function Page() {
 <span className="material-symbols-outlined text-5xl" data-icon="architecture" >architecture</span>
 {/* Scribble Marker Effect */}
 <div className="absolute -top-2 -right-2 bg-tertiary text-white text-[10px] font-bold px-2 py-0.5 rounded-full rotate-12">TARGETED</div>
-</button>
+</div>
 {/* Option 2: Default state */}
-<button className="group relative flex items-center justify-between p-8 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-xl transform hover:border-primary transition-all hover:bg-surface-container-low" onClick={() => router.push("/onboarding/path")} >
+<div className="group relative flex items-center justify-between p-8 bg-surface-container-highest border-2 border-outline-variant text-on-surface rounded-xl transform hover:border-primary transition-all hover:bg-surface-container-low cursor-pointer" onClick={() => handleSelectExam('NEET')} >
 <div className="flex flex-col items-start">
 <span className="font-headline font-black text-4xl tracking-tight">NEET</span>
 <span className="font-body text-sm font-medium opacity-60 uppercase tracking-widest">Medical Journey</span>
 </div>
 <span className="material-symbols-outlined text-5xl opacity-40 group-hover:opacity-100 group-hover:text-primary transition-all" data-icon="medical_services">medical_services</span>
-</button>
+</div>
 {/* Custom Option */}
-<button className="group relative flex items-center justify-between p-6 bg-transparent border-2 border-dashed border-outline-variant text-on-surface-variant rounded-xl hover:bg-surface-container-low transition-all" onClick={() => router.push("/onboarding/path")} >
+<div className="group relative flex items-center justify-between p-6 bg-transparent border-2 border-dashed border-outline-variant text-on-surface-variant rounded-xl hover:bg-surface-container-low transition-all cursor-pointer" onClick={() => router.push("/onboarding/path")} >
 <div className="flex items-center gap-4">
 <span className="material-symbols-outlined text-2xl" data-icon="add_circle">add_circle</span>
 <span className="font-body font-bold uppercase tracking-widest text-xs">Other Competitive Goals</span>
 </div>
-</button>
+</div>
 </div>
 </div>
 </motion.main><footer className="fixed bottom-8 left-0 w-full z-50 flex justify-between px-12 items-center">

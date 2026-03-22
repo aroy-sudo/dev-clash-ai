@@ -3,13 +3,47 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { useOnboardingStore } from '@/store/onboardingStore';
 
 export default function Page() {
   const router = useRouter();
+  const hasTakenAssessment = useOnboardingStore(state => state.hasTakenAssessment);
+  const [isMounted, setIsMounted] = React.useState(false);
+  
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   return (
     <div className="w-full min-h-screen relative">
       <motion.main className="pt-28 px-6 pb-12 relative z-10" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ type: "spring", stiffness: 200, damping: 20 }}>
+{/* Assessment Warning Banner */}
+{isMounted && !hasTakenAssessment && (
+  <motion.div 
+    initial={{ opacity: 0, y: -20, rotate: -1 }}
+    animate={{ opacity: 1, y: 0, rotate: 0 }}
+    className="w-full bg-[#fdc003] p-6 md:p-8 mb-12 rounded-2xl border-4 border-[#133347] shadow-[8px_8px_0px_0px_rgba(19,51,71,1)] relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 z-20 hand-drawn-box"
+  >
+    <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
+    <div className="flex items-start md:items-center gap-4 w-full">
+      <div className="bg-[#133347] text-[#fdc003] p-3 rounded-full flex-shrink-0 border-2 border-transparent">
+          <span className="material-symbols-outlined text-4xl animate-pulse" data-icon="warning">warning</span>
+      </div>
+      <div>
+        <h2 className="font-headline font-black text-2xl md:text-3xl text-[#133347] leading-tight">⚠️ Assessment Pending</h2>
+        <p className="font-body text-[#133347]/90 font-bold mt-1 max-w-lg">Take your diagnostic test to unlock your personalized roadmap.</p>
+      </div>
+    </div>
+    <button 
+      onClick={() => router.push('/hub/choose-difficulty')}
+      className="w-full md:w-auto whitespace-nowrap px-10 py-4 bg-white text-[#133347] font-headline font-black text-xl border-4 border-[#133347] rounded-xl shadow-[6px_6px_0px_0px_rgba(19,51,71,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all group flex items-center justify-center gap-2"
+    >
+      Take Test
+      <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+    </button>
+  </motion.div>
+)}
+
 {/* Hero Section: Days Left */}
 <section className="mb-12 flex flex-col md:flex-row items-center justify-between gap-8">
 <div className="max-w-xl">
@@ -117,7 +151,7 @@ export default function Page() {
                     Drafting <span className="material-symbols-outlined" data-icon="architecture">architecture</span> Tools
                 </h3>
 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-<button className="group relative flex flex-col items-start p-8 bg-primary text-on-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden">
+<div className="group relative flex flex-col items-start p-8 bg-primary text-on-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden cursor-pointer">
 <div className="absolute top-0 right-0 p-4 opacity-20 transform translate-x-4 -translate-y-4">
 <span className="material-symbols-outlined text-8xl" data-icon="style">style</span>
 </div>
@@ -127,8 +161,8 @@ export default function Page() {
 <div className="mt-6 flex items-center gap-2 font-bold text-sm uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full">
                             Explore <span className="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
 </div>
-</button>
-<button className="group relative flex flex-col items-start p-8 bg-secondary-container text-on-secondary-container rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden">
+</div>
+<div className="group relative flex flex-col items-start p-8 bg-secondary-container text-on-secondary-container rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden cursor-pointer">
 <div className="absolute top-0 right-0 p-4 opacity-20 transform translate-x-4 -translate-y-4">
 <span className="material-symbols-outlined text-8xl" data-icon="smart_toy">smart_toy</span>
 </div>
@@ -138,8 +172,8 @@ export default function Page() {
 <div className="mt-6 flex items-center gap-2 font-bold text-sm uppercase tracking-widest bg-black/10 px-3 py-1 rounded-full">
                             Consult <span className="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
 </div>
-</button>
-<button className="group relative flex flex-col items-start p-8 bg-surface-container-lowest text-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden">
+</div>
+<div className="group relative flex flex-col items-start p-8 bg-surface-container-lowest text-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden cursor-pointer">
 <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4">
 <span className="material-symbols-outlined text-8xl" data-icon="quiz">quiz</span>
 </div>
@@ -149,7 +183,7 @@ export default function Page() {
 <div className="mt-6 flex items-center gap-2 font-bold text-sm uppercase tracking-widest bg-tertiary/10 px-3 py-1 rounded-full text-tertiary">
                             Begin <span className="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
 </div>
-</button>
+</div>
 </div>
 </section>
 </div>

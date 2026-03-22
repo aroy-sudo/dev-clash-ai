@@ -1,11 +1,29 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { useOnboardingStore } from '@/store/onboardingStore';
 
 export default function Page() {
   const router = useRouter();
+  const [isMounted, setIsMounted] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const coursePercentage = useOnboardingStore(state => state.coursePercentage);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  const setCoursePercentage = useOnboardingStore(state => state.setCoursePercentage);
+
+  const handleOnlineCourseClick = () => {
+      setIsDialogOpen(true);
+  };
+
+  const handleDialogContinue = () => {
+      setIsDialogOpen(false);
+      router.push("/onboarding/blueprint");
+  };
   
   return (
     <div className="w-full min-h-screen relative">
@@ -75,7 +93,7 @@ export default function Page() {
 {/* Right: Choice Cards */}
 <div className="lg:col-span-7 grid md:grid-cols-2 gap-8">
 {/* Online Course Card */}
-<div className="group relative bg-surface-container-low p-8 rounded-xl sketchy-border transition-all duration-300 cursor-pointer flex flex-col h-full -rotate-1 hover:rotate-0" onClick={() => router.push("/onboarding/blueprint")}>
+<div className="group relative bg-surface-container-low p-8 rounded-xl sketchy-border transition-all duration-300 cursor-pointer flex flex-col h-full -rotate-1 hover:rotate-0" onClick={handleOnlineCourseClick}>
 <div className="mb-6 h-40 bg-white/50 rounded-lg flex items-center justify-center relative overflow-hidden">
 <span className="material-symbols-outlined text-7xl text-primary" data-icon="school">school</span>
 {/* Glowing path element */}
@@ -135,6 +153,93 @@ Next
 </button>
 </div>
 </footer>
+
+<AnimatePresence>
+{isDialogOpen && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <motion.div 
+            initial={{ scale: 0.9, opacity: 0, y: 20 }} 
+            animate={{ scale: 1, opacity: 1, y: 0 }} 
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            className="bg-[#f6faff] border-4 border-[#133347] rounded-3xl p-8 max-w-md w-full shadow-[12px_12px_0px_0px_rgba(19,51,71,1)] relative hand-drawn-box"
+        >
+            <button 
+                onClick={() => setIsDialogOpen(false)} 
+                className="absolute top-4 right-4 text-[#133347] material-symbols-outlined hover:scale-125 transition-transform bg-[#fdc003] rounded-full p-2 border-2 border-[#133347]"
+                data-icon="close"
+            >
+                close
+            </button>
+            <h2 className="font-headline font-black text-4xl mb-2 text-[#133347] tracking-tight">Set your baseline.</h2>
+            <p className="font-body text-md mb-8 text-[#133347]/80 font-medium">
+                Adjust the slider to let us know your current syllabus completion percentage.
+            </p>
+            
+            <div className="flex flex-col gap-6 mb-10 bg-white p-6 rounded-2xl border-2 border-dashed border-[#133347]/30">
+                <div className="flex justify-between items-center font-bold text-xl text-[#006b5c]">
+                    <span className="font-['Space_Grotesk']">0%</span>
+                    <motion.span 
+                        key={isMounted ? coursePercentage : 0}
+                        initial={{ scale: 1.2, color: '#006b5c' }}
+                        animate={{ scale: 1, color: '#133347' }}
+                        className="text-4xl font-black bg-[#fdc003] px-6 py-2 rounded-xl border-4 border-[#133347] shadow-[4px_4px_0px_0px_rgba(19,51,71,1)] transform -rotate-2"
+                    >
+                        {isMounted ? coursePercentage : 0}%
+                    </motion.span>
+                    <span className="font-['Space_Grotesk']">100%</span>
+                </div>
+                <div className="relative pt-4">
+                  <input 
+                      type="range" 
+                      min="0" 
+                      max="100" 
+                      value={isMounted ? coursePercentage : 0} 
+                      onChange={(e) => setCoursePercentage(parseInt(e.target.value))}
+                      className="w-full h-4 bg-[#133347]/10 rounded-full appearance-none cursor-pointer hover:bg-[#133347]/20 transition-all focus:outline-none"
+                      style={{
+                        background: `linear-gradient(to right, #00bfa5 ${isMounted ? coursePercentage : 0}%, rgba(19,51,71,0.1) ${isMounted ? coursePercentage : 0}%)`
+                      }}
+                  />
+                  {/* Thumb styled via globals.css normally, but inline works for basics */}
+                  <style jsx>{`
+                    input[type=range]::-webkit-slider-thumb {
+                      appearance: none;
+                      width: 28px;
+                      height: 28px;
+                      border-radius: 50%;
+                      background: #fdc003;
+                      cursor: pointer;
+                      border: 3px solid #133347;
+                      box-shadow: 2px 2px 0px 0px rgba(19,51,71,1);
+                      transition: transform 0.1s;
+                    }
+                    input[type=range]::-webkit-slider-thumb:hover {
+                      transform: scale(1.1);
+                    }
+                    input[type=range]::-moz-range-thumb {
+                      width: 28px;
+                      height: 28px;
+                      border-radius: 50%;
+                      background: #fdc003;
+                      cursor: pointer;
+                      border: 3px solid #133347;
+                      box-shadow: 2px 2px 0px 0px rgba(19,51,71,1);
+                    }
+                  `}</style>
+                </div>
+            </div>
+            
+            <button 
+                onClick={handleDialogContinue}
+                className="w-full py-5 bg-[#00bfa5] text-[#133347] text-xl font-black font-headline rounded-2xl border-4 border-[#133347] hover:bg-[#fdc003] transition-colors shadow-[6px_6px_0px_0px_rgba(19,51,71,1)] active:translate-y-2 active:shadow-none hover:-translate-y-1"
+            >
+                Confirm Path
+            </button>
+        </motion.div>
+    </div>
+)}
+</AnimatePresence>
+
     </div>
   );
 }

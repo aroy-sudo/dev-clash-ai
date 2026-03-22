@@ -1,12 +1,51 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { useOnboardingStore } from '@/store/onboardingStore';
+import { SYLLABUS_DATA } from '@/constants';
 
 export default function Page() {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
+  const targetExam = useOnboardingStore(state => state.targetExam);
+  const coursePercentage = useOnboardingStore(state => state.coursePercentage);
+
+  const subjects = SYLLABUS_DATA.subject_topics.filter(s => {
+    if (targetExam === 'JEE' && s.is_neet_only) return false;
+    if (targetExam === 'NEET' && s.is_jee_only) return false;
+    return true;
+  });
+
+  const [checkedTopics, setCheckedTopics] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    setIsMounted(true);
+    const initialChecked: Record<string, boolean> = {};
+    
+    subjects.forEach(subject => {
+      const allTopics = subject.topics || (subject.categories?.flatMap(c => c.topics) || []);
+      const numToCheck = Math.floor(allTopics.length * (coursePercentage / 100));
+      
+      allTopics.forEach((topic, index) => {
+        initialChecked[topic.topic_id] = index < numToCheck;
+      });
+    });
+    
+    setCheckedTopics(initialChecked);
+  }, []); // Run only once to prepopulate
+
+  const toggleTopic = (topicId: string) => {
+    setCheckedTopics(prev => ({ ...prev, [topicId]: !prev[topicId] }));
+  };
+
+  const totalTopics = Object.keys(checkedTopics).length;
+  const checkedCount = Object.values(checkedTopics).filter(Boolean).length;
+  const currentProgress = totalTopics === 0 ? 0 : Math.round((checkedCount / totalTopics) * 100);
+
   return (
     <div className="w-full min-h-screen relative">
       <header className="bg-[#f6faff] dark:bg-[#133347] flex justify-between items-center w-full px-6 py-4 mx-auto fixed top-0 z-50">
@@ -44,7 +83,7 @@ export default function Page() {
 </a>
 </div>
 <div className="mt-auto px-6 hidden md:block">
-<button className="w-full py-4 bg-primary text-on-primary font-headline font-bold rounded-xl sketchy-border hover:bg-primary-container transition-colors duration-300 shadow-lg" onClick={() => router.push("/hub")}>
+<button className="w-full py-4 bg-primary text-on-primary font-headline font-bold rounded-xl sketchy-border hover:bg-primary-container transition-colors duration-300 shadow-lg" onClick={() => setIsModalOpen(true)}>
                 Continue Draft
             </button>
 </div>
@@ -67,10 +106,10 @@ export default function Page() {
 <div className="space-y-4">
 <div className="flex justify-between items-end">
 <span className="font-label text-sm uppercase tracking-tighter">Syllabus Covered</span>
-<span className="font-headline font-bold text-2xl">42%</span>
+<span className="font-headline font-bold text-2xl">{isMounted ? `${currentProgress}%` : '0%'}</span>
 </div>
 <div className="h-4 bg-surface-container-highest rounded-full overflow-hidden">
-<div className="h-full bg-secondary w-[42%] flex items-center justify-end px-1">
+<div className="h-full bg-secondary flex items-center justify-end px-1 transition-all duration-500" style={{ width: `${isMounted ? currentProgress : 0}%` }}>
 <div className="w-2 h-2 rounded-full bg-on-secondary"></div>
 </div>
 </div>
@@ -80,111 +119,68 @@ export default function Page() {
 {/* The Blueprint Grid */}
 <div className="lg:col-span-8">
 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-{/* Class 11th Section */}
-<section className="space-y-6">
-<div className="flex items-center gap-4 mb-8">
-<span className="text-4xl font-headline font-black text-secondary/30">11</span>
-<h2 className="font-headline text-3xl font-bold tracking-tight">Class 11th</h2>
-<div className="h-px flex-grow bg-outline-variant/30"></div>
-</div>
-{/* Physics Card */}
-<div className="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-primary shadow-md transform hover:rotate-1 transition-transform cursor-default">
-<div className="flex justify-between items-start mb-4">
-<h3 className="font-headline text-xl font-bold flex items-center gap-2">
-<span className="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
-                                    Physics
-                                </h3>
-<span className="bg-primary/10 text-primary font-label text-[10px] px-2 py-1 rounded">CORE</span>
-</div>
-<ul className="space-y-3">
-<li className="flex items-center gap-3 group">
-<div className="w-5 h-5 hand-drawn-circle flex items-center justify-center text-secondary group-hover:bg-secondary-container transition-colors">
-<span className="material-symbols-outlined text-xs" data-icon="check" >check</span>
-</div>
-<span className="font-body text-sm font-medium">Mechanics &amp; Kinematics</span>
-</li>
-<li className="flex items-center gap-3 group">
-<div className="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline group-hover:bg-surface-container-high transition-colors"></div>
-<span className="font-body text-sm">Thermodynamics</span>
-</li>
-</ul>
-</div>
-{/* Chemistry Section */}
-<div className="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-tertiary shadow-md rotate-1">
-<h3 className="font-headline text-xl font-bold flex items-center gap-2 mb-6">
-<span className="material-symbols-outlined text-tertiary" data-icon="science">science</span>
-                                Chemistry
-                            </h3>
-<div className="space-y-6">
-<div>
-<p className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant mb-2">Inorganic</p>
-<div className="flex items-center gap-3">
-<div className="w-5 h-5 hand-drawn-circle flex items-center justify-center text-tertiary">
-<span className="material-symbols-outlined text-xs" data-icon="check">check</span>
-</div>
-<span className="font-body text-sm">Periodic Table</span>
-</div>
-</div>
-<div>
-<p className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant mb-2">Physical</p>
-<div className="flex items-center gap-3">
-<div className="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline"></div>
-<span className="font-body text-sm">Mole Concept</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-{/* Class 12th Section */}
-<section className="space-y-6">
-<div className="flex items-center gap-4 mb-8">
-<span className="text-4xl font-headline font-black text-primary/30">12</span>
-<h2 className="font-headline text-3xl font-bold tracking-tight">Class 12th</h2>
-<div className="h-px flex-grow bg-outline-variant/30"></div>
-</div>
-{/* Maths Card */}
-<div className="bg-surface-container-lowest p-6 rounded-xl border-l-4 border-secondary shadow-md -rotate-1">
-<h3 className="font-headline text-xl font-bold flex items-center gap-2 mb-4">
-<span className="material-symbols-outlined text-secondary" data-icon="calculate">calculate</span>
-                                Mathematics
-                            </h3>
-<ul className="space-y-3">
-<li className="flex items-center gap-3 group">
-<div className="w-5 h-5 hand-drawn-circle flex items-center justify-center text-secondary bg-secondary-container">
-<span className="material-symbols-outlined text-xs" data-icon="check" >check</span>
-</div>
-<span className="font-body text-sm font-bold">Calculus II</span>
-</li>
-<li className="flex items-center gap-3 group">
-<div className="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline"></div>
-<span className="font-body text-sm">Vector Algebra</span>
-</li>
-<li className="flex items-center gap-3 group">
-<div className="w-5 h-5 hand-drawn-circle flex items-center justify-center text-outline"></div>
-<span className="font-body text-sm">Probability</span>
-</li>
-</ul>
-</div>
-{/* Organic Chemistry (Deep Dive) */}
-<div className="bg-inverse-surface text-background p-6 rounded-xl shadow-xl sketchy-border">
-<div className="flex items-center justify-between mb-4">
-<p className="font-label text-[11px] uppercase tracking-tighter text-secondary-container">Deep Focus</p>
-<span className="material-symbols-outlined text-secondary-container" data-icon="auto_awesome">auto_awesome</span>
-</div>
-<h3 className="font-headline text-2xl font-black mb-2">Organic Synthesis</h3>
-<p className="font-body text-xs text-background/60 mb-6">Class 12th Chemistry Advanced Path</p>
-<div className="p-4 bg-background/5 rounded border border-background/10 space-y-3">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined text-sm" data-icon="radio_button_checked">radio_button_checked</span>
-<span className="font-body text-sm">Alcohols &amp; Ethers</span>
-</div>
-<div className="flex items-center gap-2 text-background/40">
-<span className="material-symbols-outlined text-sm" data-icon="radio_button_unchecked">radio_button_unchecked</span>
-<span className="font-body text-sm">Aldehydes</span>
-</div>
-</div>
-</div>
-</section>
+  {subjects.map((subject, index) => {
+    const isAlt = index % 2 !== 0;
+    const borderColor = 
+      subject.subject_name === 'Physics' ? 'border-primary' : 
+      subject.subject_name === 'Chemistry' ? 'border-tertiary' :
+      subject.subject_name === 'Mathematics' ? 'border-secondary' : 'border-[#00bfa5]';
+    const textColor = 
+      subject.subject_name === 'Physics' ? 'text-primary' : 
+      subject.subject_name === 'Chemistry' ? 'text-tertiary' :
+      subject.subject_name === 'Mathematics' ? 'text-secondary' : 'text-[#00bfa5]';
+    const iconName = 
+      subject.subject_name === 'Physics' ? 'bolt' : 
+      subject.subject_name === 'Chemistry' ? 'science' :
+      subject.subject_name === 'Mathematics' ? 'calculate' : 'biotech';
+
+    return (
+      <div key={subject.subject_id} className={`bg-surface-container-lowest p-6 rounded-xl border-l-4 ${borderColor} shadow-md ${isAlt ? 'rotate-1' : '-rotate-1'} transition-transform hover:rotate-0 flex flex-col h-full`}>
+        <div className="flex justify-between items-start mb-6">
+          <h3 className="font-headline text-xl font-bold flex items-center gap-2">
+            <span className={`material-symbols-outlined ${textColor}`} data-icon={iconName}>{iconName}</span>
+            {subject.subject_name}
+          </h3>
+          <span className={`bg-[#133347]/5 ${textColor} font-label text-[10px] px-2 py-1 rounded font-bold`}>{subject.difficulty_level.toUpperCase()}</span>
+        </div>
+
+        <div className="flex-grow overflow-y-auto pr-2 max-h-[350px] custom-scrollbar">
+          {subject.topics && (
+            <ul className="space-y-3">
+              {subject.topics.map(topic => (
+                <li key={topic.topic_id} className="flex items-start gap-3 group cursor-pointer" onClick={() => toggleTopic(topic.topic_id)}>
+                  <div className={`mt-0.5 w-5 h-5 flex-shrink-0 hand-drawn-circle flex items-center justify-center transition-colors ${checkedTopics[topic.topic_id] ? `${textColor} bg-[#133347]/5` : 'text-outline group-hover:bg-surface-container-high'}`}>
+                    {checkedTopics[topic.topic_id] && <span className="material-symbols-outlined text-xs" data-icon="check">check</span>}
+                  </div>
+                  <span className={`font-body text-sm ${checkedTopics[topic.topic_id] ? 'font-bold opacity-100' : 'opacity-80'}`}>{topic.topic_name}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          
+          {subject.categories && (
+            <div className="space-y-6">
+              {subject.categories.map(cat => (
+                <div key={cat.category_name}>
+                  <p className="font-label text-[11px] uppercase tracking-widest text-on-surface-variant mb-3 font-bold">{cat.category_name}</p>
+                  <ul className="space-y-3">
+                    {cat.topics.map(topic => (
+                      <li key={topic.topic_id} className="flex items-start gap-3 group cursor-pointer" onClick={() => toggleTopic(topic.topic_id)}>
+                        <div className={`mt-0.5 w-5 h-5 flex-shrink-0 hand-drawn-circle flex items-center justify-center transition-colors ${checkedTopics[topic.topic_id] ? `${textColor} bg-[#133347]/5` : 'text-outline group-hover:bg-surface-container-high'}`}>
+                          {checkedTopics[topic.topic_id] && <span className="material-symbols-outlined text-xs" data-icon="check">check</span>}
+                        </div>
+                        <span className={`font-body text-sm ${checkedTopics[topic.topic_id] ? 'font-bold opacity-100' : 'opacity-80'}`}>{topic.topic_name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  })}
 </div>
 {/* Hand-drawn Annotation */}
 <div className="mt-12 relative">
@@ -194,8 +190,8 @@ export default function Page() {
 </svg>
 </div>
 <p className="font-headline font-bold text-lg text-tertiary rotate-2">
-                        Wait! Don't forget your revision cycles.
-                    </p>
+    Wait! Don't forget your revision cycles.
+</p>
 </div>
 </div>
 </div>
@@ -211,12 +207,59 @@ Back
 <span className="font-['Space_Grotesk'] text-[12px] font-bold">The Blueprint</span>
 </div>
 <div className="pointer-events-auto">
-<button className="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 hover:scale-105 transition-transform group font-['Space_Grotesk'] text-[12px] font-bold bg-white rounded-xl shadow-lg border-2 border-[#133347] px-6" onClick={() => router.push("/hub")}>
+<button className="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 hover:scale-105 transition-transform group font-['Space_Grotesk'] text-[12px] font-bold bg-white rounded-xl shadow-lg border-2 border-[#133347] px-6" onClick={() => setIsModalOpen(true)}>
 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform mb-1" data-icon="arrow_forward">arrow_forward</span>
 Next
 </button>
 </div>
 </nav>
+
+<AnimatePresence>
+{isModalOpen && (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm sm:items-center sm:p-4">
+        <motion.div 
+            initial={{ y: "100%", opacity: 0 }} 
+            animate={{ y: 0, opacity: 1 }} 
+            exit={{ y: "100%", opacity: 0 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="w-full h-[85vh] sm:h-auto sm:max-w-2xl bg-[#f6faff] border-t-4 sm:border-4 border-[#133347] sm:rounded-3xl rounded-t-3xl p-8 shadow-[12px_12px_0px_0px_rgba(19,51,71,1)] relative hand-drawn-box flex flex-col justify-center gap-8 overflow-y-auto"
+        >
+            <button 
+                onClick={() => setIsModalOpen(false)} 
+                className="absolute top-4 right-4 text-[#133347] material-symbols-outlined hover:scale-125 transition-transform bg-[#fdc003] rounded-full p-2 border-2 border-[#133347]"
+                data-icon="close"
+            >
+                close
+            </button>
+            <div className="text-center mt-6">
+                <h2 className="font-headline font-black text-5xl md:text-6xl mb-6 text-[#133347] tracking-tight leading-none">
+                    Let's calibrate <br/><span className="scribble-underline px-2">your baseline.</span>
+                </h2>
+                <p className="font-body text-xl text-[#133347]/80 font-medium max-w-md mx-auto mb-10">
+                    Take a quick diagnostic test to generate your personalized roadmap.
+                </p>
+                
+                <div className="flex flex-col items-center gap-6 w-full max-w-sm mx-auto">
+                    <button 
+                        onClick={() => router.push('/hub/choose-difficulty')}
+                        className="w-full py-5 bg-[#fdc003] text-[#133347] text-xl font-black font-headline rounded-2xl border-4 border-[#133347] hover:bg-[#ffcf33] transition-colors shadow-[6px_6px_0px_0px_rgba(19,51,71,1)] active:translate-y-2 active:shadow-none hover:-translate-y-1"
+                    >
+                        Select Difficulty
+                    </button>
+                    
+                    <button 
+                        onClick={() => router.push('/hub')}
+                        className="font-['Space_Grotesk'] font-bold text-[#133347]/60 hover:text-[#133347] transition-colors underline decoration-2 underline-offset-4 decoration-[#133347]/20 hover:decoration-[#133347]"
+                    >
+                        Skip for now, take me to the hub
+                    </button>
+                </div>
+            </div>
+        </motion.div>
+    </div>
+)}
+</AnimatePresence>
+
     </div>
   );
 }

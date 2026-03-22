@@ -8,7 +8,7 @@ export async function POST(request: Request): Promise<NextResponse> {
         const body = (await request.json()) as HandleUploadBody;
 
         const jsonResponse = await handleUpload({
-            token: process.env.bookified_READ_WRITE_TOKEN,
+            token: "vercel_blob_rw_kbU8AJMKjSNXY7hU_SyQ3FyIyG0SqzGVSjfkSBDjxLAiYcw",
             body,
             request,
             onBeforeGenerateToken: async () => {

@@ -22,7 +22,7 @@ export function useLatestRef<T>(value: T) {
     return ref;
 }
 
-const VAPI_API_KEY = process.env.NEXT_PUBLIC_VAPI_API_KEY;
+const VAPI_API_KEY = "f2685569-6fed-4976-96bd-facbf3693018";
 const TIMER_INTERVAL_MS = 1000;
 const SECONDS_PER_MINUTE = 60;
 const TIME_WARNING_THRESHOLD = 60; // Show warning when this many seconds remain

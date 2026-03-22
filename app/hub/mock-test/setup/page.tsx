@@ -35,6 +35,7 @@ const subjects = [
 ] as const;
 
 const formSchema = z.object({
+<<<<<<< HEAD
   examType: z.enum(["Mains", "Advanced"], {
     message: "Please select an exam type.",
   }),
@@ -44,6 +45,13 @@ const formSchema = z.object({
   difficulty: z.enum(["Easy", "Medium", "Hard"], {
     message: "Please select a difficulty level.",
   }),
+=======
+  examType: z.enum(["Mains", "Advanced"]),
+  subjects: z.array(z.string()).refine((value) => value.length > 0, {
+    message: "You have to select at least one subject.",
+  }),
+  difficulty: z.enum(["Easy", "Medium", "Hard"]),
+>>>>>>> derp
 });
 
 export default function MockTestSetupPage() {
@@ -146,7 +154,11 @@ export default function MockTestSetupPage() {
                           <FormControl>
                             <Checkbox
                               checked={field.value?.includes(item.id)}
+<<<<<<< HEAD
                               onCheckedChange={(checked) => {
+=======
+                              onCheckedChange={(checked: boolean) => {
+>>>>>>> derp
                                 return checked
                                   ? field.onChange([...field.value, item.id])
                                   : field.onChange(

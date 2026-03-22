@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vector - The Roadmap</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-container": "#ffdad6",
+                        "outline": "#6c7a76",
+                        "on-tertiary-container": "#7e100e",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#3c4a46",
+                        "surface-container-highest": "#c8e6ff",
+                        "surface-dim": "#bfdef7",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "error": "#ba1a1a",
+                        "on-background": "#001e2e",
+                        "on-tertiary-fixed-variant": "#8b1a16",
+                        "secondary-fixed-dim": "#fabd00",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#dff0ff",
+                        "tertiary": "#ac332a",
+                        "on-surface": "#001e2e",
+                        "surface-container-high": "#d4ebff",
+                        "tertiary-fixed": "#ffdad5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#006b5c",
+                        "primary-container": "#00bfa5",
+                        "on-primary-fixed": "#00201a",
+                        "on-secondary-container": "#6c5000",
+                        "on-tertiary-fixed": "#410001",
+                        "on-secondary-fixed": "#261a00",
+                        "on-primary-container": "#00473c",
+                        "primary": "#006b5c",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "surface-bright": "#f6faff",
+                        "background": "#f6faff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#ebf5ff",
+                        "inverse-on-surface": "#e5f2ff",
+                        "tertiary-container": "#ff877a",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#bbcac4",
+                        "secondary-container": "#fdc003",
+                        "secondary": "#785900",
+                        "primary-fixed": "#68fadd",
+                        "surface-variant": "#c8e6ff",
+                        "secondary-fixed": "#ffdf9e",
+                        "surface": "#f6faff",
+                        "inverse-surface": "#133347",
+                        "primary-fixed-dim": "#44ddc1",
+                        "on-primary-fixed-variant": "#005145",
+                        "inverse-primary": "#44ddc1"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Work Sans"],
+                        "label": ["Work Sans"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .grain-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        .sketchy-path {
+            stroke-dasharray: 10, 5;
+            filter: drop-shadow(2px 2px 0px rgba(0,107,92,0.1));
+        }
+        .node-float {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .node-float:hover {
+            transform: scale(1.1) rotate(-2deg);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-background selection:bg-secondary-container selection:text-on-secondary-container">
+<div class="grain-texture fixed inset-0 z-[100]"></div>
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 max-w-full bg-[#f6faff] dark:bg-[#133347] backdrop-blur-md border-b-2 border-dashed border-[#006b5c]/20">
+<div class="text-3xl font-black text-[#006b5c] dark:text-[#00bfa5] uppercase italic font-headline tracking-tight">Vector</div>
+<div class="hidden md:flex items-center space-gap-8 gap-8">
+<a class="font-headline font-bold tracking-tight text-[#006b5c] dark:text-[#00bfa5] hover:skew-x-1 hover:text-[#785900] transition-transform active:scale-95 duration-100" href="#">Days Left: 14</a>
+<a class="font-headline font-bold tracking-tight text-[#785900] dark:text-[#fdc003] underline decoration-wavy hover:skew-x-1 transition-transform active:scale-95 duration-100" href="#">Level 12: 85% XP</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#006b5c] dark:text-[#00bfa5] text-3xl">account_circle</button>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col p-6 space-y-4 bg-[#f6faff] dark:bg-[#133347] w-72 border-r-4 border-double border-[#006b5c] shadow-[8px_8px_0px_0px_rgba(0,107,92,0.1)] pt-24 hidden lg:flex">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 bg-primary-container rounded-lg border-2 border-primary flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover grayscale contrast-125" data-alt="User Portrait Sketch" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8ay4dlcUIkWXxK7HWsID2sVmbqh52gh6BeHtYpCbzWyQbY4BgYh_RSGlTzssv_MbKWUUM27L6BNDhOKNpgnP_YRUuK6r-0Or306eUKkFo0HXqF5qohmU-Wl-NKVP9bhgLMwChe0CRhqSh8FJcJyxNuga84JrY0SexVdkjrCb_cLEV9B5hlK6tiYciiELBOzQt8p-_94kkOiEFuufCy4RqRxq24Kl3Xfrgexx-FMjiDIBljhQiaCFX2FLZE7tB-1v2s_2L-QLwLLo"/>
+</div>
+<div>
+<h3 class="font-headline text-lg font-bold text-primary leading-tight">Architect Mode</h3>
+<p class="text-xs font-medium opacity-70">Drafting Success</p>
+</div>
+</div>
+<nav class="flex flex-col space-y-2 flex-grow">
+<a class="flex items-center gap-3 px-4 py-3 text-[#006b5c] dark:text-[#00bfa5] opacity-80 font-headline text-lg font-bold hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>The Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#fdc003] dark:bg-[#785900] text-[#133347] rounded-sm rotate-1 scale-105 border-2 border-black font-headline text-lg font-bold transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">map</span>
+<span>Roadmap</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#006b5c] dark:text-[#00bfa5] opacity-80 font-headline text-lg font-bold hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">style</span>
+<span>Flashcards</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#006b5c] dark:text-[#00bfa5] opacity-80 font-headline text-lg font-bold hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span>Chatbot</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#006b5c] dark:text-[#00bfa5] opacity-80 font-headline text-lg font-bold hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span>Tests</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#006b5c] dark:text-[#00bfa5] opacity-80 font-headline text-lg font-bold hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span>Rewards</span>
+</a>
+</nav>
+<div class="pt-6 border-t border-dashed border-primary/20">
+<a class="flex items-center gap-3 px-4 py-2 text-[#006b5c] opacity-80 font-bold hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#006b5c] opacity-80 font-bold hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content: The Roadmap Journey -->
+<main class="lg:ml-72 pt-24 pb-12 min-h-screen relative overflow-hidden px-4 md:px-12">
+<!-- Parchment Texture Background Decorations -->
+<div class="absolute top-40 right-10 opacity-10 pointer-events-none rotate-12">
+<span class="material-symbols-outlined text-9xl">architecture</span>
+</div>
+<div class="absolute bottom-40 left-10 opacity-10 pointer-events-none -rotate-6">
+<span class="material-symbols-outlined text-9xl">edit_note</span>
+</div>
+<header class="max-w-4xl mx-auto mb-16 text-center">
+<h1 class="font-headline text-6xl md:text-8xl font-black text-primary italic uppercase tracking-tighter mb-4">The Journey</h1>
+<p class="font-headline text-xl text-secondary font-bold tracking-tight">Mapping your path to mastery through the physical world.</p>
+</header>
+<!-- The Treasure Map Path -->
+<div class="relative max-w-3xl mx-auto">
+<!-- Winding Path SVG -->
+<div class="absolute inset-0 z-0 pointer-events-none">
+<svg class="opacity-20 stroke-primary" fill="none" height="2400" viewbox="0 0 400 2400" width="100%" xmlns="http://www.w3.org/2000/svg">
+<path class="sketchy-path" d="M200 0 C 350 150, 50 250, 200 400 S 350 650, 200 800 S 50 1050, 200 1200 S 350 1450, 200 1600 S 50 1850, 200 2000 S 350 2250, 200 2400" stroke-linecap="round" stroke-width="12"></path>
+</svg>
+</div>
+<!-- Roadmap Nodes -->
+<div class="space-y-[200px] relative z-10 flex flex-col items-center">
+<!-- Node 1: Completed -->
+<div class="group relative flex flex-col items-center ml-[100px]">
+<div class="node-float w-24 h-24 bg-primary-container border-4 border-primary rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,107,92,1)] cursor-pointer">
+<span class="material-symbols-outlined text-5xl text-on-primary-container" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+<div class="mt-4 bg-surface-container-highest px-4 py-2 border-2 border-primary -rotate-2">
+<span class="font-headline font-black text-primary uppercase">Kinematics</span>
+</div>
+<!-- Tooltip Stickynote -->
+<div class="absolute -right-48 top-0 w-40 opacity-0 group-hover:opacity-100 transition-opacity bg-secondary-container p-4 border-2 border-black rotate-3 shadow-xl pointer-events-none">
+<p class="font-headline text-xs font-bold text-on-secondary-container">COMPLETED!</p>
+<p class="font-body text-[10px] leading-tight mt-1 text-on-secondary-container">12/12 modules finished. Total mastery achieved.</p>
+</div>
+</div>
+<!-- Node 2: Current (Active) -->
+<div class="group relative flex flex-col items-center mr-[150px]">
+<!-- You Are Here Arrow -->
+<div class="absolute -top-16 -left-8 animate-bounce">
+<span class="material-symbols-outlined text-tertiary text-6xl rotate-45" style="font-variation-settings: 'FILL' 1;">double_arrow</span>
+<span class="absolute top-2 left-16 font-headline font-black text-tertiary bg-white px-2 border-2 border-tertiary whitespace-nowrap">YOU ARE HERE</span>
+</div>
+<div class="node-float w-32 h-32 bg-secondary-container border-4 border-secondary rounded-full flex items-center justify-center shadow-[8px_8px_0px_0px_rgba(120,89,0,1)] cursor-pointer ring-4 ring-secondary/20 ring-offset-4 ring-offset-background">
+<span class="material-symbols-outlined text-6xl text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">settings_input_component</span>
+</div>
+<div class="mt-4 bg-surface-container-highest px-6 py-2 border-4 border-secondary rotate-1">
+<span class="font-headline font-black text-secondary text-xl uppercase">Dynamics</span>
+</div>
+<!-- Tooltip Stickynote -->
+<div class="absolute -right-48 top-4 w-48 opacity-100 bg-secondary-container p-4 border-2 border-black -rotate-2 shadow-xl">
+<div class="flex items-center gap-2 mb-2">
+<div class="h-2 w-full bg-on-secondary-container/20 rounded-full overflow-hidden">
+<div class="h-full bg-on-secondary-container w-[45%]"></div>
+</div>
+<span class="text-[10px] font-black">45%</span>
+</div>
+<p class="font-body text-xs leading-tight text-on-secondary-container">7 modules left to unlock "Energy Systems". Focus on friction!</p>
+</div>
+</div>
+<!-- Node 3: Locked -->
+<div class="group relative flex flex-col items-center ml-[50px]">
+<div class="node-float w-24 h-24 bg-surface-container-low border-4 border-outline-variant rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,0.1)] opacity-60 grayscale cursor-not-allowed">
+<span class="material-symbols-outlined text-5xl text-outline">bolt</span>
+</div>
+<div class="mt-4 bg-surface-container-low px-4 py-2 border-2 border-dashed border-outline-variant -rotate-1">
+<span class="font-headline font-black text-outline uppercase">Work &amp; Energy</span>
+</div>
+<div class="absolute -left-12 top-0">
+<span class="material-symbols-outlined text-outline-variant text-4xl">lock</span>
+</div>
+</div>
+<!-- Node 4: Locked -->
+<div class="group relative flex flex-col items-center mr-[100px]">
+<div class="node-float w-24 h-24 bg-surface-container-low border-4 border-outline-variant rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,0.1)] opacity-40 grayscale cursor-not-allowed">
+<span class="material-symbols-outlined text-5xl text-outline">group_work</span>
+</div>
+<div class="mt-4 bg-surface-container-low px-4 py-2 border-2 border-dashed border-outline-variant rotate-2">
+<span class="font-headline font-black text-outline uppercase">Circular Motion</span>
+</div>
+</div>
+<!-- Node 5: Milestone Boss -->
+<div class="group relative flex flex-col items-center">
+<div class="node-float w-40 h-40 bg-tertiary-container border-4 border-tertiary rounded-xl flex items-center justify-center shadow-[12px_12px_0px_0px_rgba(172,51,42,1)] cursor-not-allowed rotate-3">
+<span class="material-symbols-outlined text-8xl text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div class="mt-6 bg-tertiary px-8 py-3 border-2 border-black -rotate-3">
+<span class="font-headline font-black text-white text-2xl uppercase italic">The Mid-Term Duel</span>
+</div>
+<div class="absolute -right-32 top-10 w-24 h-24 border-4 border-dashed border-tertiary/30 rounded-full flex items-center justify-center text-tertiary/40">
+<span class="material-symbols-outlined text-5xl">lock_open</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Floatting UI Elements (Ink Splatters and Notes) -->
+<div class="fixed bottom-10 right-10 z-30">
+<button class="bg-primary hover:bg-primary-container text-white w-16 h-16 rounded-lg flex items-center justify-center border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1 active:translate-y-1">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<div class="fixed top-1/2 -left-16 rotate-90 hidden xl:block">
+<div class="bg-secondary-container border-2 border-secondary px-4 py-1 text-xs font-headline font-black text-secondary uppercase tracking-widest">
+                Scroll to explore your future
+            </div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface border-t-2 border-dashed border-primary/20 flex justify-around items-center py-4 z-50">
+<a class="flex flex-col items-center gap-1 text-primary opacity-60" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] font-bold">The Hub</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="text-[10px] font-bold">Roadmap</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary opacity-60" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-[10px] font-bold">Chat</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary opacity-60" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-bold">Profile</span>
+</a>
+</nav>
+</body></html>

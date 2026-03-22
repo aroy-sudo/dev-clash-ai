@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Work+Sans:wght@300..600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error": "#ba1a1a",
+              "on-primary-fixed": "#00201a",
+              "tertiary-fixed": "#ffdad5",
+              "on-tertiary-fixed": "#410001",
+              "on-primary": "#ffffff",
+              "on-primary-fixed-variant": "#005145",
+              "secondary-fixed": "#ffdf9e",
+              "inverse-surface": "#133347",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed-variant": "#5b4300",
+              "surface": "#f6faff",
+              "secondary": "#785900",
+              "on-secondary": "#ffffff",
+              "surface-container-highest": "#c8e6ff",
+              "surface-variant": "#c8e6ff",
+              "outline-variant": "#bbcac4",
+              "on-error": "#ffffff",
+              "on-primary-container": "#00473c",
+              "on-tertiary": "#ffffff",
+              "secondary-container": "#fdc003",
+              "on-secondary-container": "#6c5000",
+              "surface-container-low": "#ebf5ff",
+              "on-secondary-fixed": "#261a00",
+              "surface-bright": "#f6faff",
+              "on-tertiary-container": "#7e100e",
+              "primary-fixed": "#68fadd",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#fabd00",
+              "on-surface": "#001e2e",
+              "on-error-container": "#93000a",
+              "background": "#f6faff",
+              "on-surface-variant": "#3c4a46",
+              "tertiary": "#ac332a",
+              "surface-container-high": "#d4ebff",
+              "surface-container": "#dff0ff",
+              "outline": "#6c7a76",
+              "tertiary-container": "#ff877a",
+              "surface-tint": "#006b5c",
+              "on-background": "#001e2e",
+              "inverse-primary": "#44ddc1",
+              "tertiary-fixed-dim": "#ffb4aa",
+              "inverse-on-surface": "#e5f2ff",
+              "primary": "#006b5c",
+              "primary-fixed-dim": "#44ddc1",
+              "primary-container": "#00bfa5",
+              "surface-dim": "#bfdef7",
+              "on-tertiary-fixed-variant": "#8b1a16"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Work Sans"],
+              "label": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>.paper-texture {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCZMuj9jAxUBFxmax1p_R6o5xoHLdvwy7me73RQfvh4EGIty3_dbvwGlBTMRgx-sfMWdfvGpHoB0iipcnIAs10s5h1ojNOP3Ypg5ARW7uY46-ibkigYWfoXTuo7lQFFsxIcwWA9hWkANWGaV6a7wOHrezvEltS-LsJdvzP-Vr7dwPidkcywLu7ShtBTcpZO3zXnHVUc4mQPnl56vpdPl1teUfqgHYqAU9-jd2nB90HuhCTYZ-aIeMPMRfDpxnmLwa1aqp-ehuoDSV8);
+    background-repeat: repeat
+    }
+.sketchy-border {
+    border: 2px solid #133347;
+    box-shadow: 4px 4px 0 0 #133347;
+    border-radius: 4px 12px 6px 10px
+    }
+.sketchy-border-secondary {
+    border: 2px solid #785900;
+    box-shadow: 4px 4px 0 0 #785900;
+    border-radius: 8px 3px 10px 5px
+    }
+.marker-stroke {
+    mask-image: linear-gradient(to right, black, black 90%, transparent);
+    position: relative
+    }
+.marker-stroke::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: #fdc003;
+    z-index: -1;
+    opacity: 0.6;
+    transform: skewx(-15deg)
+    }</style>
+</head>
+<body class="bg-background font-body text-on-surface overflow-x-hidden paper-texture min-h-screen">
+<!-- Top Navigation (Shared Component Mockup) -->
+<header class="sticky top-0 z-50 bg-[#f6faff]/80 backdrop-blur-xl shadow-[0_10px_30px_-15px_rgba(0,107,92,0.1)] border-b-2 border-[#133347]/5">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-black text-[#006b5c] font-['Space_Grotesk'] uppercase tracking-tight">Vector Academy</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<span class="text-[#133347]/70 font-['Space_Grotesk'] uppercase tracking-tight hover:text-[#00bfa5] transition-colors duration-300">Drafts</span>
+<span class="text-[#133347]/70 font-['Space_Grotesk'] uppercase tracking-tight hover:text-[#00bfa5] transition-colors duration-300">Library</span>
+<span class="text-[#785900] font-bold underline decoration-wavy font-['Space_Grotesk'] uppercase tracking-tight">Exams</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary scale-95 active:scale-90 transition-transform cursor-pointer">notifications</span>
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden">
+<img alt="Architect Profile" class="w-full h-full object-cover" data-alt="Close up of a professional male architect profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4xlLe_2SyIkEaVdUwb42s9e5u-bqh7V-qq3OuGJuj6C5vnk15QaCTCOI787ZhZpJF5uLrpOOi9RM-bRsUDGZekM9OXMd8zaUaoRDazUnRARAEmbZDOJ6cKUyTtueyTLZM9SBmIgRt3LhIHvlwZQSSqBv3376OhTtPm-Lo9w1BtvIkw5TyFRlSKmJzBMjBbQ1XhY0Oq1GnG5ytPrTJguI7W_aUFi6qShFhcSU_ulWYHno_OlGA6CXyg43GIvIYamoiy4vszq--ZEs"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Progress Indicator (Marker Stroke) -->
+<div class="w-full bg-surface-container-low h-6 relative overflow-hidden">
+<div class="absolute inset-0 flex items-center px-4 z-10">
+<span class="text-[10px] font-bold font-headline uppercase tracking-widest text-on-surface/60">Module 4: Structural Integrity Test • 14 of 45 Questions</span>
+</div>
+<div class="h-full bg-secondary-container relative" style="width: 32%;">
+<!-- Sketchy marker texture effect -->
+<div class="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_5px,#133347_5px,#133347_6px)]"></div>
+</div>
+</div>
+<main class="max-w-screen-2xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
+<!-- Question Content Area -->
+<div class="lg:col-span-8 space-y-8">
+<div class="bg-surface-container-lowest p-8 md:p-12 rotate-[-0.5deg] sketchy-border">
+<div class="mb-8">
+<span class="font-headline text-secondary font-bold text-sm uppercase tracking-widest mb-2 block">Question 14</span>
+<h1 class="font-headline text-3xl md:text-4xl text-on-surface font-bold leading-tight">
+                        Calculate the <span class="marker-stroke">maximum load-bearing capacity</span> of a reinforced concrete beam with the following vector dimensions?
+                    </h1>
+</div>
+<div class="aspect-video bg-surface-container-low mb-10 flex items-center justify-center relative overflow-hidden rounded-xl border-dashed border-2 border-outline/30">
+<img alt="Blueprint" class="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-multiply" data-alt="Technical architectural blueprint of a structural beam system" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBReiyOZZTdXd8YYlpKRi_wCk96TMm0xeS-Sm67juMgso2REHTRGzDpa1KszWaI4GdCkkm5Veliyiq3eiRvhPZ_o8rXbVMCX-8svhVwMlAOZFc4XNoni2y489G51JviTzDKP4DDezXIEy4-XCmUpTUn3JavrH7BpIPSUQe9pnbEhfXheJdfPvMhtx2ZSv7OstkIad8dKrCoYnnwqnmVUcqiC16dJ1OpqU_QTv1G64gcDksBpXABHe__ZNedGP1n598rwpe5qop8LLw"/>
+<div class="relative z-10 flex flex-col items-center">
+<span class="material-symbols-outlined text-6xl text-primary/40 mb-2">architecture</span>
+<p class="font-headline text-on-surface/50 font-medium">FIG 14.2: CROSS-SECTIONAL ANALYSIS</p>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Option A -->
+<label class="group flex items-center p-5 cursor-pointer bg-surface rounded-xl border-2 border-transparent hover:border-primary/30 transition-all duration-200">
+<input class="w-6 h-6 border-2 border-primary text-primary focus:ring-secondary" name="exam_option" type="radio"/>
+<div class="ml-4">
+<span class="block font-headline font-bold text-on-surface">Option A</span>
+<span class="text-on-surface-variant">The tensile strength exceeds 450 MPa under uniform distribution.</span>
+</div>
+</label>
+<!-- Option B (Selected) -->
+<label class="group flex items-center p-5 cursor-pointer bg-secondary-container/10 border-2 border-secondary rounded-xl transition-all duration-200 shadow-[4px_4px_0px_0px_#fdc003]">
+<input checked="" class="w-6 h-6 border-2 border-secondary text-secondary focus:ring-secondary" name="exam_option" type="radio"/>
+<div class="ml-4">
+<span class="block font-headline font-bold text-secondary">Option B</span>
+<span class="text-on-surface font-medium">Standard vector displacement occurs at 12.5kN/m² as per FIG 14.2.</span>
+</div>
+</label>
+<!-- Option C -->
+<label class="group flex items-center p-5 cursor-pointer bg-surface rounded-xl border-2 border-transparent hover:border-primary/30 transition-all duration-200">
+<input class="w-6 h-6 border-2 border-primary text-primary focus:ring-secondary" name="exam_option" type="radio"/>
+<div class="ml-4">
+<span class="block font-headline font-bold text-on-surface">Option C</span>
+<span class="text-on-surface-variant">Zero-gravity assumption yields a differential of 0.04 across the axis.</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Hand-drawn Navigation Buttons -->
+<div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-4">
+<button class="w-full sm:w-auto px-10 py-4 font-headline font-black uppercase tracking-widest text-[#133347] bg-surface-container-high sketchy-border hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+                    Back
+                </button>
+<div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+<button class="px-10 py-4 font-headline font-black uppercase tracking-widest text-on-primary bg-primary sketchy-border hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
+                        Next Question
+                    </button>
+<button class="px-10 py-4 font-headline font-black uppercase tracking-widest text-on-tertiary bg-tertiary sketchy-border-secondary hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all" style="border-color: #ac332a; box-shadow: 4px 4px 0px 0px #ac332a;">
+                        Submit Exam
+                    </button>
+</div>
+</div>
+</div>
+<!-- Sidebar Navigation -->
+<div class="lg:col-span-4 space-y-6">
+<div class="bg-surface-container-low p-6 rotate-[1deg] sketchy-border">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline font-black uppercase text-xl text-on-surface">Navigation</h3>
+<div class="flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined text-lg">timer</span>
+<span class="font-headline font-bold">42:15</span>
+</div>
+</div>
+<div class="grid grid-cols-5 gap-3">
+<!-- Numbers 1-30 mockup -->
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">1</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">2</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">3</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-highest text-primary rounded border border-on-surface/20">4</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-highest text-primary rounded border border-on-surface/20">5</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-highest text-primary rounded border border-on-surface/20">6</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">7</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">8</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">9</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">10</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">11</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">12</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-primary text-on-primary rounded border border-on-surface/20">13</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-secondary-container text-on-secondary-container rounded-sm border-2 border-on-surface scale-110 shadow-sm">14</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-lowest text-on-surface/20 rounded border border-on-surface/10">15</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-lowest text-on-surface/20 rounded border border-on-surface/10">16</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-lowest text-on-surface/20 rounded border border-on-surface/10">17</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-tertiary-container text-on-tertiary-container rounded border border-tertiary/40" title="Flagged for review">18</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-lowest text-on-surface/20 rounded border border-on-surface/10">19</div>
+<div class="aspect-square flex items-center justify-center font-headline font-bold bg-surface-container-lowest text-on-surface/20 rounded border border-on-surface/10">20</div>
+</div>
+<div class="mt-8 pt-6 border-t-2 border-on-surface/5 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 bg-primary rounded"></div>
+<span class="text-xs font-headline font-bold uppercase tracking-wider text-on-surface-variant">Completed</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 bg-secondary-container rounded-sm border-2 border-on-surface"></div>
+<span class="text-xs font-headline font-bold uppercase tracking-wider text-on-surface-variant">Current</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-4 h-4 bg-tertiary-container rounded"></div>
+<span class="text-xs font-headline font-bold uppercase tracking-wider text-on-surface-variant">Flagged</span>
+</div>
+</div>
+</div>
+<!-- Quick Notes Area -->
+<div class="bg-surface-container-highest p-6 rotate-[-1.2deg] sketchy-border-secondary">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary">edit_note</span>
+<h3 class="font-headline font-black uppercase text-lg text-secondary">Drafting Area</h3>
+</div>
+<p class="text-xs text-on-surface-variant italic leading-relaxed mb-4">
+                    Use this space for temporary calculations or scribbles. Notes are not graded.
+                </p>
+<div class="w-full h-32 bg-surface-container-lowest/50 border-2 border-dashed border-secondary/30 rounded-lg flex items-center justify-center">
+<span class="text-secondary/40 material-symbols-outlined text-4xl">draw</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav Bar (Shared Component Mockup) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#f6faff] border-t-2 border-[#133347]/5 rounded-t-[2rem] z-50">
+<div class="flex flex-col items-center justify-center text-[#133347]/50 px-5 py-2">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-['Work_Sans'] text-[11px] font-semibold uppercase">Drafts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#133347]/50 px-5 py-2">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-['Work_Sans'] text-[11px] font-semibold uppercase">Library</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#fdc003] text-[#133347] rounded-xl px-5 py-2 -rotate-1 shadow-sm">
+<span class="material-symbols-outlined">architecture</span>
+<span class="font-['Work_Sans'] text-[11px] font-semibold uppercase">Exams</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#133347]/50 px-5 py-2">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Work_Sans'] text-[11px] font-semibold uppercase">Profile</span>
+</div>
+</nav>
+</body></html>

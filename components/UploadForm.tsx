@@ -121,11 +121,15 @@ const UploadForm = () => {
                 return;
             }
 
-            const segments = await saveBookSegments(book.data._id, userId, parsedPDF.content);
+            const CHUNK_SIZE = 100;
+            for (let i = 0; i < parsedPDF.content.length; i += CHUNK_SIZE) {
+                const chunk = parsedPDF.content.slice(i, i + CHUNK_SIZE);
+                const segmentsRes = await saveBookSegments(book.data._id, userId, chunk, parsedPDF.content.length);
 
-            if(!segments.success) {
-                toast.error("Failed to save book segments");
-                throw new Error("Failed to save book segments");
+                if(!segmentsRes.success) {
+                    toast.error("Failed to save book segments");
+                    throw new Error("Failed to save book segments");
+                }
             }
 
             form.reset();

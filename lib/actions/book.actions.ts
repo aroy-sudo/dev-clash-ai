@@ -126,7 +126,7 @@ export const getBookBySlug = async (slug: string) => {
     }
 }
 
-export const saveBookSegments = async (bookId: string, clerkId: string, segments: TextSegment[]) => {
+export const saveBookSegments = async (bookId: string, clerkId: string, segments: TextSegment[], totalExpectedSegments?: number) => {
     try {
         await connectToDatabase();
 
@@ -138,7 +138,11 @@ export const saveBookSegments = async (bookId: string, clerkId: string, segments
 
         await BookSegment.insertMany(segmentsToInsert);
 
-        await Book.findByIdAndUpdate(bookId, { totalSegments: segments.length });
+        if (totalExpectedSegments !== undefined) {
+             await Book.findByIdAndUpdate(bookId, { totalSegments: totalExpectedSegments });
+        } else {
+             await Book.findByIdAndUpdate(bookId, { $inc: { totalSegments: segments.length } });
+        }
 
         console.log('Book segments saved successfully.');
 

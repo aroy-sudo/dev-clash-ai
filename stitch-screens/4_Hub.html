@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vector - The Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error-container": "#ffdad6",
+              "outline": "#6c7a76",
+              "on-tertiary-container": "#7e100e",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#3c4a46",
+              "surface-container-highest": "#c8e6ff",
+              "surface-dim": "#bfdef7",
+              "on-secondary-fixed-variant": "#5b4300",
+              "error": "#ba1a1a",
+              "on-background": "#001e2e",
+              "on-tertiary-fixed-variant": "#8b1a16",
+              "secondary-fixed-dim": "#fabd00",
+              "on-secondary": "#ffffff",
+              "surface-container": "#dff0ff",
+              "tertiary": "#ac332a",
+              "on-surface": "#001e2e",
+              "surface-container-high": "#d4ebff",
+              "tertiary-fixed": "#ffdad5",
+              "surface-container-lowest": "#ffffff",
+              "on-error": "#ffffff",
+              "surface-tint": "#006b5c",
+              "primary-container": "#00bfa5",
+              "on-primary-fixed": "#00201a",
+              "on-secondary-container": "#6c5000",
+              "on-tertiary-fixed": "#410001",
+              "on-secondary-fixed": "#261a00",
+              "on-primary-container": "#00473c",
+              "primary": "#006b5c",
+              "tertiary-fixed-dim": "#ffb4aa",
+              "surface-bright": "#f6faff",
+              "background": "#f6faff",
+              "on-primary": "#ffffff",
+              "surface-container-low": "#ebf5ff",
+              "inverse-on-surface": "#e5f2ff",
+              "tertiary-container": "#ff877a",
+              "on-error-container": "#93000a",
+              "outline-variant": "#bbcac4",
+              "secondary-container": "#fdc003",
+              "secondary": "#785900",
+              "primary-fixed": "#68fadd",
+              "surface-variant": "#c8e6ff",
+              "secondary-fixed": "#ffdf9e",
+              "surface": "#f6faff",
+              "inverse-surface": "#133347",
+              "primary-fixed-dim": "#44ddc1",
+              "on-primary-fixed-variant": "#005145",
+              "inverse-primary": "#44ddc1"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Work Sans"],
+              "label": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .paper-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+        }
+        .scribble-ring {
+            border: 4px solid transparent;
+            border-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10,50 Q25,10 50,10 Q85,10 90,50 Q95,90 50,90 Q15,90 10,50' stroke='%2300bfa5' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") 30 stretch;
+        }
+        .rough-border {
+            clip-path: polygon(0% 2%, 100% 0%, 98% 100%, 2% 97%);
+        }
+        .marker-underline {
+            background: linear-gradient(120deg, transparent 0%, #fdc003 0%, #fdc003 100%, transparent 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 0.3em;
+            background-position: 0 88%;
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-background min-h-screen selection:bg-secondary-container">
+<div class="fixed inset-0 paper-grain z-0"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 max-w-full bg-[#f6faff] dark:bg-[#133347] backdrop-blur-md border-b-2 border-dashed border-[#006b5c]/20">
+<div class="flex items-center gap-4">
+<span class="text-3xl font-black text-[#006b5c] dark:text-[#00bfa5] uppercase italic font-headline">Vector</span>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<span class="font-headline font-bold tracking-tight text-[#785900] dark:text-[#fdc003] underline decoration-wavy">Days Left: 14</span>
+<span class="font-headline font-bold tracking-tight text-[#006b5c] dark:text-[#00bfa5] hover:skew-x-1 hover:text-[#785900] transition-transform">Level 12: 85% XP</span>
+</nav>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center border-2 border-primary overflow-hidden">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col p-6 space-y-4 bg-[#f6faff] dark:bg-[#133347] border-r-4 border-double border-[#006b5c] w-72 pt-24 hidden lg:flex">
+<div class="mb-8 px-2">
+<h2 class="font-headline text-lg font-bold text-[#006b5c]">Architect Mode</h2>
+<p class="text-xs opacity-70 font-label">Drafting Success</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-3 font-headline text-lg font-bold bg-[#fdc003] dark:bg-[#785900] text-[#133347] rounded-sm rotate-1 scale-105 border-2 border-black" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span>The Hub</span>
+</a>
+<a class="flex items-center gap-4 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span>Roadmap</span>
+</a>
+<a class="flex items-center gap-4 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="style">style</span>
+<span>Flashcards</span>
+</a>
+<a class="flex items-center gap-4 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span>Chatbot</span>
+</a>
+<a class="flex items-center gap-4 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span>Tests</span>
+</a>
+<a class="flex items-center gap-4 p-3 font-headline text-lg font-bold text-[#006b5c] dark:text-[#00bfa5] opacity-80 hover:bg-[#00bfa5]/10 hover:-rotate-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+<span>Rewards</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 flex flex-col gap-2">
+<a class="flex items-center gap-4 p-3 text-[#006b5c] opacity-70 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label">Settings</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-[#006b5c] opacity-70 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-72 pt-28 px-6 pb-12 relative z-10">
+<!-- Hero Section: Days Left -->
+<section class="mb-12 flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="max-w-xl">
+<h1 class="font-headline text-6xl md:text-8xl font-black text-primary leading-none mb-4 tracking-tighter">
+                    THE <span class="text-secondary marker-underline italic">HUB</span>
+</h1>
+<p class="text-xl font-medium text-outline max-w-md">Your drafting table for academic dominance. Every stroke counts toward the final blueprint.</p>
+</div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-tertiary/10 rounded-full blur-2xl group-hover:bg-tertiary/20 transition-colors"></div>
+<div class="relative bg-surface-container-low p-8 rough-border border-4 border-primary transform -rotate-2 flex flex-col items-center">
+<span class="text-8xl font-black font-headline text-primary leading-none">14</span>
+<span class="text-sm font-bold uppercase tracking-widest text-secondary -mt-2">Days Left</span>
+<div class="absolute -top-4 -right-4 w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center border-2 border-black rotate-12">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="timer">timer</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid System -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Streak Calendar (Bento Large) -->
+<div class="md:col-span-8 bg-surface-container-lowest p-8 rounded-xl shadow-[8px_8px_0px_0px_rgba(0,107,92,0.1)] border-2 border-primary/20 relative overflow-hidden">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline text-2xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="edit_calendar">edit_calendar</span>
+                        Daily Commits
+                    </h3>
+<div class="flex gap-2">
+<div class="w-4 h-4 rounded-sm bg-primary-container"></div>
+<div class="w-4 h-4 rounded-sm bg-secondary-container"></div>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-4 md:gap-6">
+<!-- Calendar Grid Mockup -->
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg opacity-40">1</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg opacity-40">2</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg opacity-40">3</div>
+<div class="aspect-square flex flex-col items-center justify-center bg-primary-container border-2 border-primary transform rotate-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="check" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center bg-secondary-container border-2 border-secondary transform -rotate-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center bg-primary-container border-2 border-primary transform rotate-3 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="done_all" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center bg-primary-container border-2 border-primary transform -rotate-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="edit" style="font-variation-settings: 'FILL' 1;">edit</span>
+</div>
+<!-- Row 2 -->
+<div class="aspect-square flex flex-col items-center justify-center bg-primary-container border-2 border-primary transform rotate-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg">9</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg">10</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg">11</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg">12</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg">13</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg">14</div>
+</div>
+<!-- Stationery Illustration Overlay -->
+<div class="absolute -bottom-6 -right-6 w-32 h-32 opacity-10 pointer-events-none transform -rotate-12">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="edit">edit</span>
+</div>
+</div>
+<!-- Stats & Rank (Bento Tall) -->
+<div class="md:col-span-4 flex flex-col gap-8">
+<div class="bg-surface-container-high p-8 rounded-xl border-4 border-dashed border-primary transform rotate-1 flex flex-col items-center justify-center text-center relative overflow-hidden">
+<div class="absolute inset-0 bg-tertiary/5"></div>
+<div class="relative z-10">
+<h4 class="font-headline text-lg font-bold text-outline uppercase tracking-widest mb-4">Rank Velocity</h4>
+<div class="relative inline-block mb-4">
+<!-- Pop Art Scribble Rings -->
+<div class="absolute -inset-6 border-4 border-tertiary rounded-full animate-pulse opacity-30"></div>
+<div class="absolute -inset-4 border-2 border-primary rounded-full animate-bounce opacity-40"></div>
+<div class="w-32 h-32 rounded-full bg-surface-container-lowest flex items-center justify-center border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<span class="font-headline text-5xl font-black text-tertiary">#42</span>
+</div>
+</div>
+<p class="font-headline text-2xl font-black text-primary">Top 2% <span class="text-sm font-medium text-outline">Expected</span></p>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border-2 border-primary/20 shadow-lg">
+<h4 class="font-headline font-bold text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                        Performance Gauge
+                    </h4>
+<div class="space-y-4">
+<div class="h-6 w-full bg-surface-container rounded-full overflow-hidden border-2 border-black">
+<div class="h-full bg-secondary-container border-r-2 border-black w-[85%] relative">
+<div class="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,transparent_25%,rgba(0,0,0,0.1)_25%,rgba(0,0,0,0.1)_50%,transparent_50%,transparent_75%,rgba(0,0,0,0.1)_75%,rgba(0,0,0,0.1))] bg-[length:10px_10px]"></div>
+</div>
+</div>
+<div class="flex justify-between text-xs font-bold uppercase tracking-tighter text-outline">
+<span>Drafting</span>
+<span>Architect Level</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Access Section -->
+<section class="md:col-span-12 mt-4">
+<h3 class="font-headline text-3xl font-black text-primary mb-8 flex items-center gap-4">
+                    Drafting <span class="material-symbols-outlined" data-icon="architecture">architecture</span> Tools
+                </h3>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+<button class="group relative flex flex-col items-start p-8 bg-primary text-on-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-20 transform translate-x-4 -translate-y-4">
+<span class="material-symbols-outlined text-8xl" data-icon="style">style</span>
+</div>
+<span class="material-symbols-outlined text-4xl mb-4" data-icon="style">style</span>
+<h4 class="font-headline text-2xl font-black mb-2">Flashcards</h4>
+<p class="text-sm text-primary-fixed leading-tight">Master concepts through tactile repetition.</p>
+<div class="mt-6 flex items-center gap-2 font-bold text-sm uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full">
+                            Explore <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</button>
+<button class="group relative flex flex-col items-start p-8 bg-secondary-container text-on-secondary-container rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-20 transform translate-x-4 -translate-y-4">
+<span class="material-symbols-outlined text-8xl" data-icon="smart_toy">smart_toy</span>
+</div>
+<span class="material-symbols-outlined text-4xl mb-4" data-icon="smart_toy">smart_toy</span>
+<h4 class="font-headline text-2xl font-black mb-2">Chatbot</h4>
+<p class="text-sm text-secondary-fixed-variant leading-tight">AI Drafting Assistant at your service.</p>
+<div class="mt-6 flex items-center gap-2 font-bold text-sm uppercase tracking-widest bg-black/10 px-3 py-1 rounded-full">
+                            Consult <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</button>
+<button class="group relative flex flex-col items-start p-8 bg-surface-container-lowest text-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4">
+<span class="material-symbols-outlined text-8xl" data-icon="quiz">quiz</span>
+</div>
+<span class="material-symbols-outlined text-4xl mb-4" data-icon="quiz">quiz</span>
+<h4 class="font-headline text-2xl font-black mb-2 text-tertiary">Full Tests</h4>
+<p class="text-sm text-outline leading-tight">Put your blueprints to the ultimate stress test.</p>
+<div class="mt-6 flex items-center gap-2 font-bold text-sm uppercase tracking-widest bg-tertiary/10 px-3 py-1 rounded-full text-tertiary">
+                            Begin <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</button>
+</div>
+</section>
+</div>
+<!-- Floating Decorative Element -->
+<div class="fixed bottom-10 right-10 hidden xl:block z-0 opacity-20 transform rotate-12 pointer-events-none">
+<span class="material-symbols-outlined text-[12rem] text-outline" data-icon="square_foot">square_foot</span>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-low backdrop-blur-lg flex justify-around items-center p-4 z-50 border-t-2 border-dashed border-primary/20">
+<button class="flex flex-col items-center gap-1 text-[#785900] underline decoration-wavy">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="text-[10px] font-bold uppercase">The Hub</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="text-[10px] font-bold uppercase">Roadmap</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="style">style</span>
+<span class="text-[10px] font-bold uppercase">Cards</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="text-[10px] font-bold uppercase">Tests</span>
+</button>
+</nav>
+<!-- Decorative Paper Texture Overlay Elements -->
+<div class="fixed top-1/4 left-0 w-16 h-32 bg-primary/5 -translate-x-8 transform rotate-12 pointer-events-none"></div>
+<div class="fixed top-1/2 right-0 w-24 h-24 bg-secondary-container/10 translate-x-12 transform -rotate-45 pointer-events-none"></div>
+</body></html>

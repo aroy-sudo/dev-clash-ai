@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
           <head>
             <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&family=Work+Sans:ital,wght@0,400;0,700;0,900;1,400&family=Caveat:wght@400..700&display=swap" rel="stylesheet" />
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -39,13 +39,14 @@ export default function RootLayout({
           </head>
           <body
             className={`${ibmPlexSerif.variable} ${monaSans.variable} relative font-sans antialiased`}
+            suppressHydrationWarning
           >
             <header className="fixed top-0 left-0 right-0 z-[100] h-[74px] border-b border-border/40 bg-background/80 backdrop-blur-md flex items-center justify-between px-6">
               <div className="flex items-center gap-2">
                  <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center border-2 border-black rotate-3">
-                   <span className="material-symbols-outlined text-on-primary" data-icon="architecture">architecture</span>
+                   <span className="material-symbols-outlined text-on-primary" data-icon="polyline">polyline</span>
                  </div>
-                 <span className="font-headline font-black text-2xl tracking-tighter uppercase">ARCHITECT</span>
+                 <span className="font-headline font-black text-2xl tracking-tighter uppercase">VECTOR</span>
               </div>
 
               <div className="flex items-center gap-4">

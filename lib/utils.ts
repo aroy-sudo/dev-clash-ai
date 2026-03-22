@@ -8,6 +8,31 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function calculateTargetExamDate(examType: 'JEE' | 'NEET', userClass: '11th' | '12th' | 'Dropper'): Date {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  
+  if (examType === 'JEE') {
+    // Session 1 is typically Jan 21-30. Let's aim for Jan 21.
+    const targetYear = (userClass === '11th') ? currentYear + 1 : currentYear;
+    // If we are past Jan 30 and they are 12th/Dropper, target next year anyway, 
+    // but the logic states: 12th/Dropper -> upcoming Jan, 11th -> next year Jan.
+    let targetDate = new Date(targetYear, 0, 21); // Jan 21
+    if (userClass !== '11th' && targetDate < now) {
+      targetDate = new Date(currentYear + 1, 0, 21);
+    }
+    return targetDate;
+  } else {
+    // NEET is typically first Sunday of May. Let's aim for May 5 as an approximation.
+    const targetYear = (userClass === '11th') ? currentYear + 1 : currentYear;
+    let targetDate = new Date(targetYear, 4, 5); // May 5
+    if (userClass !== '11th' && targetDate < now) {
+      targetDate = new Date(currentYear + 1, 4, 5);
+    }
+    return targetDate;
+  }
+}
+
 // Serialize Mongoose documents to plain JSON objects (strips ObjectId, Date, etc.)
 export const serializeData = <T>(data: T): T => JSON.parse(JSON.stringify(data));
 

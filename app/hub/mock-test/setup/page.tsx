@@ -44,6 +44,7 @@ const formSchema = z.object({
   difficulty: z.enum(["Easy", "Medium", "Hard"], {
     message: "Please select a difficulty level.",
   }),
+  focusOnMistakes: z.boolean(),
 });
 
 export default function MockTestSetupPage() {
@@ -54,6 +55,7 @@ export default function MockTestSetupPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       subjects: ["Physics", "Chemistry", "Math"],
+      focusOnMistakes: false,
     },
   });
 
@@ -189,6 +191,31 @@ export default function MockTestSetupPage() {
                   </SelectContent>
                 </Select>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="focusOnMistakes"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border-2 border-primary/20 bg-surface-container-low p-4 shadow-sm border-dashed">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base font-bold text-primary flex items-center gap-2">
+                    <span className="material-symbols-outlined text-sm" data-icon="troubleshoot">troubleshoot</span>
+                    Focus on Past Mistakes
+                  </FormLabel>
+                  <FormDescription className="text-outline">
+                    Dynamically weigh questions based on topics you previously struggled with.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    className="w-8 h-8 rounded-full border-4 border-black data-[state=checked]:bg-secondary data-[state=checked]:border-secondary"
+                  />
+                </FormControl>
               </FormItem>
             )}
           />

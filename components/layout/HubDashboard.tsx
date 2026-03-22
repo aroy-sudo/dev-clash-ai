@@ -4,15 +4,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/store/onboardingStore';
+import { calculateTargetExamDate } from '@/lib/utils';
 
 export function HubDashboard({ children }: { children?: React.ReactNode }) {
   const router = useRouter();
-  const hasTakenAssessment = useOnboardingStore(state => state.hasTakenAssessment);
+  const { hasTakenAssessment, targetExam, userClass } = useOnboardingStore();
   const [isMounted, setIsMounted] = React.useState(false);
+  const [daysLeft, setDaysLeft] = React.useState<number>(0);
   
   React.useEffect(() => {
     setIsMounted(true);
-  }, []);
+    const targetDate = calculateTargetExamDate(targetExam, userClass);
+    const diffTime = targetDate.getTime() - Date.now();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    setDaysLeft(diffDays > 0 ? diffDays : 0);
+  }, [targetExam, userClass]);
   
   return (
     <div className="w-full min-h-screen relative">
@@ -58,7 +64,7 @@ export function HubDashboard({ children }: { children?: React.ReactNode }) {
           <div className="relative group">
             <div className="absolute -inset-4 bg-tertiary/10 rounded-full blur-2xl group-hover:bg-tertiary/20 transition-colors"></div>
             <div className="relative bg-surface-container-low p-8 rough-border border-4 border-primary transform -rotate-2 flex flex-col items-center">
-              <span className="text-8xl font-black font-headline text-primary leading-none">14</span>
+              <span className="text-8xl font-black font-headline text-primary leading-none">{isMounted ? daysLeft : '--'}</span>
               <span className="text-sm font-bold uppercase tracking-widest text-secondary -mt-2">Days Left</span>
               <div className="absolute -top-4 -right-4 w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center border-2 border-black rotate-12">
                 <span className="material-symbols-outlined text-on-secondary-container" data-icon="timer">timer</span>

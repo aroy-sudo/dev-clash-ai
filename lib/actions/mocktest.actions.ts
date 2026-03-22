@@ -1,18 +1,19 @@
 "use server";
 
-import { GoogleGenAI, Type, Schema } from '@google/genai';
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { connectToDatabase } from '@/database/mongoose';
 import JeeTest from '@/database/models/jee-test.model';
 import TestAttempt from '@/database/models/test-attempt.model';
 import UserProgress from '@/database/models/user-progress.model';
 import { auth } from '@clerk/nextjs/server';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GEMINI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
 export async function generateMockTest(params: {
   examType: string;
   difficulty: string;
   subjects: string[];
+  focusOnMistakes?: boolean;
 }) {
   try {
     await connectToDatabase();
@@ -25,49 +26,59 @@ export async function generateMockTest(params: {
       console.log('Clerk Auth error/missing. Falling back to anonymous user.');
     }
 
-    const { examType, difficulty, subjects } = params;
+    const { examType, difficulty, subjects, focusOnMistakes } = params;
     
     // Limit to 15 questions to ensure prompt processing is reasonably fast for demo
     const noOfQuestions = examType === 'Mains' ? 15 : 10; 
+
+    let mistakeContext = "";
+    if (focusOnMistakes && userId !== 'anonymous') {
+      const pastAttempts = await TestAttempt.find({ userId }).sort({ createdAt: -1 }).limit(3).lean();
+      const improvements = pastAttempts.flatMap((a: any) => a.performanceAnalysis?.areasForImprovement || []);
+      const uniqueImprovements = [...new Set(improvements)];
+      if (uniqueImprovements.length > 0) {
+        mistakeContext = `\nCRITICAL INSTRUCTION: The user has explicitly requested to focus on their past mistakes. They often struggle with the following topics: ${uniqueImprovements.join(', ')}. Please weigh the generated questions heavily towards testing these specific topics and their closely related concepts.`;
+      }
+    }
 
     const prompt = `Act as an expert JEE paper setter. Generate a realistic, syllabus-accurate JEE mock test.
 Exam Type: ${examType}
 Difficulty: ${difficulty}
 Subjects Included: ${subjects.join(', ')}
+${mistakeContext}
 
 Please generate ${noOfQuestions} distinct questions reflecting the mix of these subjects. Ensure that the questions match the exact difficulty level specified. Provide exact details.`;
 
-    const responseSchema: Schema = {
-      type: Type.ARRAY,
-      description: "List of JEE mock test questions",
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          questionText: { type: Type.STRING, description: "The full question text including any required context or formula." },
-          options: {
-            type: Type.ARRAY,
-            items: { type: Type.STRING },
-            description: "Exactly 4 options for the question."
-          },
-          correctAnswer: { type: Type.STRING, description: "The correct option text, matching exactly one of the options." },
-          subject: { type: Type.STRING, description: "The subject this question belongs to (e.g., Physics, Chemistry, Math)." },
-          topic: { type: Type.STRING, description: "The specific topic from the JEE syllabus." },
-          conceptWeightage: { type: Type.NUMBER, description: "A weightage score between 1 and 10 indicating concept importance." }
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: SchemaType.ARRAY,
+          description: "List of JEE mock test questions",
+          items: {
+            type: SchemaType.OBJECT,
+            properties: {
+              questionText: { type: SchemaType.STRING, description: "The full question text including any required context or formula." },
+              options: {
+                type: SchemaType.ARRAY,
+                items: { type: SchemaType.STRING },
+                description: "Exactly 4 options for the question."
+              },
+              correctAnswer: { type: SchemaType.STRING, description: "The correct option text, matching exactly one of the options." },
+              subject: { type: SchemaType.STRING, description: "The subject this question belongs to (e.g., Physics, Chemistry, Math)." },
+              topic: { type: SchemaType.STRING, description: "The specific topic from the JEE syllabus." },
+              conceptWeightage: { type: SchemaType.NUMBER, description: "A weightage score between 1 and 10 indicating concept importance." }
+            },
+            required: ["questionText", "options", "correctAnswer", "subject", "topic", "conceptWeightage"]
+          }
         },
-        required: ["questionText", "options", "correctAnswer", "subject", "topic", "conceptWeightage"]
-      }
-    };
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        responseSchema: responseSchema,
-      }
+      },
     });
 
-    const jsonText = response.text || "[]";
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const jsonText = response.text() || "[]";
     const questions = JSON.parse(jsonText);
 
     if (!Array.isArray(questions) || questions.length === 0) {
@@ -147,37 +158,36 @@ Provide a detailed structured analysis containing:
 4. learningPath (A sequential list of actionable steps).
 `;
 
-    const responseSchema: Schema = {
-      type: Type.OBJECT,
-      properties: {
-        strengths: { type: Type.ARRAY, items: { type: Type.STRING } },
-        areasForImprovement: { type: Type.ARRAY, items: { type: Type.STRING } },
-        recommendedTopics: { type: Type.ARRAY, items: { type: Type.STRING } },
-        learningPath: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              step: { type: Type.NUMBER },
-              task: { type: Type.STRING }
-            },
-            required: ["step", "task"]
-          }
-        }
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: SchemaType.OBJECT,
+          properties: {
+            strengths: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+            areasForImprovement: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+            recommendedTopics: { type: SchemaType.ARRAY, items: { type: SchemaType.STRING } },
+            learningPath: {
+              type: SchemaType.ARRAY,
+              items: {
+                type: SchemaType.OBJECT,
+                properties: {
+                  step: { type: SchemaType.NUMBER },
+                  task: { type: SchemaType.STRING }
+                },
+                required: ["step", "task"]
+              }
+            }
+          },
+          required: ["strengths", "areasForImprovement", "recommendedTopics", "learningPath"]
+        },
       },
-      required: ["strengths", "areasForImprovement", "recommendedTopics", "learningPath"]
-    };
-
-    const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json',
-          responseSchema: responseSchema,
-        }
     });
 
-    const performanceAnalysis = JSON.parse(response.text || "{}");
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const performanceAnalysis = JSON.parse(response.text() || "{}");
 
     // Save attempt
     const newAttempt = await TestAttempt.create({

@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getTestById, evaluateAndAnalyzeTest } from '@/lib/actions/mocktest.actions';
+import { useOnboardingStore } from '@/store/onboardingStore';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
@@ -13,6 +14,7 @@ function SketchedTestRunner({ test }: { test: any }) {
   const [answers, setAnswers] = useState<Record<string, { selectedOption: string; timeSpentSeconds: number }>>({});
   const [activeQuestionTime, setActiveQuestionTime] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const setHasTakenAssessment = useOnboardingStore((state) => state.setHasTakenAssessment);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -85,6 +87,7 @@ function SketchedTestRunner({ test }: { test: any }) {
     try {
       const res = await evaluateAndAnalyzeTest({ testId: test._id, answers: answersArray });
       if (res.success) {
+        setHasTakenAssessment(true);
         toast.success("Test submitted successfully!");
         router.push(`/hub/mock-test/analysis/${res.attemptId}`);
       } else {

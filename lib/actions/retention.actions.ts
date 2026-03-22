@@ -3,11 +3,11 @@
 import { connectToDatabase } from "@/database/mongoose";
 import UserProgress from "@/database/models/user-progress.model";
 import JeeTest from "@/database/models/jee-test.model";
-import { GoogleGenAI, Type, Schema } from '@google/genai';
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
 
 
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GEMINI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
 /**
  * Interface for the selected topic input
@@ -111,36 +111,35 @@ export async function generateRetentionTest(dueTopics: string[], difficulty: str
     The questions MUST strictly cover ONLY the following topics: ${dueTopics.join(', ')}. 
     Do not hallucinate physics constants. Ensure exact syllabus accuracy.`;
 
-    const responseSchema: Schema = {
-      type: Type.ARRAY,
-      description: "List of 5 retention test questions",
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          questionText: { type: Type.STRING },
-          options: {
-            type: Type.ARRAY,
-            items: { type: Type.STRING },
-          },
-          correctAnswer: { type: Type.STRING },
-          subject: { type: Type.STRING },
-          topic: { type: Type.STRING },
-          conceptWeightage: { type: Type.NUMBER }
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: SchemaType.ARRAY,
+          description: "List of 5 retention test questions",
+          items: {
+            type: SchemaType.OBJECT,
+            properties: {
+              questionText: { type: SchemaType.STRING },
+              options: {
+                type: SchemaType.ARRAY,
+                items: { type: SchemaType.STRING },
+              },
+              correctAnswer: { type: SchemaType.STRING },
+              subject: { type: SchemaType.STRING },
+              topic: { type: SchemaType.STRING },
+              conceptWeightage: { type: SchemaType.NUMBER }
+            },
+            required: ["questionText", "options", "correctAnswer", "subject", "topic", "conceptWeightage"]
+          }
         },
-        required: ["questionText", "options", "correctAnswer", "subject", "topic", "conceptWeightage"]
-      }
-    };
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        responseSchema: responseSchema,
-      }
+      },
     });
 
-    const json = JSON.parse(response.text || "[]");
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const json = JSON.parse(response.text() || "[]");
     return { success: true, questions: json };
   } catch (error: any) {
     console.error("Error generating retention test:", error);
@@ -201,37 +200,36 @@ export async function generateTopicReview(userId: string, subject: string, topic
 
     const prompt = `You are an expert JEE tutor. Generate a 5-question multiple-choice test strictly covering the topic: ${topicName} in the subject: ${subject}. Do not include questions from outside this topic.`;
 
-    const responseSchema: Schema = {
-      type: Type.ARRAY,
-      description: "List of JEE mock test questions",
-      items: {
-        type: Type.OBJECT,
-        properties: {
-          questionText: { type: Type.STRING, description: "The full question text including any required context or formula." },
-          options: {
-            type: Type.ARRAY,
-            items: { type: Type.STRING },
-            description: "Exactly 4 options for the question."
-          },
-          correctAnswer: { type: Type.STRING, description: "The correct option text, matching exactly one of the options." },
-          subject: { type: Type.STRING, description: "The subject this question belongs to (e.g., Physics, Chemistry, Math)." },
-          topic: { type: Type.STRING, description: "The specific topic from the JEE syllabus." },
-          conceptWeightage: { type: Type.NUMBER, description: "A weightage score between 1 and 10 indicating concept importance." }
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: SchemaType.ARRAY,
+          description: "List of JEE mock test questions",
+          items: {
+            type: SchemaType.OBJECT,
+            properties: {
+              questionText: { type: SchemaType.STRING, description: "The full question text including any required context or formula." },
+              options: {
+                type: SchemaType.ARRAY,
+                items: { type: SchemaType.STRING },
+                description: "Exactly 4 options for the question."
+              },
+              correctAnswer: { type: SchemaType.STRING, description: "The correct option text, matching exactly one of the options." },
+              subject: { type: SchemaType.STRING, description: "The subject this question belongs to (e.g., Physics, Chemistry, Math)." },
+              topic: { type: SchemaType.STRING, description: "The specific topic from the JEE syllabus." },
+              conceptWeightage: { type: SchemaType.NUMBER, description: "A weightage score between 1 and 10 indicating concept importance." }
+            },
+            required: ["questionText", "options", "correctAnswer", "subject", "topic", "conceptWeightage"]
+          }
         },
-        required: ["questionText", "options", "correctAnswer", "subject", "topic", "conceptWeightage"]
-      }
-    };
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        responseSchema: responseSchema,
-      }
+      },
     });
 
-    const json = JSON.parse(response.text || "[]");
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const json = JSON.parse(response.text() || "[]");
 
     const newTest = await JeeTest.create({
       userId,

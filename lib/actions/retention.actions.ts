@@ -105,9 +105,9 @@ export async function getDueTopics(userId: string) {
  */
 export async function generateRetentionTest(dueTopics: string[], difficulty: string) {
   try {
-    const prompt = `You are a JEE tutor. Generate a 5-question multiple-choice test at a ${difficulty} difficulty. 
-    The questions MUST strictly cover only these topics: ${dueTopics.join(', ')}. 
-    Do not hallucinate constants. Ensure exact syllabus accuracy.`;
+    const prompt = `You are an expert JEE tutor. Generate exactly 5 multiple-choice questions at a ${difficulty} difficulty. 
+    The questions MUST strictly cover ONLY the following topics: ${dueTopics.join(', ')}. 
+    Do not hallucinate physics constants. Ensure exact syllabus accuracy.`;
 
     const responseSchema: Schema = {
       type: Type.ARRAY,
@@ -138,8 +138,8 @@ export async function generateRetentionTest(dueTopics: string[], difficulty: str
       }
     });
 
-    const questions = JSON.parse(response.text || "[]");
-    return { success: true, questions };
+    const json = JSON.parse(response.text || "[]");
+    return { success: true, questions: json };
   } catch (error: any) {
     console.error("Error generating retention test:", error);
     return { success: false, message: error.message };
@@ -147,54 +147,42 @@ export async function generateRetentionTest(dueTopics: string[], difficulty: str
 }
 
 /**
- * Updates the forgetting curve parameters based on test results.
+ * Updates the forgetting curve parameters based on test results (Ebbinghaus Algorithm).
  * 
- * Correct: retentionLevel++, nextReviewAt = now + (retentionLevel * 2 days)
- * Incorrect: retentionLevel = 0, nextReviewAt = now + 24 hours
+ * Strong Recall (isCorrect): retentionLevel++, nextReviewInterval = level * 2 days
+ * Memory Decay (!isCorrect): retentionLevel = 0, nextReviewInterval = 24 hours
  * 
  * @param userId - The Clerk user ID
- * @param topicScores - Results per topic
+ * @param testResults - Performance per topic
  */
-export async function updateForgettingCurve(
+export async function evaluateAndUpdateRetention(
   userId: string, 
-  topicScores: { topicName: string, isCorrect: boolean }[]
+  testResults: { topicName: string, isCorrect: boolean }[]
 ) {
   try {
     await connectToDatabase();
 
-    const updatePromises = topicScores.map(async (score) => {
-      const topic = await UserProgress.findOne({ userId, topicName: score.topicName });
-      if (!topic) return;
-
-      let newRetentionLevel = 0;
-      let nextReviewAt = new Date();
-
-      if (score.isCorrect) {
-        newRetentionLevel = (topic.retentionLevel || 0) + 1;
-        // Interval expansion logic: Level 1 -> 2 days, Level 2 -> 4 days, etc.
-        const daysToAdd = newRetentionLevel * 2;
-        nextReviewAt = new Date(Date.now() + daysToAdd * 24 * 60 * 60 * 1000);
-      } else {
-        newRetentionLevel = 0;
-        // Reset to 24 hours for immediate reinforcement
-        nextReviewAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-      }
-
-      return UserProgress.updateOne(
-        { _id: topic._id },
-        {
-          $set: {
-            retentionLevel: newRetentionLevel,
-            nextReviewAt: nextReviewAt,
-            lastReviewedAt: new Date(),
-          }
+    for (const result of testResults) {
+      const progress = await UserProgress.findOne({ userId, topicName: result.topicName });
+      
+      if (progress) {
+        if (result.isCorrect) {
+          // Strong Recall: Increment level and expand interval
+          progress.retentionLevel = (progress.retentionLevel || 0) + 1;
+          const daysToAdd = progress.retentionLevel * 2;
+          progress.nextReviewAt = new Date(Date.now() + daysToAdd * 24 * 60 * 60 * 1000);
+        } else {
+          // Memory Decay: Reset level and set tight interval
+          progress.retentionLevel = 0;
+          progress.nextReviewAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
         }
-      );
-    });
 
-    await Promise.all(updatePromises);
+        progress.lastReviewedAt = new Date();
+        await progress.save();
+      }
+    }
+
     revalidatePath("/hub");
-    
     return { success: true };
   } catch (error: any) {
     console.error("Error updating forgetting curve:", error);

@@ -11,12 +11,12 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-[#f6faff] dark:bg-[#133347] font-body text-[#001e2e] selection:bg-[#fdc003] selection:text-[#6c5000] overflow-x-hidden relative flex">
       {/* Global Paper Texture Overlay */}
       <div className="fixed inset-0 parchment-grain z-50 pointer-events-none" />
-      
-      <HandDrawnSidebar 
-        isCollapsed={isCollapsed} 
-        onToggle={() => setIsCollapsed(!isCollapsed)} 
+
+      <HandDrawnSidebar
+        isCollapsed={isCollapsed}
+        onToggle={() => setIsCollapsed(!isCollapsed)}
       />
-      
+
       {/* Main Content Pane */}
       <div className={cn(
         "relative z-10 w-full transition-all duration-300 ease-in-out",

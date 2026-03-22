@@ -35,11 +35,15 @@ const subjects = [
 ] as const;
 
 const formSchema = z.object({
-  examType: z.enum(["Mains", "Advanced"]),
+  examType: z.enum(["Mains", "Advanced"], {
+    message: "Please select an exam type.",
+  }),
   subjects: z.array(z.string()).refine((value) => value.length > 0, {
     message: "You have to select at least one subject.",
   }),
-  difficulty: z.enum(["Easy", "Medium", "Hard"]),
+  difficulty: z.enum(["Easy", "Medium", "Hard"], {
+    message: "Please select a difficulty level.",
+  }),
 });
 
 export default function MockTestSetupPage() {
@@ -142,14 +146,14 @@ export default function MockTestSetupPage() {
                           <FormControl>
                             <Checkbox
                               checked={field.value?.includes(item.id)}
-                              onCheckedChange={(checked: boolean) => {
+                              onCheckedChange={(checked) => {
                                 return checked
                                   ? field.onChange([...field.value, item.id])
                                   : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== item.id
-                                      )
-                                    );
+                                    field.value?.filter(
+                                      (value) => value !== item.id
+                                    )
+                                  );
                               }}
                             />
                           </FormControl>

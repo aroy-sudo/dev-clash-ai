@@ -4,6 +4,7 @@ import { GoogleGenAI, Type, Schema } from '@google/genai';
 import { connectToDatabase } from '@/database/mongoose';
 import JeeTest from '@/database/models/jee-test.model';
 import TestAttempt from '@/database/models/test-attempt.model';
+import UserProgress from '@/database/models/user-progress.model';
 import { auth } from '@clerk/nextjs/server';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GEMINI_API_KEY });
@@ -186,6 +187,27 @@ Provide a detailed structured analysis containing:
       overallScore,
       performanceAnalysis
     });
+
+    // Check if this was a Spaced Repetition test
+    if (test.examType === 'RETENTION_REVIEW' && test.questions.length > 0) {
+      // A 5-question test. If they got 3 or more right (12+ points), their memory is strong.
+      const isStrongRecall = overallScore >= 12; 
+      const topicName = test.questions[0].topic; // All questions are from the same topic
+      
+      const progress = await UserProgress.findOne({ userId, topicName });
+      if (progress) {
+        if (isStrongRecall) {
+          progress.retentionLevel = (progress.retentionLevel || 0) + 1;
+          const daysToAdd = progress.retentionLevel * 2;
+          progress.nextReviewAt = new Date(Date.now() + daysToAdd * 24 * 60 * 60 * 1000);
+        } else {
+          progress.retentionLevel = 0;
+          progress.nextReviewAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // Tomorrow
+        }
+        progress.lastReviewedAt = new Date();
+        await progress.save();
+      }
+    }
 
     return { success: true, attemptId: newAttempt._id.toString() };
   } catch(error: any) {

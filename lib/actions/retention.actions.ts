@@ -2,8 +2,10 @@
 
 import { connectToDatabase } from "@/database/mongoose";
 import UserProgress from "@/database/models/user-progress.model";
+import JeeTest from "@/database/models/jee-test.model";
 import { GoogleGenAI, Type, Schema } from '@google/genai';
 import { revalidatePath } from "next/cache";
+
 
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GEMINI_API_KEY });
 
@@ -186,6 +188,61 @@ export async function evaluateAndUpdateRetention(
     return { success: true };
   } catch (error: any) {
     console.error("Error updating forgetting curve:", error);
+    return { success: false, message: error.message };
+  }
+}
+
+/**
+ * Generates a targeted 5-question review for a specific topic and saves it as a JeeTest.
+ */
+export async function generateTopicReview(userId: string, subject: string, topicName: string) {
+  try {
+    await connectToDatabase();
+
+    const prompt = `You are an expert JEE tutor. Generate a 5-question multiple-choice test strictly covering the topic: ${topicName} in the subject: ${subject}. Do not include questions from outside this topic.`;
+
+    const responseSchema: Schema = {
+      type: Type.ARRAY,
+      description: "List of JEE mock test questions",
+      items: {
+        type: Type.OBJECT,
+        properties: {
+          questionText: { type: Type.STRING, description: "The full question text including any required context or formula." },
+          options: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING },
+            description: "Exactly 4 options for the question."
+          },
+          correctAnswer: { type: Type.STRING, description: "The correct option text, matching exactly one of the options." },
+          subject: { type: Type.STRING, description: "The subject this question belongs to (e.g., Physics, Chemistry, Math)." },
+          topic: { type: Type.STRING, description: "The specific topic from the JEE syllabus." },
+          conceptWeightage: { type: Type.NUMBER, description: "A weightage score between 1 and 10 indicating concept importance." }
+        },
+        required: ["questionText", "options", "correctAnswer", "subject", "topic", "conceptWeightage"]
+      }
+    };
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+        responseSchema: responseSchema,
+      }
+    });
+
+    const json = JSON.parse(response.text || "[]");
+
+    const newTest = await JeeTest.create({
+      userId,
+      examType: 'RETENTION_REVIEW',
+      difficulty: 'Medium',
+      questions: json
+    });
+
+    return { success: true, testId: newTest._id.toString() };
+  } catch (error: any) {
+    console.error("Error generating topic review:", error);
     return { success: false, message: error.message };
   }
 }

@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { BookOpen, Map, Target, HelpCircle, Brain, LayoutDashboard, PanelLeftClose, PanelLeftOpen, LogOut } from 'lucide-react';
+import { BookOpen, Map, Target, HelpCircle, Brain, LayoutDashboard, PanelLeftClose, PanelLeftOpen, LogOut, RotateCcw } from 'lucide-react';
 
 const navItems = [
   { href: '/hub', label: 'The Hub', icon: LayoutDashboard },
   { href: '/hub/roadmap', label: 'Roadmap', icon: Map },
+  { href: '/hub/revision', label: 'Revision Hub', icon: RotateCcw },
   { href: '/hub/mock-test', label: 'Mock Test', icon: Target },
   { href: '/hub/choose-difficulty', label: 'Difficulty', icon: Target },
   { href: '/hub/doubt-solver', label: 'Doubt Solver', icon: HelpCircle },

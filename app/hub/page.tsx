@@ -1,28 +1,27 @@
-'use client';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { connectToDatabase } from '@/database/mongoose';
+import JeeTest from '@/database/models/jee-test.model';
+import { HubDashboard } from '@/components/layout/HubDashboard';
+import RetentionWidget from '@/components/RetentionWidget';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
-import { useOnboardingStore } from '@/store/onboardingStore';
+export default async function HubPage() {
+  const { userId } = await auth();
 
-export default function Page() {
-  const router = useRouter();
-  const hasTakenAssessment = useOnboardingStore(state => state.hasTakenAssessment);
-  const [isMounted, setIsMounted] = React.useState(false);
+  if (!userId) {
+    redirect('/');
+  }
 
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  await connectToDatabase();
+  const existingTest = await JeeTest.findOne({ userId });
+
+  if (!existingTest) {
+    redirect('/hub/mock-test/setup');
+  }
 
   return (
-    <div className="w-full">
-      {/* Global Hero Alert Layer */}
-      <section className="pt-28 px-6 -mb-20 relative z-30">
-        <RetentionWidget userId={userId} />
-      </section>
-
-      {/* Main Dashboard Content */}
-      <HubDashboard />
-    </div>
+    <HubDashboard>
+      <RetentionWidget userId={userId} />
+    </HubDashboard>
   );
 }

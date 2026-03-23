@@ -112,7 +112,7 @@ export async function generateRetentionTest(dueTopics: string[], difficulty: str
     Do not hallucinate physics constants. Ensure exact syllabus accuracy.`;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-flash-latest",
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -201,7 +201,7 @@ export async function generateTopicReview(userId: string, subject: string, topic
     const prompt = `You are an expert JEE tutor. Generate a 5-question multiple-choice test strictly covering the topic: ${topicName} in the subject: ${subject}. Do not include questions from outside this topic.`;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-flash-latest",
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: {

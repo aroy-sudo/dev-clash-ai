@@ -44,7 +44,7 @@ export function HubDashboard({ children }: { children?: React.ReactNode }) {
               </div>
             </div>
             <button 
-              onClick={() => router.push('/hub/mock-test/setup')}
+              onClick={() => router.push('/hub/mock-test?auto=true')}
               className="w-full md:w-auto whitespace-nowrap px-10 py-4 bg-white text-[#133347] font-headline font-black text-xl border-4 border-[#133347] rounded-xl shadow-[6px_6px_0px_0px_rgba(19,51,71,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all group flex items-center justify-center gap-2"
             >
               Take Test
@@ -159,7 +159,7 @@ export function HubDashboard({ children }: { children?: React.ReactNode }) {
               Drafting <span className="material-symbols-outlined" data-icon="architecture">architecture</span> Tools
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div onClick={() => router.push('/hub/mock-test/setup')} className="group relative flex flex-col items-start p-8 bg-surface-container-lowest text-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden cursor-pointer">
+              <div onClick={() => router.push('/hub/mock-test')} className="group relative flex flex-col items-start p-8 bg-surface-container-lowest text-primary rounded-xl border-4 border-black transform transition-transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 overflow-hidden cursor-pointer">
                 <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-4 -translate-y-4">
                   <span className="material-symbols-outlined text-8xl" data-icon="quiz">quiz</span>
                 </div>

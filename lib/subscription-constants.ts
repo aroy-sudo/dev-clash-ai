@@ -14,10 +14,27 @@ export interface PlanLimits {
 }
 
 export const PLAN_LIMITS: Record<PlanType, PlanLimits> = {
+    [PLANS.FREE]: {
+        maxBooks: 2,
+        maxSessionsPerMonth: 5,
+        maxDurationPerSession: 15,
+        hasSessionHistory: false,
+    },
+    [PLANS.STANDARD]: {
+        maxBooks: 10,
+        maxSessionsPerMonth: 20,
+        maxDurationPerSession: 60,
+        hasSessionHistory: true,
+    },
     [PLANS.PRO]: {
         maxBooks: Infinity,
         maxSessionsPerMonth: Infinity,
         maxDurationPerSession: Infinity,
         hasSessionHistory: true,
     },
+};
+
+export const getCurrentBillingPeriodStart = (): Date => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
 };

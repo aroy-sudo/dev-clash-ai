@@ -11,6 +11,7 @@ import { ASSISTANT_ID, DEFAULT_VOICE, VOICE_SETTINGS } from '@/lib/constants';
 import { getVoice } from '@/lib/utils';
 import { IBook, Messages } from '@/types';
 import { startVoiceSession, endVoiceSession } from '@/lib/actions/session.actions';
+import { searchBookSegments } from '@/lib/actions/book.actions';
 
 export function useLatestRef<T>(value: T) {
     const ref = useRef(value);
@@ -203,11 +204,40 @@ export function useVapi(book: IBook) {
 
                 startTimeRef.current = null;
             },
+
+            'tool-call': async (payload: any) => {
+                const results = await Promise.all(payload.toolCalls.map(async (toolCall: any) => {
+                    if (toolCall.function.name === 'searchBook') {
+                        const { query, bookId } = toolCall.function.arguments;
+                        const searchResult = await searchBookSegments(query, { bookId });
+                        if (searchResult.success && searchResult.data) {
+                            const context = (searchResult.data as any[]).map(s => s.content).join('\n\n');
+                            return {
+                                toolCallId: toolCall.id,
+                                result: context || "No relevant information found in the book."
+                            };
+                        }
+                        return {
+                            toolCallId: toolCall.id,
+                            result: "Error searching the book."
+                        };
+                    }
+                    return {
+                        toolCallId: toolCall.id,
+                        result: "Unknown function"
+                    };
+                }));
+
+                (getVapi() as any).send({
+                    type: 'tool-call-result',
+                    toolCallResults: results,
+                });
+            },
         };
 
         // Register all handlers
         Object.entries(handlers).forEach(([event, handler]) => {
-            getVapi().on(event as keyof typeof handlers, handler as () => void);
+            (getVapi() as any).on(event as any, handler as () => void);
         });
 
         return () => {
@@ -221,7 +251,7 @@ export function useVapi(book: IBook) {
             }
             // Cleanup handlers
             Object.entries(handlers).forEach(([event, handler]) => {
-                getVapi().off(event as keyof typeof handlers, handler as () => void);
+                (getVapi() as any).off(event as any, handler as () => void);
             });
             if (timerRef.current) clearInterval(timerRef.current);
         };
@@ -261,10 +291,49 @@ export function useVapi(book: IBook) {
                     author: book.author,
                     bookId: book._id,
                 },
+                transcriber: {
+                    provider: "deepgram",
+                    model: "nova-3",
+                    language: "hi" // Hindi support
+                },
+                model: {
+                    provider: 'google',
+                    model: 'gemini-2.0-flash', 
+                    tools: [
+                        {
+                            type: "function",
+                            async: true,
+                            messages: [
+                                {
+                                    type: "request-start",
+                                    content: "I am checking the book for that information...",
+                                }
+                            ],
+                            function: {
+                                name: "searchBook",
+                                description: "Search the database for book content and context.",
+                                parameters: {
+                                    type: "object",
+                                    properties: {
+                                        bookId: { type: "string" },
+                                        query: { type: "string" }
+                                    },
+                                    required: ["bookId", "query"]
+                                }
+                            }
+                        }
+                    ],
+                    messages: [
+                        {
+                            role: 'system',
+                            content: `Important Instruction: The user will speak in Hindi, English, or Hinglish. Reply in the exact same language mix they use. Maintain an encouraging, expert tutor persona.\n\nYou are Vector, an expert tutor for ${book.title} by ${book.author}. Base your answers ONLY on the searchBook tool to fetch the exact text from the book.`
+                        }
+                    ]
+                },
                 voice: {
                     provider: '11labs' as const,
-                    voiceId: getVoice(voice).id,
-                    model: 'eleven_turbo_v2_5' as const,
+                    voiceId: 'pqHfZKP75CvOlQylNhV4', 
+                    model: 'eleven_multilingual_v2' as const,
                     stability: VOICE_SETTINGS.stability,
                     similarityBoost: VOICE_SETTINGS.similarityBoost,
                     style: VOICE_SETTINGS.style,

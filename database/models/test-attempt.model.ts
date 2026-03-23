@@ -2,7 +2,7 @@ import { Schema, model, models, Document } from 'mongoose';
 
 export interface IAnswer {
   questionId: string;
-  selectedOption: string;
+  selectedOption?: string;
   timeSpentSeconds: number;
 }
 
@@ -30,7 +30,7 @@ export interface ITestAttempt extends Document {
 
 const AnswerSchema = new Schema<IAnswer>({
   questionId: { type: String, required: true },
-  selectedOption: { type: String, required: true },
+  selectedOption: { type: String, required: false },
   timeSpentSeconds: { type: Number, required: true },
 });
 

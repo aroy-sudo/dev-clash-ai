@@ -11,7 +11,7 @@ export interface IQuestion {
 
 export interface IJeeTest extends Document {
   userId: string;
-  examType: 'Mains' | 'Advanced';
+  examType: 'Mains' | 'Advanced' | 'RETENTION_REVIEW';
   difficulty: string;
   questions: IQuestion[];
   createdAt: Date;
@@ -29,7 +29,7 @@ const QuestionSchema = new Schema<IQuestion>({
 
 const JeeTestSchema = new Schema<IJeeTest>({
   userId: { type: String, required: true },
-  examType: { type: String, required: true, enum: ['Mains', 'Advanced'] },
+  examType: { type: String, required: true, enum: ['Mains', 'Advanced', 'RETENTION_REVIEW'] },
   difficulty: { type: String, required: true },
   questions: { type: [QuestionSchema], required: true },
 }, { timestamps: true });

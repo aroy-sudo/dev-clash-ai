@@ -16,7 +16,7 @@ export default async function HubPage() {
   const existingTest = await JeeTest.findOne({ userId });
 
   if (!existingTest) {
-    redirect('/hub/mock-test/setup');
+    redirect('/onboarding/target');
   }
 
   return (

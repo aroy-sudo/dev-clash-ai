@@ -29,7 +29,7 @@ export async function generateMockTest(params: {
     const { examType, difficulty, subjects, focusOnMistakes } = params;
     
     // Limit to 15 questions to ensure prompt processing is reasonably fast for demo
-    const noOfQuestions = examType === 'Mains' ? 15 : 10; 
+    const noOfQuestions = examType === 'Mains' ? 10 : 5; 
 
     let mistakeContext = "";
     if (focusOnMistakes && userId !== 'anonymous') {
@@ -50,7 +50,7 @@ ${mistakeContext}
 Please generate ${noOfQuestions} distinct questions reflecting the mix of these subjects. Ensure that the questions match the exact difficulty level specified. Provide exact details.`;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-flash-latest",
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: {
@@ -78,10 +78,28 @@ Please generate ${noOfQuestions} distinct questions reflecting the mix of these 
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const jsonText = response.text() || "[]";
-    const questions = JSON.parse(jsonText);
+    
+    let jsonText = "";
+    try {
+      jsonText = response.text() || "[]";
+    } catch (e) {
+      console.error("Gemini Response Text Error (Safety?):", e);
+      throw new Error("AI failed to generate safe content for the test.");
+    }
+
+    // Clean up potential markdown blocks
+    const cleanedJson = jsonText.replace(/```json|```/g, "").trim();
+    
+    let questions;
+    try {
+      questions = JSON.parse(cleanedJson);
+    } catch (e) {
+      console.error("JSON Parse Error on AI response:", cleanedJson);
+      throw new Error("Failed to parse AI generated questions.");
+    }
 
     if (!Array.isArray(questions) || questions.length === 0) {
+      console.error("Invalid Question Format:", questions);
       throw new Error("Failed to generate correct questions format from AI.");
     }
 
@@ -159,7 +177,7 @@ Provide a detailed structured analysis containing:
 `;
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-flash-latest",
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: {

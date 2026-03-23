@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/store/onboardingStore';
+import { ROADMAP_SYLLABUS } from '@/lib/constants';
 
 export default function Page() {
   const router = useRouter();
@@ -55,7 +56,7 @@ export default function Page() {
           </p>
 
           <button 
-            onClick={() => router.push('/hub/mock-test/setup')}
+            onClick={() => router.push('/hub/mock-test?auto=true')}
             className="group relative flex items-center justify-center gap-4 px-12 py-6 bg-primary border-4 border-on-surface text-on-primary rounded-2xl transform hover:-translate-y-2 hover:translate-x-1 active:translate-y-1 transition-all shadow-[8px_8px_0px_0px_rgba(0,30,46,1)] hover:shadow-none overflow-hidden"
           >
             <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(255,255,255,0.1)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.1)_50%,rgba(255,255,255,0.1)_75%,transparent_75%,transparent)] bg-[length:20px_20px]"></div>
@@ -98,65 +99,59 @@ export default function Page() {
           
           {/* Roadmap Nodes */}
           <div className="space-y-[150px] relative z-10 flex flex-col items-center pt-10">
-            {/* Node 1: Expandable Kinematics */}
-            <div className="group relative flex flex-col items-center ml-[100px] w-full">
-              <div 
-                onClick={() => setExpandedNode(expandedNode === 'kinematics' ? null : 'kinematics')}
-                className="node-float w-28 h-28 bg-primary-container border-4 border-on-surface rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,30,46,1)] cursor-pointer hover:bg-primary transition-colors"
-                style={{ zIndex: 20 }}
-              >
-                <span className="material-symbols-outlined text-6xl text-on-surface" data-icon="speed">speed</span>
-              </div>
-              <div className="mt-4 bg-surface-container-highest px-6 py-2 border-4 border-on-surface -rotate-2 relative z-20">
-                <span className="font-headline font-black text-on-surface text-xl uppercase">Kinematics</span>
-              </div>
-
-              {/* Node Expansion View */}
-              {expandedNode === 'kinematics' && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  className="w-full max-w-sm mt-8 relative z-10 flex flex-col items-center gap-6"
-                >
-                  <div className="absolute top-0 bottom-0 left-1/2 w-1.5 bg-on-surface border-x-2 border-on-surface border-dashed -translate-x-1/2 z-0"></div>
-                  
-                  {/* Sub-module 1 */}
-                  <div className="w-64 bg-[#fff9c4] p-4 border-2 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,30,46,1)] rotate-[-1deg] relative z-10 cursor-pointer hover:-translate-y-1 transition-transform">
-                    <span className="font-headline font-bold text-lg block border-b-2 border-on-surface/20 pb-2 mb-2">1. Displacement</span>
-                    <span className="text-sm font-body font-medium italic text-on-surface-variant flex items-center gap-2">
-                       <span className="material-symbols-outlined text-sm" data-icon="draw">draw</span> Quick Review
-                    </span>
+            {/* Dynamic Roadmap Nodes from Syllabus */}
+            {ROADMAP_SYLLABUS.map((node, index) => {
+              const isLocked = node.status === 'locked';
+              const isExpanded = expandedNode === node.id;
+              
+              return (
+                <div key={node.id} className={`group relative flex flex-col items-center ${index % 2 === 0 ? 'ml-[100px]' : 'mr-[150px]'} transition-all duration-500 ${expandedNode && !isExpanded ? 'opacity-40 translate-y-24' : ''}`}>
+                  <div 
+                    onClick={() => !isLocked && setExpandedNode(isExpanded ? null : node.id)}
+                    className={`node-float w-24 h-24 md:w-28 md:h-28 border-4 border-on-surface rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,30,46,1)] ${isLocked ? 'bg-surface-container-low border-outline text-outline opacity-80 cursor-not-allowed shadow-[6px_6px_0px_0px_rgba(108,122,118,1)]' : 'bg-primary-container cursor-pointer hover:bg-primary transition-colors text-on-surface'}`}
+                    style={{ zIndex: 20 }}
+                  >
+                    <span className="material-symbols-outlined text-5xl md:text-6xl" data-icon={node.icon}>{node.icon}</span>
+                    {isLocked && (
+                      <div className="absolute -left-6 top-0 bg-surface p-1 rounded-full border-2 border-outline">
+                        <span className="material-symbols-outlined text-outline" data-icon="lock">lock</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className={`mt-4 px-6 py-2 border-4 ${isLocked ? 'bg-surface border-dashed border-outline rotate-1 text-outline' : 'bg-surface-container-highest border-on-surface -rotate-2 text-on-surface'} relative z-20`}>
+                    <span className="font-headline font-black text-lg md:text-xl uppercase tracking-widest">{node.title}</span>
                   </div>
 
-                  {/* Sub-module 2 */}
-                  <div className="w-64 bg-[#fff9c4] p-4 border-2 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,30,46,1)] rotate-[1.5deg] relative z-10 cursor-pointer hover:-translate-y-1 transition-transform">
-                    <span className="font-headline font-bold text-lg block border-b-2 border-on-surface/20 pb-2 mb-2">2. Velocity-Time</span>
-                    <span className="text-sm font-body font-medium italic text-on-surface-variant flex items-center gap-2">
-                       <span className="material-symbols-outlined text-sm" data-icon="draw">draw</span> 3 Exercises
-                    </span>
-                  </div>
+                  {/* Node Expansion View */}
+                  {isExpanded && !isLocked && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="w-full max-w-sm mt-8 relative z-10 flex flex-col items-center gap-6"
+                    >
+                      <div className="absolute top-0 bottom-0 left-1/2 w-1.5 bg-on-surface border-x-2 border-on-surface border-dashed -translate-x-1/2 z-0"></div>
+                      
+                      {node.submodules.map((sub, sIdx) => (
+                        <div key={sub.id} className={`w-64 bg-[#fff9c4] p-4 border-2 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,30,46,1)] ${sIdx % 2 === 0 ? 'rotate-[-1deg]' : 'rotate-[1.5deg]'} relative z-10 cursor-pointer hover:-translate-y-1 transition-transform`} onClick={() => {
+                          // TODO: Connect vector embeddings for specific NCERT sub-topic context chunks here
+                        }}>
+                          <span className="font-headline font-bold text-lg block border-b-2 border-on-surface/20 pb-2 mb-2">{sIdx + 1}. {sub.title}</span>
+                          <span className="text-sm font-body font-medium italic text-on-surface-variant flex items-center gap-2">
+                             <span className="material-symbols-outlined text-sm" data-icon={sub.icon}>{sub.icon}</span> {sub.type}
+                          </span>
+                        </div>
+                      ))}
 
-                  {/* Top-Level Boss Fight */}
-                  <div className="mt-4 node-float w-32 h-32 bg-tertiary-container border-4 border-tertiary rounded-xl flex items-center justify-center shadow-[10px_10px_0px_0px_rgba(172,51,42,1)] cursor-pointer rotate-3 z-10 hover:bg-tertiary transition-colors" onClick={() => router.push('/hub/mock-test/setup')}>
-                    <div className="absolute -top-3 -right-3 bg-secondary text-on-secondary px-2 py-1 text-xs font-black uppercase rotate-6 border-2 border-black">Module Test</div>
-                    <span className="material-symbols-outlined text-6xl text-on-tertiary-container" data-icon="skull">skull</span>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-
-            {/* Node 2: Dynamics (Locked example) */}
-            <div className={`group relative flex flex-col items-center mr-[150px] transition-all duration-500 ${expandedNode === 'kinematics' ? 'opacity-40 translate-y-24' : ''}`}>
-              <div className="node-float w-24 h-24 bg-surface-container-low border-4 border-outline rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(108,122,118,1)] opacity-80 cursor-not-allowed">
-                <span className="material-symbols-outlined text-5xl text-outline" data-icon="settings_input_component">settings_input_component</span>
-                <div className="absolute -left-6 top-0 bg-surface p-1 rounded-full border-2 border-outline">
-                  <span className="material-symbols-outlined text-outline" data-icon="lock">lock</span>
+                      {/* Top-Level Boss Fight */}
+                      <div className="mt-4 node-float w-32 h-32 bg-tertiary-container border-4 border-tertiary rounded-xl flex items-center justify-center shadow-[10px_10px_0px_0px_rgba(172,51,42,1)] cursor-pointer rotate-3 z-10 hover:bg-tertiary transition-colors" onClick={() => router.push('/hub/mock-test?auto=true')}>
+                        <div className="absolute -top-3 -right-3 bg-secondary text-on-secondary px-2 py-1 text-xs font-black uppercase rotate-6 border-2 border-black">Module Test</div>
+                        <span className="material-symbols-outlined text-6xl text-on-tertiary-container" data-icon="skull">skull</span>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
-              </div>
-              <div className="mt-4 bg-surface px-4 py-1 border-2 border-dashed border-outline rotate-1">
-                <span className="font-headline font-black text-outline uppercase tracking-widest text-sm">Dynamics</span>
-              </div>
-            </div>
+              );
+            })}
             
             {/* Dynamically Added Custom Nodes */}
             {customNodes.map((nodeName, idx) => (
@@ -188,7 +183,7 @@ export default function Page() {
                       </span>
                     </div>
 
-                    <div className="mt-4 node-float w-32 h-32 bg-tertiary-container border-4 border-tertiary rounded-xl flex items-center justify-center shadow-[10px_10px_0px_0px_rgba(172,51,42,1)] cursor-pointer rotate-3 z-10 hover:bg-tertiary transition-colors" onClick={() => router.push('/hub/mock-test/setup')}>
+                    <div className="mt-4 node-float w-32 h-32 bg-tertiary-container border-4 border-tertiary rounded-xl flex items-center justify-center shadow-[10px_10px_0px_0px_rgba(172,51,42,1)] cursor-pointer rotate-3 z-10 hover:bg-tertiary transition-colors" onClick={() => router.push('/hub/mock-test?auto=true')}>
                       <div className="absolute -top-3 -right-3 bg-secondary text-on-secondary px-2 py-1 text-xs font-black uppercase rotate-6 border-2 border-black">Module Test</div>
                       <span className="material-symbols-outlined text-6xl text-on-tertiary-container" data-icon="skull">skull</span>
                     </div>

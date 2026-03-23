@@ -12,7 +12,6 @@ const navItems = [
   { href: '/hub/roadmap', label: 'Roadmap', icon: Map },
   { href: '/hub/revision', label: 'Revision Hub', icon: RotateCcw },
   { href: '/hub/mock-test', label: 'Mock Test', icon: Target },
-  { href: '/hub/choose-difficulty', label: 'Difficulty', icon: Target },
   { href: '/hub/doubt-solver', label: 'Doubt Solver', icon: HelpCircle },
   { href: '/hub/ai-assessment', label: 'AI Assessment', icon: Brain },
   // Phase 4: Legacy / Current Project

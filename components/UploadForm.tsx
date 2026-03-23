@@ -35,6 +35,8 @@ const UploadForm = () => {
         defaultValues: {
             title: '',
             author: '',
+            subject: 'Physics',
+            grade: '11th',
             persona: '',
             pdfFile: undefined,
             coverImage: undefined,
@@ -102,6 +104,8 @@ const UploadForm = () => {
                 clerkId: userId,
                 title: data.title,
                 author: data.author,
+                subject: data.subject,
+                grade: data.grade,
                 persona: data.persona,
                 fileURL: uploadedPdfBlob.url,
                 fileBlobKey: uploadedPdfBlob.pathname,
@@ -124,7 +128,7 @@ const UploadForm = () => {
             const CHUNK_SIZE = 100;
             for (let i = 0; i < parsedPDF.content.length; i += CHUNK_SIZE) {
                 const chunk = parsedPDF.content.slice(i, i + CHUNK_SIZE);
-                const segmentsRes = await saveBookSegments(book.data._id, userId, chunk, parsedPDF.content.length);
+                const segmentsRes = await saveBookSegments(book.data._id, userId, data.subject, data.grade, chunk, parsedPDF.content.length);
 
                 if(!segmentsRes.success) {
                     toast.error("Failed to save book segments");
@@ -210,6 +214,52 @@ const UploadForm = () => {
                                             {...field}
                                             disabled={isSubmitting}
                                         />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* Subject Selector */}
+                        <FormField
+                            control={form.control}
+                            name="subject"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="form-label">Subject</FormLabel>
+                                    <FormControl>
+                                        <select 
+                                            {...field} 
+                                            className="w-full bg-surface px-4 py-3 border-4 border-on-surface font-headline font-bold text-on-surface focus:outline-none focus:ring-4 focus:ring-secondary/50 transition-all rounded-lg appearance-none cursor-pointer hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,30,46,1)] hover:shadow-none"
+                                            disabled={isSubmitting}
+                                        >
+                                            <option value="Physics">Physics</option>
+                                            <option value="Chemistry">Chemistry</option>
+                                            <option value="Maths">Maths</option>
+                                            <option value="Biology">Biology</option>
+                                        </select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* Grade Selector */}
+                        <FormField
+                            control={form.control}
+                            name="grade"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="form-label">Grade</FormLabel>
+                                    <FormControl>
+                                        <select 
+                                            {...field} 
+                                            className="w-full bg-surface px-4 py-3 border-4 border-on-surface font-headline font-bold text-on-surface focus:outline-none focus:ring-4 focus:ring-secondary/50 transition-all rounded-lg appearance-none cursor-pointer hover:-translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,30,46,1)] hover:shadow-none"
+                                            disabled={isSubmitting}
+                                        >
+                                            <option value="11th">11th</option>
+                                            <option value="12th">12th</option>
+                                        </select>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

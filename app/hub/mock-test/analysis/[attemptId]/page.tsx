@@ -250,7 +250,7 @@ export default async function AnalysisDashboardPage({ params }: { params: Promis
                 <RotateCcw className="w-4 h-4" /> Review Questions
               </button>
             </Link>
-            <Link href="/hub/mock-test/setup">
+            <Link href="/hub">
               <button className="px-8 py-4 bg-secondary-container hover:bg-secondary-container/90 text-on-secondary-container font-black uppercase text-xs tracking-widest rounded-2xl shadow-[4px_4px_0px_0px_#785900] active:translate-y-1 active:shadow-none transition-all flex items-center gap-2">
                 Next Test <ArrowRight className="w-4 h-4" />
               </button>

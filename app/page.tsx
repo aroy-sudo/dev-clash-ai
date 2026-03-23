@@ -6,7 +6,7 @@ import JeeTest from '@/database/models/jee-test.model';
 export default async function RootPage() {
   const { userId } = await auth();
 
-  let targetDashboard = '/hub/mock-test/setup';
+  let targetDashboard = '/onboarding/target';
   if (userId) {
     try {
       await connectToDatabase();

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { getTestById, evaluateAndAnalyzeTest } from '@/lib/actions/mocktest.actions';
+import { getTestById, evaluateAndAnalyzeTest, generateMockTest } from '@/lib/actions/mocktest.actions';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
@@ -251,17 +251,46 @@ function TestLoader() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!testId) {
-      router.push('/hub/mock-test/setup');
-      return;
-    }
     const fetchTest = async () => {
-      const res = await getTestById(testId);
+      let currentId = testId;
+      
+      // Auto-generate test if we load directly into this page without an ID
+      if (!currentId) {
+        if (searchParams.get('auto') !== 'true') {
+          router.replace('/hub/mock-test/setup');
+          return;
+        }
+
+        try {
+          const genRes = await generateMockTest({
+            examType: 'Mains',
+            subjects: ['Physics', 'Chemistry', 'Math'],
+            difficulty: 'Medium', // Implicit adaptive tracking handled by backend
+            focusOnMistakes: true
+          });
+          
+          if (genRes.success && genRes.testId) {
+            currentId = genRes.testId;
+            // Update URL silently 
+            window.history.replaceState(null, '', `/hub/mock-test?id=${currentId}`);
+          } else {
+            toast.error(genRes.message || "Failed to auto-generate test.");
+            router.push('/hub');
+            return;
+          }
+        } catch (e: any) {
+          toast.error(e.message || "Error auto-generating test");
+          router.push('/hub');
+          return;
+        }
+      }
+
+      const res = await getTestById(currentId as string);
       if (res.success) {
         setTest(res.test);
       } else {
         toast.error("Test not found");
-        router.push('/hub/mock-test/setup');
+        router.push('/hub');
       }
       setLoading(false);
     };

@@ -168,3 +168,39 @@ export const CLERK_AUTH_APPEARANCE_OVERRIDE = {
 };
 
 
+export const ROADMAP_SYLLABUS = [
+    {
+      id: 'kinematics',
+      title: 'Kinematics',
+      icon: 'speed',
+      status: 'unlocked',
+      submodules: [
+         { id: 'k1', title: 'Distance & Displacement', type: 'Review', icon: 'draw' },
+         { id: 'k2', title: 'Velocity-Time Graphs', type: 'Exercise', icon: 'draw' },
+         { id: 'k3', title: 'Projectile Motion', type: 'Theory', icon: 'menu_book' },
+         { id: 'k4', title: 'Relative Velocity', type: 'Exercise', icon: 'draw' },
+      ]
+    },
+    {
+      id: 'dynamics',
+      title: 'Dynamics',
+      icon: 'settings_input_component',
+      status: 'locked',
+      submodules: [
+         { id: 'd1', title: 'Newton\'s Laws', type: 'Theory', icon: 'menu_book' },
+         { id: 'd2', title: 'Friction', type: 'Exercise', icon: 'draw' },
+         { id: 'd3', title: 'Circular Motion', type: 'Review', icon: 'draw' },
+      ]
+    },
+    {
+      id: 'work_energy',
+      title: 'Work & Energy',
+      icon: 'bolt',
+      status: 'locked',
+      submodules: [
+         { id: 'w1', title: 'Work Done', type: 'Theory', icon: 'menu_book' },
+         { id: 'w2', title: 'Conservation of Energy', type: 'Exercise', icon: 'draw' },
+         { id: 'w3', title: 'Collisions', type: 'Exercise', icon: 'draw' },
+      ]
+    }
+  ];

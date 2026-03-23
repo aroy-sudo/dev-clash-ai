@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { 
@@ -42,10 +43,28 @@ const curveData = [
   { day: 5, level0: 20, level2: 45, level4: 85 },
 ];
 
+const mockFlashcards = [
+  { id: 1, subject: "Physics", topic: "Kinematics", front: "What is Newton's Second Law of Motion?", back: "The rate of change of momentum of a body is directly proportional to the applied force. (F = ma)" },
+  { id: 2, subject: "Physics", topic: "Work & Energy", front: "Define Work-Energy Theorem", back: "The work done by the net force on a particle is equal to the change in the kinetic energy of the particle." },
+  { id: 3, subject: "Physics", topic: "Gravitation", front: "What is the formula for escape velocity?", back: "v_e = √(2GM/R)" }
+];
+
 export default function RevisionHubPage() {
   const router = useRouter();
   const { userId } = useAuth();
   const [loadingTopic, setLoadingTopic] = useState<string | null>(null);
+
+  // Flashcards state
+  const [currentCardIdx, setCurrentCardIdx] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleRate = (rating: 'hard' | 'good' | 'easy') => {
+    // In the future, send this to the spaced repetition backend
+    setIsFlipped(false);
+    setTimeout(() => {
+      setCurrentCardIdx((prev) => (prev + 1) % mockFlashcards.length);
+    }, 150);
+  };
 
   // Utility to determine if a topic is overdue
   const isOverdue = (nextReviewAt: string) => new Date(nextReviewAt) < new Date();
@@ -133,6 +152,94 @@ export default function RevisionHubPage() {
           </ResponsiveContainer>
         </CardContent>
       </Card>
+
+
+      {/* AI Daily Flashcards */}
+      <div className="space-y-8 bg-surface-container-low p-8 rounded-2xl border-4 border-dashed border-primary">
+        <div className="flex justify-between items-end">
+          <h2 className="text-4xl font-black uppercase tracking-tighter flex items-center gap-4 text-primary">
+            <span className="material-symbols-outlined text-4xl" data-icon="style">style</span>
+            Daily AI Flashcards
+          </h2>
+          <span className="font-bold text-outline italic">
+            {currentCardIdx + 1} / {mockFlashcards.length} Cards Remaining
+          </span>
+        </div>
+        
+        <div className="flex flex-col items-center justify-center py-8">
+          {/* Flip Container */}
+          <div className="w-full max-w-2xl h-[350px] cursor-pointer" style={{ perspective: "1200px" }} onClick={() => setIsFlipped(!isFlipped)}>
+            <motion.div
+              className="w-full h-full relative"
+              style={{ transformStyle: "preserve-3d" }}
+              initial={false}
+              animate={{ rotateY: isFlipped ? 180 : 0 }}
+              transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+            >
+              {/* Card Front */}
+              <div 
+                className="absolute inset-0 bg-white border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col p-8 text-center bg-[url('https://www.transparenttextures.com/patterns/always-grey.png')]"
+                style={{ backfaceVisibility: "hidden" }}
+              >
+                <div className="flex justify-between w-full mb-8">
+                   <div className="bg-secondary/20 text-secondary border-2 border-secondary font-black px-4 py-1 rounded-full uppercase text-sm rotate-[-2deg]">
+                     {mockFlashcards[currentCardIdx].subject}
+                   </div>
+                   <div className="bg-primary-container text-on-primary-container border-2 border-primary font-black px-4 py-1 rounded-full uppercase text-sm rotate-[2deg]">
+                     {mockFlashcards[currentCardIdx].topic}
+                   </div>
+                </div>
+                <div className="flex-1 flex items-center justify-center">
+                   <h3 className="font-headline font-black text-3xl md:text-4xl leading-tight text-on-surface">
+                     {mockFlashcards[currentCardIdx].front}
+                   </h3>
+                </div>
+                <div className="text-outline font-bold italic mt-8 animate-pulse">
+                  (Click card to reveal answer)
+                </div>
+              </div>
+              
+              {/* Card Back */}
+              <div 
+                className="absolute inset-0 bg-[#fff9c4] border-8 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-3xl flex flex-col items-center justify-center p-12 text-center bg-[url('https://www.transparenttextures.com/patterns/always-grey.png')]"
+                style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+              >
+                <div className="absolute top-6 left-6 opacity-20">
+                   <span className="material-symbols-outlined text-6xl" data-icon="lightbulb">lightbulb</span>
+                </div>
+                <p className="font-headline font-bold text-2xl md:text-3xl text-on-surface leading-relaxed">
+                  {mockFlashcards[currentCardIdx].back}
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Rating Buttons */}
+          <div className="h-20 mt-8 flex justify-center items-center">
+            {isFlipped ? (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                className="flex items-center gap-4 sm:gap-6"
+              >
+                <button onClick={(e) => { e.stopPropagation(); handleRate('hard'); }} className="px-6 py-4 bg-error text-white font-black uppercase text-xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all rotate-[-3deg] active:bg-error/80">
+                   Hard 😰
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); handleRate('good'); }} className="px-6 py-4 bg-[#fdc003] text-black font-black uppercase text-xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all active:bg-[#fdc003]/80">
+                   Good 🤔
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); handleRate('easy'); }} className="px-6 py-4 bg-primary text-white font-black uppercase text-xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all rotate-[3deg] active:bg-primary/80">
+                   Easy 😎
+                </button>
+              </motion.div>
+            ) : (
+               <div className="text-secondary font-bold italic tracking-widest uppercase opacity-40 animate-pulse">
+                  Think before you flip
+               </div>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Mastery Grid Section */}
       <div className="space-y-8">

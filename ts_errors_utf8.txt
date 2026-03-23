@@ -1,23 +1,5 @@
-﻿app/(root)/mocktest/[testId]/page.tsx(4,24): error TS2307: Cannot find module '@/components/mocktest/TestRunner' or its corresponding type declarations.
-app/(root)/mocktest/setup/page.tsx(19,26): error TS2307: Cannot find module '@/components/ui/checkbox' or its corresponding type declarations.
-app/(root)/mocktest/setup/page.tsx(26,8): error TS2307: Cannot find module '@/components/ui/select' or its corresponding type declarations.
-app/(root)/mocktest/setup/page.tsx(37,15): error TS2769: No overload matches this call.
-  Overload 1 of 2, '(values: readonly ["Mains", "Advanced"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
-    Object literal may only specify known properties, and 'required_error' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
-  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
-    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
-      Index signature for type 'string' is missing in type 'string[]'.
-app/(root)/mocktest/setup/page.tsx(43,17): error TS2769: No overload matches this call.
-  Overload 1 of 2, '(values: readonly ["Easy", "Medium", "Hard"], params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
-    Object literal may only specify known properties, and 'required_error' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.
-  Overload 2 of 2, '(entries: Readonly<Record<string, EnumValue>>, params?: string | { error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; } | undefined): ZodEnum<...>', gave the following error.
-    Argument of type 'string[]' is not assignable to parameter of type 'Readonly<Record<string, EnumValue>>'.
-      Index signature for type 'string' is missing in type 'string[]'.
-app/(root)/mocktest/setup/page.tsx(144,49): error TS7006: Parameter 'checked' implicitly has an 'any' type.
-app/hub/mock-test/setup/page.tsx(19,26): error TS2307: Cannot find module '@/components/ui/checkbox' or its corresponding type declarations.
-app/hub/mock-test/setup/page.tsx(26,8): error TS2307: Cannot find module '@/components/ui/select' or its corresponding type declarations.
-app/hub/mock-test/setup/page.tsx(149,49): error TS7006: Parameter 'checked' implicitly has an 'any' type.
+app/api/vapi/search-book/route.ts(22,62): error TS2559: Type 'string' has no properties in common with type '{ bookId?: string | undefined; subject?: string | undefined; grade?: string | undefined; }'.
 lib/actions/session.actions.ts(6,9): error TS2305: Module '"@/lib/subscription-constants"' has no exported member 'getCurrentBillingPeriodStart'.
 lib/subscription-constants.ts(16,14): error TS2739: Type '{ pro: { maxBooks: number; maxSessionsPerMonth: number; maxDurationPerSession: number; hasSessionHistory: true; }; }' is missing the following properties from type 'Record<PlanType, PlanLimits>': free, standard
-lib/utils.ts(124,28): error TS2345: Argument of type '{ canvasContext: CanvasRenderingContext2D; viewport: PageViewport; }' is not assignable to parameter of type 'RenderParameters'.
+lib/utils.ts(149,28): error TS2345: Argument of type '{ canvasContext: CanvasRenderingContext2D; viewport: PageViewport; }' is not assignable to parameter of type 'RenderParameters'.
   Property 'canvas' is missing in type '{ canvasContext: CanvasRenderingContext2D; viewport: PageViewport; }' but required in type 'RenderParameters'.

@@ -15,6 +15,8 @@ export interface IBook extends Document {
     title: string;
     slug: string;
     author: string;
+    subject: string;
+    grade: string;
     persona?: string;
     fileURL: string;
     fileBlobKey: string;
@@ -29,7 +31,10 @@ export interface IBook extends Document {
 export interface IBookSegment extends Document {
     clerkId: string;
     bookId: Types.ObjectId;
+    subject: string;
+    grade: string;
     content: string;
+    embedding: number[];
     segmentIndex: number;
     pageNumber?: number;
     wordCount: number;
@@ -59,6 +64,8 @@ export interface CreateBook {
     clerkId: string;
     title: string;
     author: string;
+    subject: string;
+    grade: string;
     persona?: string;
     fileURL: string;
     fileBlobKey: string;

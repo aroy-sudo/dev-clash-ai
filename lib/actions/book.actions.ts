@@ -1,5 +1,6 @@
 'use server';
 
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import {CreateBook, TextSegment} from "@/types";
 import {connectToDatabase} from "@/database/mongoose";
 import {escapeRegex, generateSlug, serializeData} from "@/lib/utils";
@@ -7,6 +8,8 @@ import Book from "@/database/models/book.model";
 import BookSegment from "@/database/models/book-segment.model";
 import mongoose from "mongoose";
 import {getUserPlan} from "@/lib/subscription.server";
+
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
 export const getAllBooks = async (search?: string) => {
     try {
@@ -126,15 +129,21 @@ export const getBookBySlug = async (slug: string) => {
     }
 }
 
-export const saveBookSegments = async (bookId: string, clerkId: string, segments: TextSegment[], totalExpectedSegments?: number) => {
+export const saveBookSegments = async (bookId: string, clerkId: string, subject: string, grade: string, segments: TextSegment[], totalExpectedSegments?: number) => {
     try {
         await connectToDatabase();
 
         console.log('Saving book segments...');
 
-        const segmentsToInsert = segments.map(({ text, segmentIndex, pageNumber, wordCount }) => ({
-            clerkId, bookId, content: text, segmentIndex, pageNumber, wordCount
-        }));
+        const embeddingModel = genAI.getGenerativeModel({ model: "text-embedding-004" });
+
+        const segmentsToInsert = await Promise.all(
+            segments.map(async ({ text, segmentIndex, pageNumber, wordCount }) => {
+                const result = await embeddingModel.embedContent(text);
+                const embedding = result.embedding.values;
+                return { clerkId, bookId, subject, grade, content: text, embedding, segmentIndex, pageNumber, wordCount };
+            })
+        );
 
         await BookSegment.insertMany(segmentsToInsert);
 
@@ -160,45 +169,49 @@ export const saveBookSegments = async (bookId: string, clerkId: string, segments
     }
 }
 
-// Searches book segments using MongoDB text search with regex fallback
-export const searchBookSegments = async (bookId: string, query: string, limit: number = 5) => {
+// Searches book segments using MongoDB Atlas Vector Search
+export const searchBookSegments = async (query: string, filterConfig: { bookId?: string, subject?: string, grade?: string }, limit: number = 5) => {
     try {
         await connectToDatabase();
 
-        console.log(`Searching for: "${query}" in book ${bookId}`);
+        console.log(`Searching for: "${query}" with filters: ${JSON.stringify(filterConfig)}`);
 
-        const bookObjectId = new mongoose.Types.ObjectId(bookId);
+        const embeddingModel = genAI.getGenerativeModel({ model: "text-embedding-004" });
+        const result = await embeddingModel.embedContent(query);
+        const queryVector = result.embedding.values;
 
-        // Try MongoDB text search first (requires text index)
-        let segments: Record<string, unknown>[] = [];
-        try {
-            segments = await BookSegment.find({
-                bookId: bookObjectId,
-                $text: { $search: query },
-            })
-                .select('_id bookId content segmentIndex pageNumber wordCount')
-                .sort({ score: { $meta: 'textScore' } })
-                .limit(limit)
-                .lean();
-        } catch {
-            // Text index may not exist — fall through to regex fallback
-            segments = [];
-        }
+        // Construct standard MQL filter object for Atlas Search
+        const filter: any = {};
+        if (filterConfig.bookId) filter.bookId = new mongoose.Types.ObjectId(filterConfig.bookId);
+        if (filterConfig.subject) filter.subject = filterConfig.subject;
+        if (filterConfig.grade) filter.grade = filterConfig.grade;
 
-        // Fallback: regex search matching ANY keyword
-        if (segments.length === 0) {
-            const keywords = query.split(/\s+/).filter((k) => k.length > 2);
-            const pattern = keywords.map(escapeRegex).join('|');
-
-            segments = await BookSegment.find({
-                bookId: bookObjectId,
-                content: { $regex: pattern, $options: 'i' },
-            })
-                .select('_id bookId content segmentIndex pageNumber wordCount')
-                .sort({ segmentIndex: 1 })
-                .limit(limit)
-                .lean();
-        }
+        // Atlas Vector Search aggregation pipeline
+        const segments = await BookSegment.aggregate([
+            {
+                $vectorSearch: {
+                    index: "vector_index", // Ensure this matches your Atlas index name
+                    path: "embedding",
+                    queryVector: queryVector,
+                    numCandidates: limit * 10,
+                    limit: limit,
+                    ...(Object.keys(filter).length > 0 && { filter })
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    bookId: 1,
+                    subject: 1,
+                    grade: 1,
+                    content: 1,
+                    segmentIndex: 1,
+                    pageNumber: 1,
+                    wordCount: 1,
+                    score: { $meta: "vectorSearchScore" }
+                }
+            }
+        ]);
 
         console.log(`Search complete. Found ${segments.length} results`);
 
@@ -215,3 +228,36 @@ export const searchBookSegments = async (bookId: string, query: string, limit: n
         };
     }
 };
+
+export const askDoubtText = async (query: string, bookId?: string) => {
+    try {
+        await connectToDatabase();
+        
+        let context = "";
+        
+        // Use provided bookId or fallback to any book
+        const bookQuery = bookId ? { _id: bookId } : {};
+        const book = await Book.findOne(bookQuery).lean();
+        
+        if (book) {
+            const searchResult = await searchBookSegments(query, { bookId: book._id.toString() }, 3);
+            if (searchResult.success && searchResult.data) {
+                context = (searchResult.data as {content: string}[]).map(s => s.content).join('\n\n');
+            }
+        }
+
+        const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+        const systemPrompt = `Important Instruction: The user will speak in Hindi, English, or Hinglish. Reply in the exact same language mix they use. Maintain an encouraging, expert tutor persona.
+You are Vector, an expert tutor for JEE exams. Base your answers on the following textbook context if relevant:
+<context>
+${context}
+</context>`;
+
+        const response = await model.generateContent([systemPrompt, query]);
+        return { success: true, text: response.response.text() };
+        
+    } catch (e) {
+        console.error("Text doubt error:", e);
+        return { success: false, error: "Failed to fetch response" };
+    }
+}

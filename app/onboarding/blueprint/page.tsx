@@ -241,7 +241,7 @@ Next
                 
                 <div className="flex flex-col items-center gap-6 w-full max-w-sm mx-auto">
                     <button 
-                        onClick={() => router.push('/hub/choose-difficulty')}
+                        onClick={() => router.push('/hub/mock-test?auto=true')}
                         className="w-full py-5 bg-[#fdc003] text-[#133347] text-xl font-black font-headline rounded-2xl border-4 border-[#133347] hover:bg-[#ffcf33] transition-colors shadow-[6px_6px_0px_0px_rgba(19,51,71,1)] active:translate-y-2 active:shadow-none hover:-translate-y-1"
                     >
                         Select Difficulty

@@ -21,8 +21,13 @@ export interface IPerformanceAnalysis {
 export interface ITestAttempt extends Document {
   testId: Schema.Types.ObjectId;
   userId: string;
+  testType: string; // 'Full', 'Custom', 'Quick Review'
+  topicsCovered: string[];
   answers: IAnswer[];
   overallScore: number;
+  totalQuestions: number;
+  timeTaken: number;
+  detailedFeedback?: string;
   performanceAnalysis: IPerformanceAnalysis;
   createdAt: Date;
   updatedAt: Date;
@@ -49,8 +54,13 @@ const PerformanceAnalysisSchema = new Schema<IPerformanceAnalysis>({
 const TestAttemptSchema = new Schema<ITestAttempt>({
   testId: { type: Schema.Types.ObjectId, ref: 'JeeTest', required: true },
   userId: { type: String, required: true }, // from Clerk
+  testType: { type: String, default: 'Full' },
+  topicsCovered: { type: [String], default: [] },
   answers: { type: [AnswerSchema], required: true },
   overallScore: { type: Number, required: true },
+  totalQuestions: { type: Number, default: 0 },
+  timeTaken: { type: Number, default: 0 },
+  detailedFeedback: { type: String, required: false },
   performanceAnalysis: { type: PerformanceAnalysisSchema, required: true },
 }, { timestamps: true });
 

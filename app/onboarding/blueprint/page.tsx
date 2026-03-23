@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { SYLLABUS_DATA } from '@/constants';
+import { saveUserSyllabus } from '@/lib/actions/user.actions';
+import { toast } from 'sonner';
 
 export default function Page() {
   const router = useRouter();
@@ -46,6 +48,25 @@ export default function Page() {
   const checkedCount = Object.values(checkedTopics).filter(Boolean).length;
   const currentProgress = totalTopics === 0 ? 0 : Math.round((checkedCount / totalTopics) * 100);
 
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleConfirmDraft = async () => {
+    setIsSaving(true);
+    const selected = Object.keys(checkedTopics).filter(k => checkedTopics[k]);
+    try {
+      const res = await saveUserSyllabus(selected);
+      if (res.success) {
+        setIsModalOpen(true);
+      } else {
+        toast.error(res.message || "Failed to save syllabus");
+      }
+    } catch (e) {
+      toast.error("Something went wrong");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div className="w-full min-h-screen relative">
       <header className="bg-[#f6faff] dark:bg-[#133347] flex justify-between items-center w-full px-6 py-4 mx-auto fixed top-0 z-50">
@@ -83,7 +104,7 @@ export default function Page() {
 </a>
 </div>
 <div className="mt-auto px-6 hidden md:block">
-<button className="w-full py-4 bg-primary text-on-primary font-headline font-bold rounded-xl sketchy-border hover:bg-primary-container transition-colors duration-300 shadow-lg" onClick={() => setIsModalOpen(true)}>
+<button disabled={isSaving} className="w-full py-4 bg-primary text-on-primary font-headline font-bold rounded-xl sketchy-border hover:bg-primary-container transition-colors duration-300 shadow-lg disabled:opacity-50" onClick={handleConfirmDraft}>
                 Continue Draft
             </button>
 </div>
@@ -207,7 +228,7 @@ Back
 <span className="font-['Space_Grotesk'] text-[12px] font-bold">The Blueprint</span>
 </div>
 <div className="pointer-events-auto">
-<button className="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 hover:scale-105 transition-transform group font-['Space_Grotesk'] text-[12px] font-bold bg-white rounded-xl shadow-lg border-2 border-[#133347] px-6" onClick={() => setIsModalOpen(true)}>
+<button disabled={isSaving} className="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] p-4 hover:scale-105 transition-transform group font-['Space_Grotesk'] text-[12px] font-bold bg-white rounded-xl shadow-lg border-2 border-[#133347] px-6 disabled:opacity-50" onClick={handleConfirmDraft}>
 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform mb-1" data-icon="arrow_forward">arrow_forward</span>
 Next
 </button>

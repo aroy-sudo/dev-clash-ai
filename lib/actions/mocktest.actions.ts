@@ -5,6 +5,7 @@ import { connectToDatabase } from '@/database/mongoose';
 import JeeTest from '@/database/models/jee-test.model';
 import TestAttempt from '@/database/models/test-attempt.model';
 import UserProgress from '@/database/models/user-progress.model';
+import User from '@/database/models/user.model';
 import { auth } from '@clerk/nextjs/server';
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
@@ -41,11 +42,20 @@ export async function generateMockTest(params: {
       }
     }
 
+    let syllabusContext = "";
+    if (userId !== 'anonymous') {
+      const userDoc = await User.findOne({ userId });
+      if (userDoc && userDoc.selectedSyllabus && userDoc.selectedSyllabus.length > 0) {
+        syllabusContext = `\nCRITICAL: You must only generate questions for the following topics: [${userDoc.selectedSyllabus.join(', ')}]. Do not generate questions for any unlisted topics.`;
+      }
+    }
+
     const prompt = `Act as an expert JEE paper setter. Generate a realistic, syllabus-accurate JEE mock test.
 Exam Type: ${examType}
 Difficulty: ${difficulty}
 Subjects Included: ${subjects.join(', ')}
 ${mistakeContext}
+${syllabusContext}
 
 Please generate ${noOfQuestions} distinct questions reflecting the mix of these subjects. Ensure that the questions match the exact difficulty level specified. Provide exact details.`;
 
@@ -207,14 +217,45 @@ Provide a detailed structured analysis containing:
     const response = await result.response;
     const performanceAnalysis = JSON.parse(response.text() || "{}");
 
+    const topicsCovered = Array.from(new Set(test.questions.map((q: any) => q.topic)));
+    const totalQuestions = test.questions.length;
+    const timeTaken = answers.reduce((acc, curr) => acc + curr.timeSpentSeconds, 0);
+    
+    // Determine test type based on URL/state or default
+    let testType = "Full";
+    if (test.examType === 'RETENTION_REVIEW') testType = "Quick Review";
+    else if (test.questions.length < 10) testType = "Custom";
+    
+    // Extract string feedback
+    const detailedFeedback = response.text() || "";
+
     // Save attempt
     const newAttempt = await TestAttempt.create({
       testId,
       userId,
+      testType,
+      topicsCovered,
       answers,
       overallScore,
+      totalQuestions,
+      timeTaken,
+      detailedFeedback,
       performanceAnalysis
     });
+
+    // Update User model weak topics
+    try {
+      if (userId !== 'anonymous' && performanceAnalysis.areasForImprovement?.length > 0) {
+        const userDoc = await User.findOne({ userId });
+        if (userDoc) {
+          const newWeakTopics = new Set([...userDoc.weakTopics, ...performanceAnalysis.areasForImprovement]);
+          userDoc.weakTopics = Array.from(newWeakTopics);
+          await userDoc.save();
+        }
+      }
+    } catch (e) {
+      console.error("Error updating weak topics", e);
+    }
 
     // Check if this was a Spaced Repetition test
     if (test.examType === 'RETENTION_REVIEW' && test.questions.length > 0) {

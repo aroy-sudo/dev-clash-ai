@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/store/onboardingStore';
 import { calculateTargetExamDate } from '@/lib/utils';
 
-export function HubDashboard({ children }: { children?: React.ReactNode }) {
+export function HubDashboard({ children, weakTopics = [] }: { children?: React.ReactNode, weakTopics?: string[] }) {
   const router = useRouter();
   const { hasTakenAssessment, targetExam, userClass } = useOnboardingStore();
   const [isMounted, setIsMounted] = React.useState(false);
@@ -152,6 +152,27 @@ export function HubDashboard({ children }: { children?: React.ReactNode }) {
               </div>
             </div>
           </div>
+
+          {/* Target Locked - Weak Topics */}
+          {weakTopics.length > 0 && (
+            <div className="md:col-span-12 bg-surface-container-highest p-8 rounded-xl border-4 border-dashed border-[#ac332a] hand-drawn-box relative overflow-hidden mt-4">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="bg-[#ac332a] text-white p-2 rounded-full transform -rotate-6">
+                  <span className="material-symbols-outlined" data-icon="crisis_alert">crisis_alert</span>
+                </div>
+                <h3 className="font-headline text-3xl font-black text-[#133347]">Target Locked</h3>
+              </div>
+              <p className="font-body text-[#133347]/80 font-bold mb-6">Focus your artillery on these high-priority weak zones:</p>
+              
+              <div className="flex flex-wrap gap-4">
+                {weakTopics.map((topic, idx) => (
+                  <span key={idx} className="bg-[#fdc003]/20 text-[#133347] font-bold px-4 py-2 border-2 border-[#133347] rounded-lg shadow-[4px_4px_0px_0px_rgba(19,51,71,1)] transform hover:-translate-y-1 transition-transform flex items-center gap-2" style={{ transform: `rotate(${Math.random() * 4 - 2}deg)` }}>
+                    <span className="text-xl">⚠️</span> {topic}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Quick Access Section */}
           <section className="md:col-span-12 mt-4">

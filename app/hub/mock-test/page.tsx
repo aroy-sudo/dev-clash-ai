@@ -8,11 +8,12 @@ import { useOnboardingStore } from '@/store/onboardingStore';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
-function SketchedTestRunner({ test }: { test: any }) {
+function SketchedTestRunner({ test, mode }: { test: any, mode?: string | null }) {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, { selectedOption: string; timeSpentSeconds: number }>>({});
   const [activeQuestionTime, setActiveQuestionTime] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes strict timer
   const [isSubmitting, setIsSubmitting] = useState(false);
   const setHasTakenAssessment = useOnboardingStore((state) => state.setHasTakenAssessment);
 
@@ -22,6 +23,21 @@ function SketchedTestRunner({ test }: { test: any }) {
     }, 1000);
     return () => clearInterval(timer);
   }, [currentIndex]);
+
+  useEffect(() => {
+    if (mode === 'quick_review' && timeLeft > 0 && !isSubmitting) {
+      const countdown = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+      return () => clearInterval(countdown);
+    }
+  }, [mode, isSubmitting, timeLeft]);
+
+  useEffect(() => {
+    if (mode === 'quick_review' && timeLeft <= 0 && !isSubmitting) {
+      submitTest();
+    }
+  }, [timeLeft, mode, isSubmitting]);
 
   const flushTime = () => {
     const qId = test.questions[currentIndex]._id;
@@ -105,9 +121,17 @@ function SketchedTestRunner({ test }: { test: any }) {
   
   // Format total test time
   const totalSeconds = Object.values(answers).reduce((acc: number, val: any) => acc + val.timeSpentSeconds, 0) + activeQuestionTime;
-  const mins = Math.floor(totalSeconds / 60);
-  const secs = totalSeconds % 60;
-  const timeString = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  
+  let timeString = "";
+  if (mode === 'quick_review') {
+    const minLeft = Math.floor(timeLeft / 60);
+    const secLeft = timeLeft % 60;
+    timeString = `${minLeft.toString().padStart(2, '0')}:${secLeft.toString().padStart(2, '0')} LEFT`;
+  } else {
+    const mins = Math.floor(totalSeconds / 60);
+    const secs = totalSeconds % 60;
+    timeString = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }
 
   return (
     <div className="w-full min-h-screen relative">
@@ -256,12 +280,35 @@ function TestLoader() {
       
       // Auto-generate test if we load directly into this page without an ID
       if (!currentId) {
-        if (searchParams.get('auto') !== 'true') {
+        const mode = searchParams.get('mode');
+        
+        if (mode === 'quick_review') {
+          const targetTopic = searchParams.get('topic');
+          try {
+            const genRes = await generateMockTest({
+              examType: 'RETENTION_REVIEW',
+              subjects: [targetTopic || 'Physics Focus'],
+              difficulty: 'Medium'
+            });
+            if (genRes.success && genRes.testId) {
+              currentId = genRes.testId;
+              window.history.replaceState(null, '', `/hub/mock-test?id=${currentId}&mode=quick_review`);
+            } else {
+              toast.error(genRes.message || "Failed to generate quick review test.");
+              router.push('/hub/revision');
+              return;
+            }
+          } catch(e: any) {
+             toast.error(e.message || "Error generating test");
+             router.push('/hub/revision');
+             return;
+          }
+        }
+        else if (searchParams.get('auto') !== 'true') {
           router.replace('/hub/mock-test/setup');
           return;
-        }
-
-        try {
+        } else {
+          try {
           const genRes = await generateMockTest({
             examType: 'Mains',
             subjects: ['Physics', 'Chemistry', 'Math'],
@@ -284,8 +331,8 @@ function TestLoader() {
           return;
         }
       }
-
-      const res = await getTestById(currentId as string);
+    }
+    const res = await getTestById(currentId as string);
       if (res.success) {
         setTest(res.test);
       } else {
@@ -300,7 +347,7 @@ function TestLoader() {
   if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin h-8 w-8 text-primary" /></div>;
   if (!test) return null;
 
-  return <SketchedTestRunner test={test} />;
+  return <SketchedTestRunner test={test} mode={searchParams.get('mode')} />;
 }
 
 export default function Page() {

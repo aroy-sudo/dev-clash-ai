@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Assessment Hub - Test History</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: Space Grotesk (Architect Hand) & Work Sans (Draftsman Print) -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-container": "#fdc003",
+              "on-primary-container": "#00473c",
+              "on-primary-fixed": "#00201a",
+              "surface-container-low": "#ebf5ff",
+              "inverse-surface": "#133347",
+              "surface-variant": "#c8e6ff",
+              "surface-tint": "#006b5c",
+              "primary-fixed-dim": "#44ddc1",
+              "on-tertiary-container": "#7e100e",
+              "on-tertiary-fixed": "#410001",
+              "surface-container-lowest": "#ffffff",
+              "on-primary": "#ffffff",
+              "background": "#f6faff",
+              "on-secondary-container": "#6c5000",
+              "tertiary-fixed": "#ffdad5",
+              "inverse-primary": "#44ddc1",
+              "error-container": "#ffdad6",
+              "inverse-on-surface": "#e5f2ff",
+              "surface-dim": "#bfdef7",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#f6faff",
+              "surface-container-high": "#d4ebff",
+              "on-background": "#001e2e",
+              "outline": "#6c7a76",
+              "tertiary": "#ac332a",
+              "surface-container": "#dff0ff",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed-dim": "#ffb4aa",
+              "tertiary-container": "#ff877a",
+              "on-surface": "#001e2e",
+              "on-primary-fixed-variant": "#005145",
+              "primary": "#006b5c",
+              "on-tertiary-fixed-variant": "#8b1a16",
+              "outline-variant": "#bbcac4",
+              "secondary": "#785900",
+              "primary-container": "#00bfa5",
+              "surface-container-highest": "#c8e6ff",
+              "on-secondary-fixed-variant": "#5b4300",
+              "on-error-container": "#93000a",
+              "primary-fixed": "#68fadd",
+              "on-secondary-fixed": "#261a00",
+              "surface": "#f6faff",
+              "on-surface-variant": "#3c4a46",
+              "error": "#ba1a1a",
+              "secondary-fixed-dim": "#fabd00",
+              "secondary-fixed": "#ffdf9e",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Work Sans"],
+              "label": ["Work Sans"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .scribble-bg {
+            background-image: radial-gradient(#001e2e 0.5px, transparent 0.5px);
+            background-size: 14px 14px;
+            opacity: 0.03;
+        }
+        .marker-circle {
+            border: 4px solid #ac332a;
+            border-radius: 48% 52% 55% 45% / 42% 48% 52% 58%;
+            transform: rotate(-3deg);
+        }
+        .sketchy-border {
+            border: 2.5px solid #133347;
+            border-radius: 4px 12px 6px 14px;
+        }
+        .asymmetric-tilt {
+            transform: rotate(0.8deg);
+        }
+        .highlighter-stroke {
+            box-shadow: inset 0 -12px 0 0 #fdc003;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body text-on-background selection:bg-secondary-container">
+<!-- TopAppBar -->
+<header class="bg-[#f6faff] dark:bg-[#133347] opacity-90 backdrop-blur-md docked full-width top-0 sticky z-50 shadow-[0_4px_0_0_rgba(0,107,92,0.1)]">
+<div class="flex items-center justify-between px-6 py-4 w-full max-w-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#006b5c] dark:text-[#00bfa5]" data-icon="architecture">architecture</span>
+<h1 class="font-['Space_Grotesk'] font-bold tracking-tight text-[#006b5c] dark:text-[#00bfa5] italic text-2xl">AI Assessment Hub</h1>
+</div>
+<button class="material-symbols-outlined text-[#133347] dark:text-[#f6faff] p-2 hover:bg-[#fdc003]/10 transition-colors duration-200 active:scale-95" data-icon="more_vert">more_vert</button>
+</div>
+<div class="bg-[#fdc003] h-[2px] w-full block"></div>
+</header>
+<main class="relative min-h-screen pb-32">
+<!-- Texture Overlay -->
+<div class="fixed inset-0 pointer-events-none scribble-bg"></div>
+<!-- Horizontal Scrollable Tabs -->
+<div class="px-6 py-6 overflow-x-auto flex gap-4 no-scrollbar">
+<button class="flex-shrink-0 px-6 py-3 bg-primary-container text-on-primary-container font-headline font-bold border-2 border-on-primary-container rotate-[-1.5deg] shadow-[4px_4px_0_0_#133347]">
+                Kinematics
+            </button>
+<button class="flex-shrink-0 px-6 py-3 bg-surface-container text-on-surface font-headline font-bold border-2 border-outline-variant rotate-[1deg]">
+                Dynamics
+            </button>
+<button class="flex-shrink-0 px-6 py-3 bg-surface-container text-on-surface font-headline font-bold border-2 border-outline-variant rotate-[-0.5deg]">
+                Optics
+            </button>
+<button class="flex-shrink-0 px-6 py-3 bg-surface-container text-on-surface font-headline font-bold border-2 border-outline-variant rotate-[1.2deg]">
+                Thermodynamics
+            </button>
+</div>
+<!-- Scoring Section -->
+<section class="px-6 py-8 flex flex-col items-center">
+<div class="relative inline-block px-12 py-10">
+<!-- Messy Circle Around Score -->
+<div class="absolute inset-0 marker-circle border-[6px] opacity-80"></div>
+<div class="relative text-center">
+<span class="text-7xl font-headline font-black tracking-tighter text-on-background">84</span>
+<p class="font-label text-xs uppercase tracking-widest font-bold opacity-60">Total Score</p>
+</div>
+</div>
+<div class="mt-8 flex gap-8 items-center font-headline font-bold text-2xl italic">
+<span class="text-primary">+4 <span class="text-xs not-italic font-body uppercase tracking-tighter block text-on-surface-variant">Correct</span></span>
+<div class="h-8 w-px bg-outline-variant rotate-12"></div>
+<span class="text-tertiary">-1 <span class="text-xs not-italic font-body uppercase tracking-tighter block text-on-surface-variant">Incorrect</span></span>
+</div>
+</section>
+<!-- Stats Grid -->
+<section class="px-6 grid grid-cols-1 gap-6">
+<div class="bg-surface-container-low p-6 sketchy-border asymmetric-tilt flex justify-between items-center shadow-[6px_6px_0_0_rgba(0,107,92,0.05)]">
+<div>
+<h3 class="font-label text-xs font-bold uppercase text-on-surface-variant">Accuracy</h3>
+<p class="font-headline text-3xl font-bold text-primary">82%</p>
+</div>
+<span class="material-symbols-outlined text-4xl opacity-20" data-icon="target">target</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-6 sketchy-border flex flex-col shadow-[4px_4px_0_0_rgba(120,89,0,0.05)]">
+<h3 class="font-label text-xs font-bold uppercase text-on-surface-variant">Time Taken</h3>
+<p class="font-headline text-xl font-bold">14m 22s</p>
+</div>
+<div class="bg-surface-container-low p-6 sketchy-border flex flex-col shadow-[4px_4px_0_0_rgba(0,30,46,0.05)]">
+<h3 class="font-label text-xs font-bold uppercase text-on-surface-variant">Attempted</h3>
+<p class="font-headline text-xl font-bold">18/20</p>
+</div>
+</div>
+</section>
+<!-- Question Grid (5x4) -->
+<section class="px-6 py-12">
+<h2 class="font-headline text-xl font-bold mb-6 flex items-center gap-2">
+<span class="highlighter-stroke">Response Grid</span>
+</h2>
+<div class="grid grid-cols-5 gap-3">
+<!-- Correct Item -->
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[-1deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<!-- Correct Item -->
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[2deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<!-- Incorrect Item -->
+<div class="aspect-square bg-tertiary-container/20 border-2 border-tertiary rounded-md flex items-center justify-center rotate-[-2deg]">
+<span class="material-symbols-outlined text-tertiary font-bold" data-icon="close" style="font-variation-settings: 'FILL' 0, 'wght' 700;">close</span>
+</div>
+<!-- Correct Item -->
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[1deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<!-- Correct Item -->
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[-3deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<!-- Row 2 -->
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[2deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[-1.5deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<div class="aspect-square bg-tertiary-container/20 border-2 border-tertiary rounded-md flex items-center justify-center rotate-[2.5deg]">
+<span class="material-symbols-outlined text-tertiary font-bold" data-icon="close" style="font-variation-settings: 'FILL' 0, 'wght' 700;">close</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<!-- Row 3 -->
+<div class="aspect-square bg-tertiary-container/20 border-2 border-tertiary rounded-md flex items-center justify-center rotate-[-1deg]">
+<span class="material-symbols-outlined text-tertiary font-bold" data-icon="close" style="font-variation-settings: 'FILL' 0, 'wght' 700;">close</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[0.5deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<div class="aspect-square bg-outline-variant/10 border-2 border-outline-variant border-dashed rounded-md flex items-center justify-center">
+<span class="text-[10px] font-bold opacity-40">13</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[-2deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[1.2deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<!-- Row 4 -->
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[-0.8deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+<div class="aspect-square bg-tertiary-container/20 border-2 border-tertiary rounded-md flex items-center justify-center rotate-[3deg]">
+<span class="material-symbols-outlined text-tertiary font-bold" data-icon="close" style="font-variation-settings: 'FILL' 0, 'wght' 700;">close</span>
+</div>
+<div class="aspect-square bg-outline-variant/10 border-2 border-outline-variant border-dashed rounded-md flex items-center justify-center">
+<span class="text-[10px] font-bold opacity-40">19</span>
+</div>
+<div class="aspect-square bg-primary-container/20 border-2 border-primary rounded-md flex items-center justify-center rotate-[-1.5deg]">
+<span class="material-symbols-outlined text-primary font-bold" data-icon="check" style="font-variation-settings: 'FILL' 0, 'wght' 700;">check</span>
+</div>
+</div>
+</section>
+<!-- AI Feedback Card -->
+<section class="px-6 py-4">
+<div class="bg-surface-container-highest p-8 sketchy-border rotate-[-0.5deg] relative shadow-[8px_8px_0_0_#fdc003]">
+<div class="absolute -top-4 -right-2 bg-secondary text-on-secondary px-4 py-1 font-headline font-bold text-sm rotate-[12deg] shadow-sm">
+                    Tutor's Note
+                </div>
+<h3 class="font-headline text-lg font-bold mb-4 italic text-on-primary-container">"Great grasp of projectile motion!"</h3>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant mb-4">
+                    You're crushing the conceptual questions. However, the <span class="highlighter-stroke px-1">integration of air resistance</span> in dynamic models seems to be where you lose focus. 
+                </p>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant">
+                    Try revisiting the 'Fluid Dynamics' card set before the next test. You're only 3 points away from the 'Architect' rank!
+                </p>
+<div class="mt-6 flex justify-end">
+<span class="font-headline font-bold text-xs opacity-30">— AI Tutor v2.4</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 border-t-4 border-[#006b5c] dark:border-[#00bfa5] rounded-t-xl bg-[#f6faff] dark:bg-[#133347] shadow-[0_-8px_20px_-12px_rgba(0,30,46,0.15)]">
+<div class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3">
+<!-- Hub -->
+<a class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] opacity-60 hover:opacity-100 hover:text-[#006b5c] transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="grid_view">grid_view</span>
+<span class="font-['Work_Sans'] text-[11px] font-bold uppercase tracking-wider">Hub</span>
+</a>
+<!-- Roadmap -->
+<a class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] opacity-60 hover:opacity-100 hover:text-[#006b5c] transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="map">map</span>
+<span class="font-['Work_Sans'] text-[11px] font-bold uppercase tracking-wider">Roadmap</span>
+</a>
+<!-- Flashcards -->
+<a class="flex flex-col items-center justify-center text-[#133347] dark:text-[#f6faff] opacity-60 hover:opacity-100 hover:text-[#006b5c] transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="layers">layers</span>
+<span class="font-['Work_Sans'] text-[11px] font-bold uppercase tracking-wider">Flashcards</span>
+</a>
+<!-- Tests (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#fdc003] text-[#133347] rounded-lg px-4 py-1 rotate-[-1deg] shadow-[2px_2px_0_0_#006b5c] transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="quiz">quiz</span>
+<span class="font-['Work_Sans'] text-[11px] font-bold uppercase tracking-wider">Tests</span>
+</a>
+</div>
+</nav>
+</body></html>

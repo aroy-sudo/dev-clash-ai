@@ -72,10 +72,8 @@ export default function RevisionHubPage() {
   const handleReview = async (subject: string, topicName: string) => {
     if (!userId) return;
     setLoadingTopic(topicName);
-    const res = await generateTopicReview(userId, subject, topicName);
-    if (res.success) {
-      router.push('/hub/mock-test/' + res.testId);
-    }
+    const encodedTopic = encodeURIComponent(topicName);
+    router.push(`/hub/mock-test?topic=${encodedTopic}&mode=quick_review`);
     setLoadingTopic(null);
   };
 

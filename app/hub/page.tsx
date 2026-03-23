@@ -4,6 +4,7 @@ import { connectToDatabase } from '@/database/mongoose';
 import JeeTest from '@/database/models/jee-test.model';
 import { HubDashboard } from '@/components/layout/HubDashboard';
 import RetentionWidget from '@/components/RetentionWidget';
+import User from '@/database/models/user.model';
 
 export default async function HubPage() {
   const { userId } = await auth();
@@ -19,8 +20,11 @@ export default async function HubPage() {
     redirect('/onboarding/target');
   }
 
+  const userDoc = await User.findOne({ userId }).lean();
+  const weakTopics = userDoc?.weakTopics || [];
+
   return (
-    <HubDashboard>
+    <HubDashboard weakTopics={weakTopics}>
       <RetentionWidget userId={userId} />
     </HubDashboard>
   );

@@ -299,8 +299,8 @@ export function useVapi(book: IBook) {
                     language: "hi" // Hindi support
                 },
                 model: {
-                    provider: 'google',
-                    model: 'gemini-2.0-flash', 
+                    provider: 'openai',
+                    model: 'gpt-4o-mini', 
                     tools: [
                         {
                             type: "function",

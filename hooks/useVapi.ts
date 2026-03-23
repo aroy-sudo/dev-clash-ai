@@ -331,14 +331,11 @@ export function useVapi(book: IBook) {
                     ]
                 },
                 voice: {
-                    provider: '11labs' as const,
-                    voiceId: 'pqHfZKP75CvOlQylNhV4', 
-                    model: 'eleven_multilingual_v2' as const,
-                    stability: VOICE_SETTINGS.stability,
-                    similarityBoost: VOICE_SETTINGS.similarityBoost,
-                    style: VOICE_SETTINGS.style,
-                    useSpeakerBoost: VOICE_SETTINGS.useSpeakerBoost,
-                },
+                    provider: "cartesia",
+                    model: "sonic-english",
+                    voiceId: "248be419-c632-4f23-815f-ce0d8a41c1eb", // Standard clear Cartesia voice
+                    apiKey: "sk_car_9F2pyXNoYLAn5Ewcc8CP7x" // Hardcoded API key
+                } as any,
             });
         } catch (err) {
             console.error('Failed to start call:', err);

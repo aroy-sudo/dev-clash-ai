@@ -171,8 +171,10 @@ export function useVapi(book: IBook) {
                 }
             },
 
-            error: (error: Error) => {
-                console.error('Vapi error:', error);
+            error: (error: any) => {
+                console.error('Vapi error full trace:', error);
+                console.error('Vapi error message:', error?.message);
+                console.error('Vapi response data:', error?.response?.data || error?.response || error?.data);
                 // Don't reset isStoppingRef here - delayed events may still fire
                 setStatus('idle');
                 setCurrentMessage('');
@@ -334,8 +336,7 @@ export function useVapi(book: IBook) {
                     provider: "cartesia",
                     model: "sonic-english",
                     voiceId: "248be419-c632-4f23-815f-ce0d8a41c1eb", // Standard clear Cartesia voice
-                    apiKey: "sk_car_9F2pyXNoYLAn5Ewcc8CP7x" // Hardcoded API key
-                } as any,
+                },
             });
         } catch (err) {
             console.error('Failed to start call:', err);
